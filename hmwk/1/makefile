@@ -1,2 +1,2 @@
 all : 
-	g++ -o test -O1 *.cpp -I. -Wall -std=c++11
+	g++ -O1 -o test *.cpp -I. -Wall -std=c++11

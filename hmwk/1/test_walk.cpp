@@ -45,10 +45,9 @@ void test_fractal_dim(int iterations, int length, bool verbose)
 int main(){
   //test_fractal_dim(1000, 100000, true);
 
-  
   avoiding_random_walk<DIMENSION_COUNT, WALK_TYPE> walk;
   walk.verbose = 2;
-  walk.step_walk(200000);
+  walk.step_walk(1000);
 
   std::vector<std::array<WALK_TYPE, DIMENSION_COUNT>> last_loc = walk.get_location_list();
 
@@ -67,17 +66,20 @@ int main(){
   std::cout << "Dimension Sigma: " << regress.get_slope_sigma() << std::endl;
 
   std::cout << "Number of locations: " << last_loc.size() << std::endl;
+  std::cout << "Steps: << " << walk.get_total_steps() << std::endl;
 
   std::cout << "Regression Points:" << std::endl;
   std::vector<double> x, y;
   regress.get_data_points(x, y);
-  for(uint i = 0; i < x.size(); i++)
+  for(unsigned int i = 0; i < x.size(); i++)
     std::cout << std::setw(4) << std::fixed << std::setprecision(2)
       << "x: " << x[i] << " | y: " << y[i] << std::endl;
   
-  /*for (uint i = 0; i < last_loc.size(); i++)
+  walk.write_to_file("outfile.csv");
+
+  /*for (unsigned int i = 0; i < last_loc.size(); i++)
   {
-    for (uint j = 0; j < last_loc[0].size(); j++)
+    for (unsigned int j = 0; j < last_loc[0].size(); j++)
       std::cout << last_loc[i][j] << ",";
     std::cout << std::endl;
   }*/
