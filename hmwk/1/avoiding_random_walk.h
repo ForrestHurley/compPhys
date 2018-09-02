@@ -150,7 +150,7 @@ class avoiding_random_walk<2, double>::is_collision_impl<2, double>
 
     //if (p->get_total_steps() % 1000 == 0)
     //  std::cout << line_list.size() << std::endl;
-    std::array<double, 2> previous_point = p->get_location_list().end()[-2];
+    std::array<double, 2> previous_point = p->get_history_at(p->get_total_steps() - 2);
 
     for (std::pair<std::array<double, 2>, std::array<double, 2>> test_line : line_list)
     {
