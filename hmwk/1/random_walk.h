@@ -17,20 +17,22 @@ class random_walk
 private:
   std::array<point_type, N> last_location;
 
-  template <int, class>
-  class step_walk_impl { public: static void _(random_walk* p) {} };
-
 protected:
   int steps = 0;
+  int goal_step_count = 0;
 
   void set_last_location(std::array<point_type, N> loc);
+
+  template <int, class>
+  class generate_single_step_impl { public: static std::array<point_type, N> _(random_walk* p) {} };
 
 public:
   int verbose = 0;
 
   random_walk();
 
-  virtual void step_walk() { step_walk_impl<N, point_type>::_(this); steps++; }
+  virtual std::array<point_type, N> generate_single_step();
+  virtual void step_walk();
   void step_walk(int steps);
 
   std::array<point_type, N> get_last_location();
@@ -60,10 +62,10 @@ public:
 
 template <int N, class point_type>
 template <int R>
-class random_walk<N, point_type>::step_walk_impl<R, int>
+class random_walk<N, point_type>::generate_single_step_impl<R, int>
 {
 public:
-  static void _(random_walk* p)
+  static std::array<point_type, N> _(random_walk<N, point_type>* p)
   {
     //static thread_local std::random_device rd;
     static thread_local std::mt19937_64 engine(time(0));
@@ -74,16 +76,19 @@ public:
     int direction = (random_num % 2) * 2 - 1;
     int dim_index = random_num / 2;
 
-    p->last_location[dim_index] += direction;
+    std::array<point_type, N> out = p->last_location;
+    out[dim_index] += direction;
+
+    return out;
   }
 };
 
 template <int N, class point_type>
 template <int R>
-class random_walk<N, point_type>::step_walk_impl<R, double>
+class random_walk<N, point_type>::generate_single_step_impl<R, double>
 {
 public:
-  static void _(random_walk* p)
+  static std::array<point_type, N> _(random_walk<N, point_type>* p)
   {
     //static thread_local std::random_device rd;
     static thread_local std::mt19937_64 engine(time(0));
@@ -101,7 +106,10 @@ public:
     double magnitude = sqrt(magnitude_sqr);
     for (double &dimension : step) dimension /= magnitude;
 
-    for (unsigned int i = 0; i < step.size(); i++) p->last_location[i] += step[i];
+    std::array<point_type, N> out = p->last_location;
+    for (unsigned int i = 0; i < step.size(); i++) out[i] += step[i];
+
+    return out;
   }
 };
 
@@ -119,27 +127,42 @@ random_walk<N, point_type>::random_walk()
 }
 
 template <int N, class point_type>
-void random_walk<N, point_type>::step_walk(int steps)
+std::array<point_type, N> random_walk<N, point_type>::generate_single_step()
 {
-  if (verbose == 0)
+
+  std::array<point_type, N> out = generate_single_step_impl<N, point_type>::_(this);
+  if (verbose != 0)
   {
-    for (int i = 0; i < steps; i++)
-      step_walk();
-  }
-  else
-  {
-    int print_interval = steps / 1000;
+    int print_interval = goal_step_count / 1000;
     if (print_interval < 1) print_interval = 1;
 
-    for (int i = 0; i < steps; i++)
+    if (get_total_steps() % print_interval == 0)
     {
-      step_walk();
-      if (i % print_interval == 0)
-      {
-        std::cout << std::setw(4) << std::fixed << std::setprecision(1) << std::setfill(' ') << "\r"
-          << (double)i / steps * 100. << " percent complete" << std::flush;
-      }
+      std::cout << std::setw(4) << std::fixed << std::setprecision(1) << std::setfill(' ') << "\r"
+        << (double)get_total_steps() / goal_step_count * 100. << " percent complete" << std::flush;
     }
+
+  }
+
+  return out;
+}
+
+template <int N, class point_type>
+void random_walk<N, point_type>::step_walk()
+{
+  last_location = generate_single_step();
+  steps++;
+}
+
+template <int N, class point_type>
+void random_walk<N, point_type>::step_walk(int steps)
+{
+  goal_step_count = steps;
+  for (int i = 0; i < steps; i++)
+    step_walk();
+
+  if (verbose != 0)
+  {
     std::cout << std::endl;
   }
 }

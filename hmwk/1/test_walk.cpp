@@ -47,7 +47,7 @@ int main(){
 
   avoiding_random_walk<DIMENSION_COUNT, WALK_TYPE> walk;
   walk.verbose = 2;
-  walk.step_walk(1000);
+  walk.step_walk(10000000);
 
   std::vector<std::array<WALK_TYPE, DIMENSION_COUNT>> last_loc = walk.get_location_list();
 
@@ -66,7 +66,6 @@ int main(){
   std::cout << "Dimension Sigma: " << regress.get_slope_sigma() << std::endl;
 
   std::cout << "Number of locations: " << last_loc.size() << std::endl;
-  std::cout << "Steps: << " << walk.get_total_steps() << std::endl;
 
   std::cout << "Regression Points:" << std::endl;
   std::vector<double> x, y;
