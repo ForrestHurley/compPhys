@@ -8,7 +8,7 @@
 #include <cmath>
 
 #define DIMENSION_COUNT 2
-#define WALK_TYPE double
+#define WALK_TYPE int
 
 void test_fractal_dim(int iterations, int length, bool verbose)
 {
@@ -47,7 +47,7 @@ int main(){
 
   avoiding_random_walk<DIMENSION_COUNT, WALK_TYPE> walk;
   walk.verbose = 2;
-  walk.step_walk(10000000);
+  walk.step_walk(100000);
 
   std::vector<std::array<WALK_TYPE, DIMENSION_COUNT>> last_loc = walk.get_location_list();
 

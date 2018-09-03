@@ -69,7 +69,7 @@ public:
     if (p->location_multimap.count(p->map_key(point)) > 0)
     {
       auto range = p->location_multimap.equal_range(p->map_key(point));
-      std::pair<std::array<int, R>, int> first_point = range.first;
+      std::pair<std::array<int, R>, int> first_point = range.first->second;
       colliding_point_index = first_point.second;
 
       return true;
