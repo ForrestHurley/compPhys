@@ -158,7 +158,7 @@ template <int N, class point_type>
 void random_walk<N, point_type>::step_walk(int steps)
 {
   goal_step_count = steps;
-  for (int i = 0; i < steps; i++)
+  while(this->steps < goal_step_count)
     step_walk();
 
   if (verbose != 0)

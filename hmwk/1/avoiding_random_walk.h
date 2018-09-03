@@ -46,6 +46,7 @@ public:
   int max_without_progress = 20;
   bool preserve_n = true;
   unsigned int test_direction_count = 4;
+  int max_steps_backwards = 100;
 
   using random_walk_with_memory<N, point_type>::step_walk;
   void step_walk() override;
@@ -256,31 +257,22 @@ void avoiding_random_walk<N, point_type>::step_walk()
         this->steps++;
 
         int maximum_index = *std::max_element(colliding_indices.begin(), colliding_indices.end()); 
-        int delta_index = this->get_total_steps() - maximum_index;
+        int delta_index = std::min(this->get_total_steps() - maximum_index, max_steps_backwards);
+        maximum_steps_acheived = this->get_total_steps() - delta_index;
 
         step_backwards(delta_index);
-        num_without_progress = 0;
         
-        int num_to_move = num_without_move;
-        num_without_move = 0;
-        for (int i = 0; i < delta_index + num_to_move; i++)
-          step_walk();
+        int num_to_move = num_without_move + num_without_progress;
+        num_without_move = num_without_progress = 0;
       }
       else
       {
-        const int number_of_backsteps = pow(num_without_progress / max_without_move, 0.5) - (maximum_steps_acheived - this->get_total_steps());
+        const int number_of_backsteps = pow(num_without_progress / max_without_move, 0.5) - (maximum_steps_acheived - this->get_total_steps()) + 1;
 
         for (int i = 0; i < number_of_backsteps; i++)
           avoiding_random_walk<N, point_type>::step_backwards();
-        num_without_move += number_of_backsteps;
 
-        if (preserve_n)
-        { //There is a really really small chance that this will die with some error right at the beginning
-          int num_to_move = num_without_move;
-          num_without_move = 0;
-          for (int i = 0; i < num_to_move; i++)
-            step_walk();
-        }
+        num_without_move = 0;
       }
     }
   }
