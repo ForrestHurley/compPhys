@@ -1,7 +1,8 @@
 #include "random_walk.h"
+#include "lattice_walk.h"
+#include "avoiding_lattice_walk.h"
 #include "regression.h"
 #include "box_counting.h"
-#include "avoiding_random_walk.h"
 
 #include <iostream>
 #include <iomanip>
@@ -18,8 +19,8 @@ void test_fractal_dim(int iterations, int length, bool verbose)
   {
     if (verbose && i % 10 == 0)
       std::cout << std::setprecision(6) << "\rPercent Done: " << (double)i / iterations * 100. << std::flush;
-    random_walk_with_memory<DIMENSION_COUNT, WALK_TYPE> walk;
-    walk.step_walk(length);
+    lattice_walk<DIMENSION_COUNT> walk;
+    walk.make_walk(length);
 
     std::vector<std::array<WALK_TYPE, DIMENSION_COUNT>> last_loc = walk.get_location_list();
 
@@ -45,9 +46,9 @@ void test_fractal_dim(int iterations, int length, bool verbose)
 int main(){
   //test_fractal_dim(1000, 100000, true);
 
-  avoiding_random_walk<DIMENSION_COUNT, WALK_TYPE> walk;
+  avoiding_lattice_walk<DIMENSION_COUNT> walk;
   walk.verbose = 2;
-  walk.step_walk(100000);
+  walk.make_walk(100000);
 
   std::vector<std::array<WALK_TYPE, DIMENSION_COUNT>> last_loc = walk.get_location_list();
 
