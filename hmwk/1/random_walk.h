@@ -99,7 +99,7 @@ void random_walk<point_type, N>::make_walk(int steps)
     if (!step_forwards(1)) //Check for failed step
     {
       int length = get_length();
-      for(int j = 0; j < length; j++)
+      for(int j = 0; j < length - 1; j++)
         pop_point();
       i = 0;
     }

@@ -42,7 +42,9 @@ bool avoiding_lattice_walk<N>::step_forwards(int steps)
     std::array<int, N> new_location = this->get_last_location();
 
     for (int j = 0; j < N; j++)
+    {
       new_location[j] += random_step[j];
+    }
 
     if (check_collision(new_location))
       return false; 
