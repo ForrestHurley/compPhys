@@ -25,9 +25,12 @@ protected:
   virtual bool step_forwards(int steps);
   virtual void step_backwards(int steps);
 
-public:
   virtual void push_point(point in_point);
   virtual void pop_point();
+
+  virtual bool take_step(std::array<point_type, N> step);
+
+public:
 
   int get_length();
 
@@ -55,17 +58,24 @@ void random_walk<point_type, N>::pop_point()
 }
 
 template <class point_type, int N>
+bool random_walk<point_type, N>::take_step(std::array<point_type, N> step)
+{
+    std::array<int, N> new_location = get_last_location();
+
+    for (int j = 0; j < N; j++)
+      new_location[j] += step[j];
+
+    push_point(new_location);
+    return true;
+}
+
+template <class point_type, int N>
 bool random_walk<point_type, N>::step_forwards(int steps)
 {
   for (int i = 0; i < steps; i++)
   {
-    point random_step = generate_random_step();
-    point new_location = get_last_location();
-
-    for (int j = 0; j < N; j++)
-      new_location[j] += random_step[j];
-
-    push_point(new_location);
+    std::array<int, N> random_step = generate_random_step();
+    take_step(random_step);
   }
 
   return true;
@@ -98,6 +108,7 @@ void random_walk<point_type, N>::make_walk(int steps)
 
     if (!step_forwards(1)) //Check for failed step
     {
+      std::cout << std::endl << "Restarting due to a collision" << std::endl;
       int length = get_length();
       for(int j = 0; j < length - 1; j++)
         pop_point();

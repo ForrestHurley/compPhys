@@ -49,7 +49,7 @@ int main(){
 
   avoiding_counting_lattice_walk<DIMENSION_COUNT> walk;
   walk.verbose = 2;
-  walk.make_walk(30);
+  walk.make_walk(1000);
 
   std::vector<std::array<WALK_TYPE, DIMENSION_COUNT>> last_loc = walk.get_location_list();
 

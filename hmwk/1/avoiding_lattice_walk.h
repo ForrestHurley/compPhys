@@ -17,6 +17,7 @@ protected:
   virtual bool step_forwards(int steps) override;
 
   bool check_collision(std::array<int, N> new_point);
+  bool take_step(std::array<int, N> step) override;
 };
 
 template <int N>
@@ -39,17 +40,9 @@ bool avoiding_lattice_walk<N>::step_forwards(int steps)
   for (int i = 0; i < steps; i++)
   {
     std::array<int, N> random_step = this->generate_random_step();
-    std::array<int, N> new_location = this->get_last_location();
 
-    for (int j = 0; j < N; j++)
-    {
-      new_location[j] += random_step[j];
-    }
-
-    if (check_collision(new_location))
-      return false; 
-
-    push_point(new_location);
+    if (!take_step(random_step))
+      return false;
   }
   return true;
 }
@@ -58,6 +51,21 @@ template <int N>
 bool avoiding_lattice_walk<N>::check_collision(std::array<int, N> new_point)
 {
   return location_set.count(new_point) > 0;
+}
+
+template <int N>
+bool avoiding_lattice_walk<N>::take_step(std::array<int, N> step)
+{
+    std::array<int, N> new_location = this->get_last_location();
+
+    for (int j = 0; j < N; j++)
+      new_location[j] += step[j];
+
+    if (check_collision(new_location))
+      return false;
+
+    push_point(new_location);
+    return true;
 }
 
 #endif
