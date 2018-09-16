@@ -139,6 +139,17 @@ std::vector<std::array<point_type, N>> random_walk<point_type, N>::get_location_
 }
 
 template <class point_type, int N>
+std::vector<double> random_walk<point_type, N>::get_probabilities()
+{
+  std::vector<double> out(location_list.size());
+
+  for(unsigned int i = 0; i < out.size(); i++)
+    out[i] = 1. / N;
+
+  return out;
+}
+
+template <class point_type, int N>
 std::array<point_type, N> random_walk<point_type, N>::get_single_location(int index)
 {
   return location_list.at(index);

@@ -96,9 +96,10 @@ bool avoiding_lattice_walk<N>::take_step(std::array<int, N> step)
 template <int N>
 bool avoiding_lattice_walk<N>::same_as_last_step(std::array<int, N> new_step)
 {
-  if (new_step == last_step)
-    return true;
-  return false;
+  for (int i = 0; i < N; i++)
+    if (new_step[i] != (last_step[i] * -1))
+      return false;
+  return true;
 }
 
 #endif

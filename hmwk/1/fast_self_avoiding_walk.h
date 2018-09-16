@@ -2,14 +2,19 @@
 #define FAST_SELF_AVOIDING_WALK
 
 #include "avoiding_lattice_walk.h"
+#include <math.h>
 
 template <int N>
 class avoiding_distributed_lattice_walk : public avoiding_lattice_walk<N>
 {
   std::vector<double> probabilities;
+  double last_probability;
 
 protected:
   std::array<int, N> generate_random_step() override;
+  bool step_forwards(int steps) override;
+
+  void pop_point() override;
 
   virtual std::array<int, N * 2> find_direction_counts(int depth = 0) = 0;
 public:
@@ -20,7 +25,7 @@ template <int N>
 class avoiding_counting_lattice_walk : public avoiding_distributed_lattice_walk<N>
 {
 private:
-  int maximum_depth = 2;
+  int maximum_depth = 4;
 
 protected:
   std::array<int, N * 2> find_direction_counts(int depth = 0) override;
@@ -46,7 +51,36 @@ std::array<int, N> avoiding_distributed_lattice_walk<N>::generate_random_step()
   static thread_local std::mt19937_64 engine(time(0));
   std::discrete_distribution<int> distribution (direction_counts.begin(), direction_counts.end());
 
-  return this->generate_nth_step(distribution(engine));
+  int n = distribution(engine);
+  last_probability = distribution.probabilities()[n];
+
+  return this->generate_nth_step(n);
+}
+
+template <int N>
+bool avoiding_distributed_lattice_walk<N>::step_forwards(int steps)
+{
+  for (int i = 0; i < steps; i++)
+  {
+    if (!avoiding_lattice_walk<N>::step_forwards(1))
+      return false;
+
+    probabilities.push_back(last_probability);
+  }
+  return true;
+}
+
+template <int N>
+void avoiding_distributed_lattice_walk<N>::pop_point()
+{
+  probabilities.pop_back();
+  avoiding_lattice_walk<N>::pop_point();
+}
+
+template <int N>
+std::vector<double> avoiding_distributed_lattice_walk<N>::get_probabilities()
+{
+  return probabilities;
 }
 
 template <int N>
@@ -65,8 +99,8 @@ std::array<int, N * 2> avoiding_counting_lattice_walk<N>::find_direction_counts(
       if (this->take_step(step_list[idx]))
       {
         std::array<int, N * 2> temp_counts = find_direction_counts(depth + 1);
-        out[idx] = std::accumulate(temp_counts.begin(), temp_counts.end(), 0);
-        this->pop_point();
+        out[idx] = std::accumulate(temp_counts.begin(), temp_counts.end(), 0) + 1;
+        avoiding_lattice_walk<N>::pop_point();
       }
     }
   }

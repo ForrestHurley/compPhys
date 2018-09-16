@@ -45,11 +45,11 @@ void test_fractal_dim(int iterations, int length, bool verbose)
   std::cout << "Standard Deviation of the mean: " << sigma << std::endl;
 }
 
-void weighted_flory_exponent_calc(int iterations, bool verbose = true, int max_length = 200)
+void weighted_flory_exponent_calc(unsigned long iterations, bool verbose = true, int max_length = 100)
 {
   average_chains expected_calc;
 
-  for (int idx = 0; idx < iterations; idx++)
+  for (unsigned int idx = 0; idx < iterations; idx++)
   {
     if (verbose && idx % 1 == 0)
       std::cout << std::setprecision(6) << "\rPercent Done: " << (double)idx / iterations * 100. << std::flush;
@@ -71,13 +71,20 @@ void weighted_flory_exponent_calc(int iterations, bool verbose = true, int max_l
       dist_sqr_list[i] = r;
     }
 
+    for (unsigned int i = 0; i < tmp_prob_list.size(); i++)
+    {
+      tmp_prob_list[i] = 1. / tmp_prob_list[i];
+    }
+
+    //std::cout << std::endl << point_list.size() << tmp_prob_list.size() << std::endl;
     expected_calc.add_chain(dist_sqr_list, tmp_prob_list);
   }
 
   if (verbose)
-    std::cout << "Calculating expected values" << std::endl;
+    std::cout << std::endl << "Calculating expected values" << std::endl;
 
   std::vector<double> expected_distance_sqr = expected_calc.calculate_expected_chain();
+  //std::cout << expected_distance_sqr[2] << std::endl;
 
   if (verbose)
     std::cout << std::endl;
@@ -100,7 +107,7 @@ void weighted_flory_exponent_calc(int iterations, bool verbose = true, int max_l
     y[i - start_cut - 1] = log(expected_distance_sqr[i]);
     x[i - start_cut - 1] = log(i);
     if (verbose)
-      std::cout << x[i - start_cut - 1] << "," << y[i - start_cut - 1] << std::endl;
+      std::cout << i << "," << expected_distance_sqr[i] << std::endl;
   }
 
   if (verbose)
@@ -117,18 +124,18 @@ void weighted_flory_exponent_calc(int iterations, bool verbose = true, int max_l
   std::cout << "Flory exponent sigma: " << flory_sigma << std::endl;
 }
 
-void flory_exponent_calc(int iterations, bool verbose = true, int max_length = 200)
+void flory_exponent_calc(unsigned long long iterations, bool verbose = true, int max_length = 200)
 {
   std::vector<double> r_sqr_list;
   std::vector<int> r_sqr_counts;
 
-  for (int idx = 0; idx < iterations; idx++)
+  for (unsigned int idx = 0; idx < iterations; idx++)
   {
-    if (verbose && idx % 1 == 0)
+    if (verbose && idx % 100000 == 0)
       std::cout << std::setprecision(6) << "\rPercent Done: " << (double)idx / iterations * 100. << std::flush;
 
-    avoiding_counting_lattice_walk<DIMENSION_COUNT> walk;
-    walk.make_walk(max_length, true);
+    avoiding_lattice_walk<DIMENSION_COUNT> walk;
+    walk.make_walk(max_length, false);
 
     std::vector<std::array<WALK_TYPE, DIMENSION_COUNT>> point_list = walk.get_location_list();
 
@@ -193,7 +200,8 @@ void flory_exponent_calc(int iterations, bool verbose = true, int max_length = 2
 int main(){
   //test_fractal_dim(1000, 100000, true);
 
-  flory_exponent_calc(1000);
+  //weighted_flory_exponent_calc(1000);
+  flory_exponent_calc(1000000000);
 
   /*avoiding_counting_lattice_walk<DIMENSION_COUNT> walk;
   walk.verbose = 2;

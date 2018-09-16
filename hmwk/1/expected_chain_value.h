@@ -13,6 +13,7 @@ private:
   int bits_of_precision = 128;
 
   void norm_prob(std::vector<mpfr::mpreal>& in_probs);
+  mpfr::mpreal calc_expected_value(std::vector<mpfr::mpreal> values, std::vector<mpfr::mpreal> weights);
 
 public:
   void add_chain(std::vector<double> y, std::vector<double> p);
