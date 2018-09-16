@@ -10,6 +10,8 @@ class avoiding_lattice_walk : public lattice_walk<N>
 private:
   std::unordered_set<std::array<int, N>, int_array_hash<N>> location_set;
 
+  std::array<int, N> last_step;
+
 protected:
   void push_point(std::array<int, N> in_point) override;
   void pop_point() override;
@@ -18,7 +20,19 @@ protected:
 
   bool check_collision(std::array<int, N> new_point);
   bool take_step(std::array<int, N> step) override;
+
+  bool same_as_last_step(std::array<int, N> new_step);
+
+public:
+  avoiding_lattice_walk();
 };
+
+template <int N>
+avoiding_lattice_walk<N>::avoiding_lattice_walk()
+{
+  for (int i = 0; i < N; i++)
+    last_step[i] = 0;
+}
 
 template <int N>
 void avoiding_lattice_walk<N>::push_point(std::array<int, N> in_point)
@@ -39,7 +53,18 @@ bool avoiding_lattice_walk<N>::step_forwards(int steps)
 {
   for (int i = 0; i < steps; i++)
   {
-    std::array<int, N> random_step = this->generate_random_step();
+    std::array<int, N> random_step;
+    int repeats = 0;
+    do
+    {
+      random_step = this->generate_random_step();
+
+      if (repeats == 10)
+        return false;
+      repeats++;
+
+    } while (same_as_last_step(random_step));
+    last_step = random_step;
 
     if (!take_step(random_step))
       return false;
@@ -66,6 +91,14 @@ bool avoiding_lattice_walk<N>::take_step(std::array<int, N> step)
 
     push_point(new_location);
     return true;
+}
+
+template <int N>
+bool avoiding_lattice_walk<N>::same_as_last_step(std::array<int, N> new_step)
+{
+  if (new_step == last_step)
+    return true;
+  return false;
 }
 
 #endif

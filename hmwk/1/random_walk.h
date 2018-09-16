@@ -17,7 +17,7 @@ public:
   int verbose = 0;
 
 private:
-  std::vector<point> location_list;
+  std::vector<std::array<point_type, N>> location_list;
 
 protected:
   virtual std::array<point_type, N> generate_random_step() = 0;
@@ -34,11 +34,12 @@ public:
 
   int get_length();
 
-  std::vector<point> get_location_list();
-  point get_single_location(int index);
-  point get_last_location();
+  std::vector<std::array<point_type, N>> get_location_list();
+  virtual std::vector<double> get_probabilities();
+  std::array<point_type, N> get_single_location(int index);
+  std::array<point_type, N> get_last_location();
 
-  void make_walk(int steps);
+  void make_walk(int steps, bool restart_on_failure = true);
 
   void write_to_file(std::string f);
 
@@ -89,7 +90,7 @@ void random_walk<point_type, N>::step_backwards(int steps)
 }
 
 template <class point_type, int N>
-void random_walk<point_type, N>::make_walk(int steps)
+void random_walk<point_type, N>::make_walk(int steps, bool restart_on_failure)
 {
   push_point(get_zero_point());
 
@@ -108,7 +109,15 @@ void random_walk<point_type, N>::make_walk(int steps)
 
     if (!step_forwards(1)) //Check for failed step
     {
-      std::cout << std::endl << "Restarting due to a collision" << std::endl;
+      if (!restart_on_failure)
+      {
+        if (verbose >= 1)
+          std::cout << std::endl << "Ending due to a collision" << std::endl;
+        return;
+      }
+
+      if (verbose >= 2)
+        std::cout << std::endl << "Restarting due to a collision" << std::endl;
       int length = get_length();
       for(int j = 0; j < length - 1; j++)
         pop_point();

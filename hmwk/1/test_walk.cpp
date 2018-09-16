@@ -4,6 +4,7 @@
 #include "fast_self_avoiding_walk.h"
 #include "regression.h"
 #include "box_counting.h"
+#include "expected_chain_value.h"
 
 #include <iostream>
 #include <iomanip>
@@ -44,12 +45,159 @@ void test_fractal_dim(int iterations, int length, bool verbose)
   std::cout << "Standard Deviation of the mean: " << sigma << std::endl;
 }
 
+void weighted_flory_exponent_calc(int iterations, bool verbose = true, int max_length = 200)
+{
+  average_chains expected_calc;
+
+  for (int idx = 0; idx < iterations; idx++)
+  {
+    if (verbose && idx % 1 == 0)
+      std::cout << std::setprecision(6) << "\rPercent Done: " << (double)idx / iterations * 100. << std::flush;
+
+    avoiding_counting_lattice_walk<DIMENSION_COUNT> walk;
+    walk.make_walk(max_length, true);
+
+    std::vector<std::array<WALK_TYPE, DIMENSION_COUNT>> point_list = walk.get_location_list();
+    std::vector<double> tmp_prob_list = walk.get_probabilities();
+
+    std::vector<double> dist_sqr_list(point_list.size());
+
+    for (unsigned int i = 0; i < point_list.size(); i++)
+    {
+      double r = 0;
+      for (int j = 0; j < DIMENSION_COUNT; j++)
+        r += point_list[i][j] * point_list[i][j];
+        
+      dist_sqr_list[i] = r;
+    }
+
+    expected_calc.add_chain(dist_sqr_list, tmp_prob_list);
+  }
+
+  if (verbose)
+    std::cout << "Calculating expected values" << std::endl;
+
+  std::vector<double> expected_distance_sqr = expected_calc.calculate_expected_chain();
+
+  if (verbose)
+    std::cout << std::endl;
+
+  int start_cut = 5;
+  int end_cut = 10;
+
+  if (expected_distance_sqr.size() - start_cut - end_cut < 5)
+  {
+    std::cout << "Not enough points" << std::endl;
+    start_cut = 0;
+    end_cut = 0;
+  }
+
+  std::vector<double> x(expected_distance_sqr.size() - start_cut - end_cut - 1);
+  std::vector<double> y(expected_distance_sqr.size() - start_cut - end_cut - 1);
+    
+  for (unsigned int i = 1 + start_cut; i < expected_distance_sqr.size() - end_cut; i++)
+  {
+    y[i - start_cut - 1] = log(expected_distance_sqr[i]);
+    x[i - start_cut - 1] = log(i);
+    if (verbose)
+      std::cout << x[i - start_cut - 1] << "," << y[i - start_cut - 1] << std::endl;
+  }
+
+  if (verbose)
+    std::cout << std::endl << "Number of points to fit: " << y.size() << std::endl;
+
+  regression regress;
+
+  regress.calculate(x, y);
+
+  double flory_exp = regress.get_slope() / 2;
+  double flory_sigma = regress.get_slope_sigma() / sqrt(2);
+
+  std::cout << "Flory exponent: " << flory_exp << std::endl;
+  std::cout << "Flory exponent sigma: " << flory_sigma << std::endl;
+}
+
+void flory_exponent_calc(int iterations, bool verbose = true, int max_length = 200)
+{
+  std::vector<double> r_sqr_list;
+  std::vector<int> r_sqr_counts;
+
+  for (int idx = 0; idx < iterations; idx++)
+  {
+    if (verbose && idx % 1 == 0)
+      std::cout << std::setprecision(6) << "\rPercent Done: " << (double)idx / iterations * 100. << std::flush;
+
+    avoiding_counting_lattice_walk<DIMENSION_COUNT> walk;
+    walk.make_walk(max_length, true);
+
+    std::vector<std::array<WALK_TYPE, DIMENSION_COUNT>> point_list = walk.get_location_list();
+
+    const int size_diff = point_list.size() - r_sqr_list.size();
+
+    for (int i = 0; i < size_diff; i++)
+    {
+      r_sqr_list.push_back(0.);
+      r_sqr_counts.push_back(0);
+    }
+
+    for (unsigned int i = 0; i < point_list.size(); i++)
+    {
+      double r = 0;
+      
+      for (int j = 0; j < DIMENSION_COUNT; j++)
+        r += point_list[i][j] * point_list[i][j];
+        
+      r_sqr_list[i] += r;
+      r_sqr_counts[i]++;
+    }
+  }
+
+  int start_cut = 5;
+  int end_cut = 10;
+
+  if (r_sqr_list.size() - start_cut - end_cut < 5)
+  {
+    std::cout << "Not enough points" << std::endl;
+    start_cut = 0;
+    end_cut = 0;
+  }
+
+  std::vector<double> x(r_sqr_list.size() - start_cut - end_cut - 1);
+  std::vector<double> y(r_sqr_list.size() - start_cut - end_cut - 1);
+
+  if (verbose)
+    std::cout << std::endl;
+    
+  for (unsigned int i = 1 + start_cut; i < r_sqr_list.size() - end_cut; i++)
+  {
+    y[i - start_cut - 1] = log(r_sqr_list[i] / r_sqr_counts[i]);
+    x[i - start_cut - 1] = log(i);
+    if (verbose)
+      std::cout << x[i - start_cut - 1] << "," << y[i - start_cut - 1] << std::endl;
+  }
+
+  if (verbose)
+    std::cout << std::endl << "Number of points to fit: " << y.size() << std::endl;
+
+  regression regress;
+
+  regress.calculate(x, y);
+
+  double flory_exp = regress.get_slope() / 2;
+  double flory_sigma = regress.get_slope_sigma() / sqrt(2);
+
+  std::cout << "Flory exponent: " << flory_exp << std::endl;
+  std::cout << "Flory exponent sigma: " << flory_sigma << std::endl;
+}
+
 int main(){
   //test_fractal_dim(1000, 100000, true);
 
-  avoiding_counting_lattice_walk<DIMENSION_COUNT> walk;
+  flory_exponent_calc(1000);
+
+  /*avoiding_counting_lattice_walk<DIMENSION_COUNT> walk;
   walk.verbose = 2;
-  walk.make_walk(1000);
+  walk.make_walk(1000, false);
 
   std::vector<std::array<WALK_TYPE, DIMENSION_COUNT>> last_loc = walk.get_location_list();
 
@@ -76,7 +224,7 @@ int main(){
     std::cout << std::setw(4) << std::fixed << std::setprecision(2)
       << "x: " << x[i] << " | y: " << y[i] << std::endl;
   
-  walk.write_to_file("outfile.csv");
+  walk.write_to_file("outfile.csv");*/
 
   /*for (unsigned int i = 0; i < last_loc.size(); i++)
   {

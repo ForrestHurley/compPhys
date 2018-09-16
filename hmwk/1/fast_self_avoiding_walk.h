@@ -6,17 +6,21 @@
 template <int N>
 class avoiding_distributed_lattice_walk : public avoiding_lattice_walk<N>
 {
+  std::vector<double> probabilities;
+
 protected:
   std::array<int, N> generate_random_step() override;
 
   virtual std::array<int, N * 2> find_direction_counts(int depth = 0) = 0;
+public:
+  std::vector<double> get_probabilities() override;
 };
 
 template <int N>
 class avoiding_counting_lattice_walk : public avoiding_distributed_lattice_walk<N>
 {
 private:
-  int maximum_depth = 18;
+  int maximum_depth = 2;
 
 protected:
   std::array<int, N * 2> find_direction_counts(int depth = 0) override;
@@ -72,12 +76,6 @@ std::array<int, N * 2> avoiding_counting_lattice_walk<N>::find_direction_counts(
   }
 
   return out;
-}
-
-template <int N>
-std::array<int, N * 2> avoiding_random_lattice_walk<N>::find_direction_counts(int depth)
-{
-
 }
 
 #endif
