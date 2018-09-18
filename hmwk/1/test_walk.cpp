@@ -242,22 +242,47 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
 }
 
 int main(){
-  //weighted_flory_diffusion_calc<normalized_gaussian_walk<2>>(10000, false, true, "2D_unit_vector.csv", 200, true);
-
   //Diffusion of a 2D random walk
-  //weighted_flory_diffusion_calc<lattice_walk<2>>(100000, false, true, "2D_lattice.csv", 200, true);
-  //weighted_flory_diffusion_calc<lattice_walk<3>>(100000, false, true, "3D_lattice.csv", 200, true);
+  weighted_flory_diffusion_calc<lattice_walk<2>>(100000, false, true, "2D_lattice.csv", 200, true, 5, 0);
+  weighted_flory_diffusion_calc<lattice_walk<3>>(100000, false, true, "3D_lattice.csv", 200, true, 5, 0);
+  weighted_flory_diffusion_calc<lattice_walk<4>>(100000, false, true, "4D_lattice.csv", 200, true, 5, 0);
+
+  //Diffusion and flory for gaussian and unit walks
+  weighted_flory_diffusion_calc<gaussian_walk<2>>(100000, false, false, "2D_gauss.csv", 200, true, 5, 0);
+  weighted_flory_diffusion_calc<normalized_gaussian_walk<2>>(100000, false, false, "2D_gauss_norm.csv", 200, true, 5, 0);
 
   //Fractal dimension of a 3D random walk
-  //test_fractal_dim<lattice_walk<2>>(1000, 100000, true, "fractal_dimension_2D_calculations.csv");
-  //test_fractal_dim<lattice_walk<3>>(1000, 100000, true, "fractal_dimension_3D_calculations.csv");
-  //test_fractal_dim<lattice_walk<4>>(1000, 100000, true, "fractal_dimension_4D_calculations.csv");
+  test_fractal_dim<lattice_walk<2>>(1000, 100000, true, "fractal_lattice_2D_calculations.csv");
+  test_fractal_dim<lattice_walk<3>>(1000, 100000, true, "fractal_lattice_3D_calculations.csv");
+  test_fractal_dim<lattice_walk<4>>(1000, 100000, true, "fractal_lattice_4D_calculations.csv");
+  test_fractal_dim<lattice_walk<5>>(1000, 100000, true, "fractal_lattice_5D_calculations.csv");
+  test_fractal_dim<lattice_walk<10>>(1000, 100000, true, "fractal_lattice_10D_calculations.csv");
 
-  //Several methods for generating flory constants for 2D random walks
-  //weighted_flory_diffusion_calc<avoiding_counting_lattice_walk<2>>(10000, true, false, "2D_counting_predict.csv", 500);
-  //weighted_flory_diffusion_calc<avoiding_random_lattice_walk<2>>(4000, true, false, "2D_random_predict.csv", 500);
+  //Fractal dimension of gaussian and unit walks
+  test_fractal_dim<gaussian_walk<2>>(1000, 100000, true, "fractal_gauss_2D_calculations.csv");
+  test_fractal_dim<gaussian_walk<3>>(1000, 100000, true, "fractal_gauss_3D_calculations.csv");
+  test_fractal_dim<gaussian_walk<4>>(1000, 100000, true, "fractal_gauss_4D_calculations.csv");
+  test_fractal_dim<gaussian_walk<5>>(1000, 100000, true, "fractal_gauss_5D_calculations.csv");
+  test_fractal_dim<normalized_gaussian_walk<2>>(1000, 100000, true, "fractal_gaussnorm_2D_calculations.csv");
+  test_fractal_dim<normalized_gaussian_walk<3>>(1000, 100000, true, "fractal_gaussnorm_3D_calculations.csv");
+  test_fractal_dim<normalized_gaussian_walk<4>>(1000, 100000, true, "fractal_gaussnorm_4D_calculations.csv");
+  test_fractal_dim<normalized_gaussian_walk<5>>(1000, 100000, true, "fractal_gaussnorm_5D_calculations.csv");
+
+  //Several methods for generating self avoiding 2D random walks and calculating flory constants
+  weighted_flory_diffusion_calc<avoiding_counting_lattice_walk<2>>(10000, true, false, "2D_counting_predict.csv", 500, false);
+  weighted_flory_diffusion_calc<avoiding_counting_lattice_walk<3>>(10000, true, false, "3D_counting_predict.csv", 500, false);
+  weighted_flory_diffusion_calc<avoiding_counting_lattice_walk<4>>(10000, true, false, "4D_counting_predict.csv", 500, false);
+  weighted_flory_diffusion_calc<avoiding_counting_lattice_walk<5>>(10000, true, false, "5D_counting_predict.csv", 500, false);
+
+  weighted_flory_diffusion_calc<avoiding_random_lattice_walk<2>>(4000, true, false, "2D_random_predict.csv", 500, false);
+  weighted_flory_diffusion_calc<avoiding_random_lattice_walk<3>>(4000, true, false, "3D_random_predict.csv", 500, false);
+  weighted_flory_diffusion_calc<avoiding_random_lattice_walk<4>>(4000, true, false, "4D_random_predict.csv", 500, false);
+  weighted_flory_diffusion_calc<avoiding_random_lattice_walk<5>>(4000, true, false, "5D_random_predict.csv", 500, false);
+
   weighted_flory_diffusion_calc<avoiding_lattice_walk<2>>(1000000, false, false, "2D_avoiding_without_predict.csv", 200, true, 10, 30, true, true);
-  //weighted_flory_diffusion_calc<avoiding_lattice_walk<3>>(1000000, false, false, "3D_avoiding_without_predict.csv", 200, true);
+  weighted_flory_diffusion_calc<avoiding_lattice_walk<3>>(1000000, false, false, "3D_avoiding_without_predict.csv", 200, true, 10, 30, true, true);
+  weighted_flory_diffusion_calc<avoiding_lattice_walk<4>>(1000000, false, false, "4D_avoiding_without_predict.csv", 200, true, 10, 30, true, true);
+  weighted_flory_diffusion_calc<avoiding_lattice_walk<5>>(1000000, false, false, "5D_avoiding_without_predict.csv", 200, true, 10, 30, true, true);
 
   return 0;
 }

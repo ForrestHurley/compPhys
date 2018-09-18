@@ -32,9 +32,11 @@ std::array<double, N> gaussian_walk<N>::raw_random_step()
   static thread_local std::mt19937_64 engine(time(0));
   static thread_local std::normal_distribution<double> distribution(0., 1.);
 
+  static const double scaling_factor = 1. / sqrt(N);
+
   std::array<double, N> out;
   for (int i = 0; i < N; i++)
-    out[i] = distribution(engine);
+    out[i] = distribution(engine) * scaling_factor;
 
   return out;
 }
