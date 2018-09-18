@@ -44,6 +44,9 @@ public:
   void write_to_file(std::string f);
 
   static inline point get_zero_point();
+
+  using point_data_type = point_type;
+  static const int dimensions = N;
 };
 
 template <class point_type, int N>

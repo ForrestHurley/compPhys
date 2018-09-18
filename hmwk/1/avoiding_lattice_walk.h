@@ -23,6 +23,9 @@ protected:
 
   bool same_as_last_step(std::array<int, N> new_step);
 
+  std::array<int, N> get_last_step();
+  void set_last_step(std::array<int, N> new_step);
+
 public:
   avoiding_lattice_walk();
 };
@@ -100,6 +103,18 @@ bool avoiding_lattice_walk<N>::same_as_last_step(std::array<int, N> new_step)
     if (new_step[i] != (last_step[i] * -1))
       return false;
   return true;
+}
+
+template <int N>
+std::array<int, N> avoiding_lattice_walk<N>::get_last_step()
+{
+  return last_step;
+}
+
+template <int N>
+void avoiding_lattice_walk<N>::set_last_step(std::array<int, N> new_step)
+{
+  last_step = new_step;
 }
 
 #endif
