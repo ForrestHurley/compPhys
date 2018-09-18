@@ -2,6 +2,7 @@
 #include "lattice_walk.h"
 #include "avoiding_lattice_walk.h"
 #include "fast_self_avoiding_walk.h"
+#include "gaussian_walk.h"
 #include "regression.h"
 #include "box_counting.h"
 #include "expected_chain_value.h"
@@ -45,8 +46,11 @@ void test_fractal_dim(int iterations = 10000, int length = 100000, bool verbose 
 
   if (verbose)
   {
+    std::cout << "*****************************************" << std::endl;
     std::cout << "Starting fractal dimension calculation" << std::endl;
     std::cout << "Function is " << __PRETTY_FUNCTION__ << std::endl;
+    std::cout << "Iterations: " << iterations << " Walk Length: " << length << std::endl;
+    std::cout << "Datafile: " << datafile << std::endl;
   }
 
   std::vector<double> frac_dims, frac_sigmas;
@@ -91,15 +95,18 @@ void test_fractal_dim(int iterations = 10000, int length = 100000, bool verbose 
 template<class walk_type>
 void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length = false, bool assume_linear = false, std::string datafile = "", int max_length = 200, bool verbose = true)
 {
-  static_assert(std::is_base_of<lattice_walk<walk_type::dimensions>, walk_type>::value, "Derived not derived from lattice_walk<N>");
+  static_assert(std::is_base_of<random_walk<typename walk_type::point_data_type, walk_type::dimensions>, walk_type>::value, "Derived not derived from lattice_walk<N>");
 
   average_chains expected_calc;
 
+  std::cout << "*****************************************" << std::endl;
   if (assume_linear)
     std::cout << "Starting diffusion constant calculation" << std::endl;
   else
     std::cout << "Starting flory exponent and diffusion constant calculation" << std::endl;
   std::cout << "Function is " << __PRETTY_FUNCTION__ << std::endl;
+  std::cout << "Iterations: " << iterations << " Force Constant Length: " << force_length << " Max length: " << max_length << std::endl;
+  std::cout << "Assume linear: " << assume_linear << " Datafile: " << datafile << std::endl;
 
   int print_step = iterations / 10000;
   if (print_step < 1)
@@ -115,7 +122,7 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
 
     //std::cout << "Finished Walk" << std::endl;
 
-    std::vector<std::array<int, walk_type::dimensions>> point_list = walk.get_location_list();
+    std::vector<std::array<typename walk_type::point_data_type, walk_type::dimensions>> point_list = walk.get_location_list();
     std::vector<double> tmp_prob_list = walk.get_probabilities();
 
     std::vector<double> dist_sqr_list(point_list.size());
@@ -167,7 +174,7 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
       x[i - start_cut - 1] = log(i);
     }
 
-    std::cout << std::endl << "Number of points to fit: " << y.size() << std::endl;
+    std::cout << "Number of points to fit: " << y.size() << std::endl;
     
     if (datafile != "")
     {
@@ -216,16 +223,22 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
 }
 
 int main(){
+  weighted_flory_diffusion_calc<normalized_gaussian_walk<2>>(10000, false, true, "2D_unit_vector.csv", 200);
+
   //Diffusion of a 2D random walk
-  weighted_flory_diffusion_calc<lattice_walk<2>>(100000, false, true, "2D_lattice.csv", 200);
+  //weighted_flory_diffusion_calc<lattice_walk<2>>(100000, false, true, "2D_lattice.csv", 200);
+  //weighted_flory_diffusion_calc<lattice_walk<3>>(100000, false, true, "3D_lattice.csv", 200);
 
   //Fractal dimension of a 3D random walk
-  test_fractal_dim<lattice_walk<3>>(1000, 100000, true, "fractal_dimension_calculations.csv");
+  //test_fractal_dim<lattice_walk<2>>(1000, 100000, true, "fractal_dimension_2D_calculations.csv");
+  //test_fractal_dim<lattice_walk<3>>(1000, 100000, true, "fractal_dimension_3D_calculations.csv");
+  //test_fractal_dim<lattice_walk<4>>(1000, 100000, true, "fractal_dimension_4D_calculations.csv");
 
   //Several methods for generating flory constants for 2D random walks
-  weighted_flory_diffusion_calc<avoiding_counting_lattice_walk<2>>(2000, true, false, "2D_counting_predict.csv", 200);
-  weighted_flory_diffusion_calc<avoiding_random_lattice_walk<2>>(500, true, false, "2D_random_predict.csv", 200);
-  weighted_flory_diffusion_calc<avoiding_lattice_walk<2>>(100000, false, false, "2D_avoiding_without_predict.csv", 200);
+  //weighted_flory_diffusion_calc<avoiding_counting_lattice_walk<2>>(10000, true, false, "2D_counting_predict.csv", 500);
+  //weighted_flory_diffusion_calc<avoiding_random_lattice_walk<2>>(4000, true, false, "2D_random_predict.csv", 500);
+  //weighted_flory_diffusion_calc<avoiding_lattice_walk<2>>(1000000, false, false, "2D_avoiding_without_predict.csv", 200);
+  //weighted_flory_diffusion_calc<avoiding_lattice_walk<3>>(1000000, false, false, "3D_avoiding_without_predict.csv", 200);
 
   return 0;
 }

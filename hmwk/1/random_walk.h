@@ -64,7 +64,7 @@ void random_walk<point_type, N>::pop_point()
 template <class point_type, int N>
 bool random_walk<point_type, N>::take_step(std::array<point_type, N> step)
 {
-    std::array<int, N> new_location = get_last_location();
+    std::array<point_type, N> new_location = get_last_location();
 
     for (int j = 0; j < N; j++)
       new_location[j] += step[j];
@@ -78,7 +78,7 @@ bool random_walk<point_type, N>::step_forwards(int steps)
 {
   for (int i = 0; i < steps; i++)
   {
-    std::array<int, N> random_step = generate_random_step();
+    std::array<point_type, N> random_step = generate_random_step();
     take_step(random_step);
   }
 

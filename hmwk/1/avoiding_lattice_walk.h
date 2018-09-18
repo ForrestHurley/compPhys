@@ -3,6 +3,7 @@
 
 #include "lattice_walk.h"
 #include <unordered_set>
+#include "point_hash.h"
 
 template <int N>
 class avoiding_lattice_walk : public lattice_walk<N>

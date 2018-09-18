@@ -2,7 +2,6 @@
 #define LATTICE_WALK
 
 #include "random_walk.h"
-#include "point_hash.h"
 
 template <int N>
 class lattice_walk : public random_walk<int, N>
