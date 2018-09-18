@@ -14,14 +14,18 @@ private:
 
   void norm_prob(std::vector<mpfr::mpreal>& in_probs);
   mpfr::mpreal calc_expected_value(std::vector<mpfr::mpreal> values, std::vector<mpfr::mpreal> weights);
+  mpfr::mpreal calc_expected_value_uniform(std::vector<mpfr::mpreal> values);
 
 public:
   void add_chain(std::vector<double> y, std::vector<double> p);
 
   std::vector<double> calculate_expected_chain();
+  std::vector<double> calculate_expected_chain(bool assume_uniform);
 
   void set_precision();
   int get_precision();
+
+  bool verbose = false;
 };
 
 #endif

@@ -93,7 +93,7 @@ void test_fractal_dim(int iterations = 10000, int length = 100000, bool verbose 
 }
 
 template<class walk_type>
-void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length = false, bool assume_linear = false, std::string datafile = "", int max_length = 200, bool verbose = true)
+void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length = false, bool assume_linear = false, std::string datafile = "", int max_length = 200, bool assume_uniform = false, int start_cut = 5, int end_cut = 10, bool verbose = true, bool expected_verbose = false)
 {
   static_assert(std::is_base_of<random_walk<typename walk_type::point_data_type, walk_type::dimensions>, walk_type>::value, "Derived not derived from lattice_walk<N>");
 
@@ -107,6 +107,7 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
   std::cout << "Function is " << __PRETTY_FUNCTION__ << std::endl;
   std::cout << "Iterations: " << iterations << " Force Constant Length: " << force_length << " Max length: " << max_length << std::endl;
   std::cout << "Assume linear: " << assume_linear << " Datafile: " << datafile << std::endl;
+  std::cout << "Verbose: " << verbose << " Expected value verbose: " << expected_verbose << std::endl;
 
   int print_step = iterations / 10000;
   if (print_step < 1)
@@ -148,11 +149,9 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
   if (verbose)
     std::cout << std::endl << "Calculating expected values" << std::endl;
 
-  std::vector<double> expected_distance_sqr = expected_calc.calculate_expected_chain();
+  expected_calc.verbose = expected_verbose;
+  std::vector<double> expected_distance_sqr = expected_calc.calculate_expected_chain(assume_uniform);
   //std::cout << expected_distance_sqr[2] << std::endl;
-
-  int start_cut = 5;
-  int end_cut = 10;
 
   if (expected_distance_sqr.size() - start_cut - end_cut < 5)
   {
@@ -165,25 +164,35 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
 
   if (!assume_linear)
   {
-    std::vector<double> x(expected_distance_sqr.size() - start_cut - end_cut - 1);
-    std::vector<double> y(expected_distance_sqr.size() - start_cut - end_cut - 1);
+    std::vector<double> x(expected_distance_sqr.size());
+    std::vector<double> y(expected_distance_sqr.size());
       
-    for (unsigned int i = 1 + start_cut; i < expected_distance_sqr.size() - end_cut; i++)
+    for (unsigned int i = 0; i < expected_distance_sqr.size(); i++)
     {
-      y[i - start_cut - 1] = log(expected_distance_sqr[i]);
-      x[i - start_cut - 1] = log(i);
+      y[i] = log(expected_distance_sqr[i]);
+      x[i] = log(i);
     }
 
-    std::cout << "Number of points to fit: " << y.size() << std::endl;
+    std::cout << "Number of points to fit before cut: " << y.size() << std::endl;
     
     if (datafile != "")
     {
       write_data_to_file("flory_" + datafile, x, y);
     }
 
+    std::vector<double> short_x(expected_distance_sqr.size() - 1 - start_cut - end_cut);
+    std::vector<double> short_y(expected_distance_sqr.size() - 1 - start_cut - end_cut);
+    for (unsigned int i = 1 + start_cut; i < expected_distance_sqr.size() - end_cut; i++)
+    {
+      short_x[i - start_cut - 1] = x[i];
+      short_y[i - start_cut - 1] = y[i];
+    }
+
+    std::cout << "Cut " << start_cut << " points from start and " << end_cut << " from end" << std::endl;
+    
     regression regress;
 
-    regress.calculate(x, y);
+    regress.calculate(short_x, short_y);
 
     flory_exp = regress.get_slope() / 2.;
     double flory_sigma = regress.get_slope_sigma() / sqrt(2);
@@ -195,25 +204,35 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
   std::cout << "Calculating diffusion constant" << std::endl;
 
   const double i_exp = 2. * flory_exp;
-  std::vector<double> x(expected_distance_sqr.size() - start_cut - end_cut - 1);
-  std::vector<double> y(expected_distance_sqr.size() - start_cut - end_cut - 1);
+  std::vector<double> x(expected_distance_sqr.size());
+  std::vector<double> y(expected_distance_sqr.size());
     
-  for (unsigned int i = 1 + start_cut; i < expected_distance_sqr.size() - end_cut; i++)
+  std::cout << "Number of points to fit before cut: " << y.size() << std::endl;
+
+  for (unsigned int i = 0; i < expected_distance_sqr.size(); i++)
   {
-    y[i - start_cut - 1] = expected_distance_sqr[i];
-    x[i - start_cut - 1] = pow(i, i_exp);
+    y[i] = expected_distance_sqr[i];
+    x[i] = pow(i, i_exp);
   }
-
-  std::cout << "Number of points to fit: " << y.size() << std::endl;
-
+  
   if (datafile != "")
   {
     write_data_to_file("diffusion_" + datafile, x, y);
   }
 
+  std::vector<double> short_x(expected_distance_sqr.size() - 1 - start_cut - end_cut);
+  std::vector<double> short_y(expected_distance_sqr.size() - 1 - start_cut - end_cut);
+  for (unsigned int i = 1 + start_cut; i < expected_distance_sqr.size() - end_cut; i++)
+  {
+    short_x[i - start_cut - 1] = x[i];
+    short_y[i - start_cut - 1] = y[i];
+  }
+
+  std::cout << "Cut " << start_cut << " points from start and " << end_cut << " from end" << std::endl;
+    
   regression regress;
 
-  regress.calculate(x, y);
+  regress.calculate(short_x, short_y);
 
   double diffusion_const = regress.get_slope() / 2.;
   double diffusion_sigma = regress.get_slope_sigma() / sqrt(2);
@@ -223,11 +242,11 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
 }
 
 int main(){
-  weighted_flory_diffusion_calc<normalized_gaussian_walk<2>>(10000, false, true, "2D_unit_vector.csv", 200);
+  //weighted_flory_diffusion_calc<normalized_gaussian_walk<2>>(10000, false, true, "2D_unit_vector.csv", 200, true);
 
   //Diffusion of a 2D random walk
-  //weighted_flory_diffusion_calc<lattice_walk<2>>(100000, false, true, "2D_lattice.csv", 200);
-  //weighted_flory_diffusion_calc<lattice_walk<3>>(100000, false, true, "3D_lattice.csv", 200);
+  //weighted_flory_diffusion_calc<lattice_walk<2>>(100000, false, true, "2D_lattice.csv", 200, true);
+  //weighted_flory_diffusion_calc<lattice_walk<3>>(100000, false, true, "3D_lattice.csv", 200, true);
 
   //Fractal dimension of a 3D random walk
   //test_fractal_dim<lattice_walk<2>>(1000, 100000, true, "fractal_dimension_2D_calculations.csv");
@@ -237,8 +256,8 @@ int main(){
   //Several methods for generating flory constants for 2D random walks
   //weighted_flory_diffusion_calc<avoiding_counting_lattice_walk<2>>(10000, true, false, "2D_counting_predict.csv", 500);
   //weighted_flory_diffusion_calc<avoiding_random_lattice_walk<2>>(4000, true, false, "2D_random_predict.csv", 500);
-  //weighted_flory_diffusion_calc<avoiding_lattice_walk<2>>(1000000, false, false, "2D_avoiding_without_predict.csv", 200);
-  //weighted_flory_diffusion_calc<avoiding_lattice_walk<3>>(1000000, false, false, "3D_avoiding_without_predict.csv", 200);
+  weighted_flory_diffusion_calc<avoiding_lattice_walk<2>>(1000000, false, false, "2D_avoiding_without_predict.csv", 200, true, 10, 30, true, true);
+  //weighted_flory_diffusion_calc<avoiding_lattice_walk<3>>(1000000, false, false, "3D_avoiding_without_predict.csv", 200, true);
 
   return 0;
 }

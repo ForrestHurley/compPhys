@@ -34,10 +34,66 @@ mpfr::mpreal average_chains::calc_expected_value(std::vector<mpfr::mpreal> value
   return sum;
 }
 
+mpfr::mpreal average_chains::calc_expected_value_uniform(std::vector<mpfr::mpreal> values)
+{
+  //kahan summation algorithm
+  mpfr::mpreal sum, y, t, c;
+  sum = c = 0.;
+  for (unsigned int i = 0; i < values.size(); i++)
+  {
+    y = values[i] - c;
+    t = sum + y;
+    c = (t - sum) - y;
+    sum = t;
+  }
+
+  //calc average
+  return sum / values.size();
+}
+
 void average_chains::add_chain(std::vector<double> y, std::vector<double> p)
 {
   y_values.push_back(y);
   probabilities.push_back(p);
+}
+
+std::vector<double> average_chains::calculate_expected_chain(bool assume_uniform)
+{
+  if (!assume_uniform)
+    return calculate_expected_chain();
+
+  std::vector<double> expected_values;
+
+  unsigned int idx = 0;
+  while (true)
+  {
+    if (verbose)
+      std::cout << "\rcalculating expected value for index " << idx << std::flush;
+
+    bool finished = true;
+    std::vector<mpfr::mpreal> single_iter_values;
+
+    for (unsigned int i = 0; i < y_values.size(); i++)
+    {
+      if (y_values[i].size() > idx)
+      {
+        finished = false;
+        single_iter_values.push_back(y_values[i][idx]);
+      }
+    }  
+
+    if (!finished)
+      expected_values.push_back((double)calc_expected_value_uniform(single_iter_values));
+    else
+      break;
+
+    idx++;
+  }
+
+  if (verbose)
+    std::cout << std::endl;
+
+  return expected_values; 
 }
 
 std::vector<double> average_chains::calculate_expected_chain()
@@ -53,6 +109,9 @@ std::vector<double> average_chains::calculate_expected_chain()
   unsigned int idx = 0;
   while (true)
   {
+    if (verbose)
+      std::cout << "\rcalculating expected value for index " << idx << std::flush;
+
     //update probabilities and check if finished
     finished = true;
     //std::cout << std::endl;
@@ -84,6 +143,7 @@ std::vector<double> average_chains::calculate_expected_chain()
 
     idx++;
   }
+  std::cout << std::endl;
 
   return expected_values;
 }
