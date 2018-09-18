@@ -10,13 +10,44 @@
 #include <iomanip>
 #include <cmath>
 
+template <class data_type>
+void write_data_to_file(std::string file_name, std::vector<data_type> x)
+{
+  std::ofstream out_file;
+  out_file.open(file_name);
+
+  out_file << "x" << std::endl;
+
+  for (unsigned int i = 0; i < x.size(); i++)
+  {
+    out_file << x[i] << std::endl;
+  }
+}
+
+template <class data_type>
+void write_data_to_file(std::string file_name, std::vector<data_type> x, std::vector<data_type> y)
+{
+  std::ofstream out_file;
+  out_file.open(file_name);
+
+  out_file << "x,y" << std::endl;
+
+  for (unsigned int i = 0; i < x.size(); i++)
+  {
+    out_file << x[i] << "," << y[i] << std::endl;
+  }
+}
+
 template <class walk_type>
-void test_fractal_dim(int iterations = 10000, int length = 100000, bool verbose = false)
+void test_fractal_dim(int iterations = 10000, int length = 100000, bool verbose = true, std::string datafile = "")
 {
   static_assert(std::is_base_of<random_walk<typename walk_type::point_data_type, walk_type::dimensions>, walk_type>::value, "Derived not derived from random_walk<N>");
 
-  std::cout << "Starting fractal dimension calculation" << std::endl;
-  std::cout << "Function is " << __PRETTY_FUNCTION__ << std::endl;
+  if (verbose)
+  {
+    std::cout << "Starting fractal dimension calculation" << std::endl;
+    std::cout << "Function is " << __PRETTY_FUNCTION__ << std::endl;
+  }
 
   std::vector<double> frac_dims, frac_sigmas;
 
@@ -42,6 +73,11 @@ void test_fractal_dim(int iterations = 10000, int length = 100000, bool verbose 
   if (verbose)
     std::cout << std::endl;
 
+  if (datafile != "")
+  {
+    write_data_to_file(datafile, frac_dims); 
+  }
+
   double mean = regression::mean(frac_dims);
 
   std::vector<double> frac_vars = frac_sigmas;
@@ -62,7 +98,7 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
   if (assume_linear)
     std::cout << "Starting diffusion constant calculation" << std::endl;
   else
-    std::cout << "Starting flory and diffusion exponent calculation" << std::endl;
+    std::cout << "Starting flory exponent and diffusion constant calculation" << std::endl;
   std::cout << "Function is " << __PRETTY_FUNCTION__ << std::endl;
 
   int print_step = iterations / 10000;
@@ -132,13 +168,14 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
     {
       y[i - start_cut - 1] = log(expected_distance_sqr[i]);
       x[i - start_cut - 1] = log(i);
-      if (datafile != "")
-      {
-        std::cout << i << "," << expected_distance_sqr[i] << std::endl;
-      }
     }
 
     std::cout << std::endl << "Number of points to fit: " << y.size() << std::endl;
+    
+    if (datafile != "")
+    {
+      write_data_to_file("flory_" + datafile, x, y);
+    }
 
     regression regress;
 
@@ -161,13 +198,14 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
   {
     y[i - start_cut - 1] = expected_distance_sqr[i];
     x[i - start_cut - 1] = pow(i, i_exp);
-    if (datafile != "")
-    {
-      std::cout << i << "," << expected_distance_sqr[i] << std::endl;
-    }
   }
 
   std::cout << std::endl << "Number of points to fit: " << y.size() << std::endl;
+
+  if (datafile != "")
+  {
+    write_data_to_file("diffusion_" + datafile, x, y);
+  }
 
   regression regress;
 
@@ -178,129 +216,19 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
 
   std::cout << "Diffusion constant: " << diffusion_const << std::endl;
   std::cout << "Diffusion constant sigma: " << diffusion_sigma << std::endl;
-  
-}
-
-//older method to calculate flory exponent, doesn't work with weighted walks
-template <int N>
-void flory_exponent_calc(unsigned long long iterations, bool verbose = true, int max_length = 200)
-{
-  std::vector<double> r_sqr_list;
-  std::vector<int> r_sqr_counts;
-
-  for (unsigned int idx = 0; idx < iterations; idx++)
-  {
-    if (verbose && idx % 100000 == 0)
-      std::cout << std::setprecision(6) << "\rPercent Done: " << (double)idx / iterations * 100. << std::flush;
-
-    avoiding_lattice_walk<N> walk;
-    walk.make_walk(max_length, false);
-
-    std::vector<std::array<int, N>> point_list = walk.get_location_list();
-
-    const int size_diff = point_list.size() - r_sqr_list.size();
-
-    for (int i = 0; i < size_diff; i++)
-    {
-      r_sqr_list.push_back(0.);
-      r_sqr_counts.push_back(0);
-    }
-
-    for (unsigned int i = 0; i < point_list.size(); i++)
-    {
-      double r = 0;
-      
-      for (int j = 0; j < N; j++)
-        r += point_list[i][j] * point_list[i][j];
-        
-      r_sqr_list[i] += r;
-      r_sqr_counts[i]++;
-    }
-  }
-
-  int start_cut = 5;
-  int end_cut = 10;
-
-  if (r_sqr_list.size() - start_cut - end_cut < 5)
-  {
-    std::cout << "Not enough points" << std::endl;
-    start_cut = 0;
-    end_cut = 0;
-  }
-
-  std::vector<double> x(r_sqr_list.size() - start_cut - end_cut - 1);
-  std::vector<double> y(r_sqr_list.size() - start_cut - end_cut - 1);
-
-  if (verbose)
-    std::cout << std::endl;
-    
-  for (unsigned int i = 1 + start_cut; i < r_sqr_list.size() - end_cut; i++)
-  {
-    y[i - start_cut - 1] = log(r_sqr_list[i] / r_sqr_counts[i]);
-    x[i - start_cut - 1] = log(i);
-    if (verbose)
-      std::cout << x[i - start_cut - 1] << "," << y[i - start_cut - 1] << std::endl;
-  }
-
-  if (verbose)
-    std::cout << std::endl << "Number of points to fit: " << y.size() << std::endl;
-
-  regression regress;
-
-  regress.calculate(x, y);
-
-  double flory_exp = regress.get_slope() / 2;
-  double flory_sigma = regress.get_slope_sigma() / sqrt(2);
-
-  std::cout << "Flory exponent: " << flory_exp << std::endl;
-  std::cout << "Flory exponent sigma: " << flory_sigma << std::endl;
 }
 
 int main(){
-  //test_fractal_dim<lattice_walk<3>>(1000, 100000, true);
+  //Diffusion of a 2D random walk
+  weighted_flory_diffusion_calc<lattice_walk<2>>(100000, false, true, "2D_lattice.csv", 200);
 
-  //weighted_flory_diffusion_calc<avoiding_counting_lattice_walk<2>>(2000, true);
-  //weighted_flory_diffusion_calc<avoiding_random_lattice_walk<2>>(500, true);
-  weighted_flory_diffusion_calc<lattice_walk<2>>(100000, false, true);
-  //flory_exponent_calc(1000000000);
+  //Fractal dimension of a 3D random walk
+  test_fractal_dim<lattice_walk<3>>(1000, 100000, true, "fractal_dimension_calculations.csv");
 
-  /*avoiding_counting_lattice_walk<N> walk;
-  walk.verbose = 2;
-  walk.make_walk(1000, false);
-
-  std::vector<std::array<int, N>> last_loc = walk.get_location_list();
-
-  regression regress;
-
-  box_counter<N> counter(2, 1.5, 10);
-  counter.verbose = true;
-  const double frac_dim = counter.get_fractal_dimension(last_loc, regress);
-  
-  std::cout << "Last value: ";
-  const std::array<int, N> last = walk.get_last_location();
-  for (int loc : last) std::cout << loc << ", ";
-  std::cout << std::endl;
-
-  std::cout << std::setprecision(4) << "Dimension: " << frac_dim << std::endl;
-  std::cout << "Dimension Sigma: " << regress.get_slope_sigma() << std::endl;
-
-  std::cout << "Number of locations: " << last_loc.size() << std::endl;
-
-  std::cout << "Regression Points:" << std::endl;
-  std::vector<double> x, y;
-  regress.get_data_points(x, y);
-  for(unsigned int i = 0; i < x.size(); i++)
-    std::cout << std::setw(4) << std::fixed << std::setprecision(2)
-      << "x: " << x[i] << " | y: " << y[i] << std::endl;
-  
-  walk.write_to_file("outfile.csv");*/
-
-  /*for (unsigned int i = 0; i < last_loc.size(); i++)
-  {
-    for (unsigned int j = 0; j < last_loc[0].size(); j++)
-      std::cout << last_loc[i][j] << ",";
-    std::cout << std::endl;
-  }*/
+  //Several methods for generating flory constants for 2D random walks
+  weighted_flory_diffusion_calc<avoiding_counting_lattice_walk<2>>(2000, true, false, "2D_counting_predict.csv", 200);
+  weighted_flory_diffusion_calc<avoiding_random_lattice_walk<2>>(500, true, false, "2D_random_predict.csv", 200);
+  weighted_flory_diffusion_calc<avoiding_lattice_walk<2>>(100000, false, false, "2D_avoiding_without_predict.csv", 200);
 
   return 0;
 }
