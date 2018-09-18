@@ -85,7 +85,7 @@ void test_fractal_dim(int iterations = 10000, int length = 100000, bool verbose 
   double sigma = sqrt(regression::mean(frac_vars)) / sqrt(frac_vars.size());
 
   std::cout << "Fractal Dimension: " << mean << std::endl;
-  std::cout << "Standard Deviation of the mean: " << sigma << std::endl;
+  std::cout << "Standard Deviation of the mean: " << sigma << std::endl << std::endl;
 }
 
 template<class walk_type>
@@ -144,9 +144,6 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
   std::vector<double> expected_distance_sqr = expected_calc.calculate_expected_chain();
   //std::cout << expected_distance_sqr[2] << std::endl;
 
-  if (verbose)
-    std::cout << std::endl;
-
   int start_cut = 5;
   int end_cut = 10;
 
@@ -200,7 +197,7 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
     x[i - start_cut - 1] = pow(i, i_exp);
   }
 
-  std::cout << std::endl << "Number of points to fit: " << y.size() << std::endl;
+  std::cout << "Number of points to fit: " << y.size() << std::endl;
 
   if (datafile != "")
   {
@@ -215,7 +212,7 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
   double diffusion_sigma = regress.get_slope_sigma() / sqrt(2);
 
   std::cout << "Diffusion constant: " << diffusion_const << std::endl;
-  std::cout << "Diffusion constant sigma: " << diffusion_sigma << std::endl;
+  std::cout << "Diffusion constant sigma: " << diffusion_sigma << std::endl << std::endl;
 }
 
 int main(){
