@@ -15,7 +15,7 @@ public:
     virtual void init_random_state();
 
     virtual double get_hamiltonian();
-    virtual void apply_step(mc_step);
+    virtual void apply_step(mc_step* step);
 
     virtual mc_step get_step();
 }
