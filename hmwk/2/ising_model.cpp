@@ -154,10 +154,10 @@ void ising_model::update_hamiltonian()
             other_location = index_location;
             other_location[i/2] += (i % 2) * 2 - 1;
             other_index = location_to_index(other_location);
-            std::cout << "i " << i/2 << ", " << (i % 2) * 2 - 1 << " idx " << other_index << " pair " << single_pair_value(i/2, other_index) << std::endl;
+            //std::cout << "i " << i/2 << ", " << (i % 2) * 2 - 1 << " idx " << other_index << " pair " << single_pair_value(last_step_index, other_index) << " h " << hamiltonian_value << " spin " << spin_list[last_step_index] << std::endl;
 
             //The multiplication by 2 cancels out the previous state, before the flip
-            hamiltonian_value += 2 * single_pair_value(i/2, other_index);
+            hamiltonian_value += 2 * single_pair_value(last_step_index, other_index);
         }
 
         steps_since_last_recalc++;

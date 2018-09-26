@@ -5,8 +5,8 @@
 
 int main()
 {
-    ising_model model(4, 2);
+    ising_model model(20, 2);
     monte_carlo metro(&model, 4e23);
-    metro.run_iterations(50);
+    metro.run_iterations(500);
     return 0;
 }

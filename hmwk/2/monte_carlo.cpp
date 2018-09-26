@@ -83,6 +83,5 @@ void monte_carlo::run_iterations(int iterations, bool verbose)
 
         hamiltonian_list.push_back(last_hamiltonian);
 
-        std::cout << "Last " << last_hamiltonian << std::endl;
     }
 }
