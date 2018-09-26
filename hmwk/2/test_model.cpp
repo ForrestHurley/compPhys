@@ -4,7 +4,7 @@
 #include <iostream>
 #include <math.h>
 
-void iterate_model(ising_model& model, double min_t = 0.2, double max_t = 5, double t_steps = 25)
+void iterate_model(ising_model& model, double min_t = 0.2, double max_t = 5, double t_steps = 49)
 {
     double t;
     double hamiltonian;
@@ -52,10 +52,11 @@ void iterate_model(ising_model& model, double min_t = 0.2, double max_t = 5, dou
     }
 }
 
-void mcmc_evolve_model(ising_model& model, int iterations = 200000, int burn_in = 5000, double min_t = 0.2, double max_t = 5, double t_steps = 25)
+void mcmc_evolve_model(ising_model& model, int iterations = 200000, int burn_in = 5000, double min_t = 0.2, double max_t = 5, double t_steps = 49)
 {
-    model.init_random_state();
+    model.zero_model();
     monte_carlo metropolis(&model);
+    metropolis.run_iterations(burn_in * 10, burn_in * 10);
     double t;
 
     std::cout.precision(5);
@@ -97,28 +98,16 @@ void mcmc_evolve_model(ising_model& model, int iterations = 200000, int burn_in 
 }
 int main()
 {
-    /*ising_model model_itr(4, 2);
+    ising_model model_itr(4, 2);
     iterate_model(model_itr);
-    mcmc_evolve_model(model_itr);*/
+    mcmc_evolve_model(model_itr);
 
-    ising_model model(10, 2);
-    mcmc_evolve_model(model);
-
-
-    /*ising_model model(4, 2);
-    model.init_random_state();
-    monte_carlo metro(&model);
-    metro.set_beta(5.);
-    metro.run_iterations(500);
-    
-    double mean_hamiltonian = 0.;
-    std::vector<double> hamiltonian_list = model.get_hamiltonian_history();
-
-    for (double ham : hamiltonian_list)
-        mean_hamiltonian += ham;
-    mean_hamiltonian /= hamiltonian_list.size();
-
-    std::cout << "<H>: " << mean_hamiltonian << std::endl;*/
+    ising_model small_model(10, 2);
+    mcmc_evolve_model(small_model);
+    ising_model larger_model(20, 2);
+    mcmc_evolve_model(larger_model);
+    ising_model largest_model(40, 2);
+    mcmc_evolve_model(largest_model);
 
     return 0;
 }
