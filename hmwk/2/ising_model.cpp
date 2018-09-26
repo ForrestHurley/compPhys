@@ -2,10 +2,11 @@
 #include <limits>
 #include <random>
 #include <iostream>
+#include <assert.h>
 
 ising_model::ising_step::ising_step(int size) : mc_object::mc_step()
 {
-    step_distribution = std::uniform_int_distribution<int>(0, size);
+    step_distribution = std::uniform_int_distribution<int>(0, size - 1);
 }
 
 void ising_model::ising_step::invert_step() { }
@@ -84,9 +85,10 @@ void ising_model::apply_step(mc_step* step)
 void ising_model::apply_step(ising_step* step)
 {
     const int index = step->get_index();
+    assert (index < size);
     spin_list[index] = !spin_list[index];
     last_step_index = index;
-    calculate_hamiltonian();//update_hamiltonian();
+    update_hamiltonian();
 }
 
 mc_object::mc_step* ising_model::get_step()
@@ -190,8 +192,7 @@ void ising_model::calculate_hamiltonian()
 
 void ising_model::update_hamiltonian()
 {
-    //TODO: Debug
-    /*if (steps_since_last_recalc > full_recalculation_frequency)
+    if (steps_since_last_recalc > full_recalculation_frequency)
     {
         calculate_hamiltonian();
         steps_since_last_recalc = 0;
@@ -210,10 +211,11 @@ void ising_model::update_hamiltonian()
 
             //The multiplication by 2 cancels out the previous state, before the flip
             hamiltonian_value += 2 * single_pair_value(last_step_index, other_index);
+
         }
 
         steps_since_last_recalc++;
-    }*/
+    }
 }
 
 double ising_model::single_pair_value(int first_index, int second_index)

@@ -109,7 +109,7 @@ int main()
     model.init_random_state();
     monte_carlo metro(&model);
     metro.set_beta(5.);
-    metro.run_iterations(5000);
+    metro.run_iterations(500);
     
     double mean_hamiltonian = 0.;
     std::vector<double> hamiltonian_list = model.get_hamiltonian_history();
