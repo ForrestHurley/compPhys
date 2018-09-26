@@ -48,7 +48,7 @@ void monte_carlo::run_iterations(int iterations, bool verbose)
 {
     mc_object::mc_step* step = working_model->get_step();
 
-    double last_hamiltonian = 0;
+    double last_hamiltonian = working_model->get_hamiltonian();
     double new_hamiltonian;
     double probability;
 
@@ -62,11 +62,11 @@ void monte_carlo::run_iterations(int iterations, bool verbose)
         working_model->apply_step(step);
         new_hamiltonian = working_model->get_hamiltonian();
 
-        if(new_hamiltonian < last_hamiltonian)
+        if(new_hamiltonian > last_hamiltonian)
         {
             probability = std::exp( - beta * (new_hamiltonian - last_hamiltonian) );
 
-            if (probability < distribution(generator))
+            if (probability > distribution(generator))
             {
                 last_hamiltonian = new_hamiltonian;
             }
@@ -82,6 +82,7 @@ void monte_carlo::run_iterations(int iterations, bool verbose)
         }
 
         hamiltonian_list.push_back(last_hamiltonian);
-        std::cout << last_hamiltonian << std::endl;
+
+        std::cout << "Last " << last_hamiltonian << std::endl;
     }
 }

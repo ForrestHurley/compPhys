@@ -5,11 +5,8 @@
 
 int main()
 {
-    std::cout << "test" << std::endl;
     ising_model model(4, 2);
-    std::cout << "test" << std::endl;
-    monte_carlo metro(&model, 2);
-    std::cout << "test" << std::endl;
-    metro.run_iterations(10);
+    monte_carlo metro(&model, 4e23);
+    metro.run_iterations(50);
     return 0;
 }

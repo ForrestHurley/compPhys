@@ -96,7 +96,7 @@ int ising_model::location_to_index(std::vector<int> location)
     for (int i = dimension - 1; i >= 0; i--)
     {
         index *= length;
-        index += location[i];
+        index += (location[i] + length) % length;
     }
     return index;
 }
@@ -149,11 +149,12 @@ void ising_model::update_hamiltonian()
         std::vector<int> other_location;
         int other_index;
 
-        for (int i = 0; i < size * 2; i++)
+        for (int i = 0; i < dimension * 2; i++)
         {
             other_location = index_location;
             other_location[i/2] += (i % 2) * 2 - 1;
             other_index = location_to_index(other_location);
+            std::cout << "i " << i/2 << ", " << (i % 2) * 2 - 1 << " idx " << other_index << " pair " << single_pair_value(i/2, other_index) << std::endl;
 
             //The multiplication by 2 cancels out the previous state, before the flip
             hamiltonian_value += 2 * single_pair_value(i/2, other_index);
@@ -165,8 +166,12 @@ void ising_model::update_hamiltonian()
 
 double ising_model::single_pair_value(int first_index, int second_index)
 {
-    const int first_value = spin_list[(first_index + length) % length] * 2 - 1;
-    const int second_value = spin_list[(second_index + length) % length] * 2 - 1;
+    const int first_value = spin_list[first_index];
+    const int second_value = spin_list[second_index];
+    const int first_spin = first_value * 2 - 1;
+    const int second_spin = second_value * 2 - 1;
 
-    return - (first_value * second_value);
+    const int energy = - (first_spin * second_spin);
+
+    return energy;
 }
