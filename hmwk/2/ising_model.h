@@ -24,14 +24,14 @@ public:
         std::uniform_int_distribution<int> step_distribution;
     };
 
+    const int length;
+    const int dimension;
+    const int size;
+
     int full_recalculation_frequency = 1000;
 
 private:
     std::vector<bool> spin_list;
-
-    const int length;
-    const int dimension;
-    const int size;
 
     double hamiltonian_value;
 
@@ -48,9 +48,13 @@ private:
 public:
     ising_model(int length = 4, int dims = 2);
     
+    void zero_model();
     void init_random_state() override;
+    void reset_saved_data();
 
     double get_hamiltonian() override;
+    double average_spin();
+
     void apply_step(mc_step* step) override;
     void apply_step(ising_step* step);
 

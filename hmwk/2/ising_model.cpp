@@ -25,11 +25,17 @@ int ising_model::ising_step::get_index()
 
 ising_model::ising_model(int length, int dims) : length(length), dimension(dims), size((int)round(pow(length, (double)dims))), working_step(size) 
 {
+    zero_model();
+}
+
+void ising_model::zero_model()
+{
     spin_list = std::vector<bool>(size);
     for (int i = 0; i < size; i++)
         spin_list[i] = false;
 
     calculate_hamiltonian();
+    reset_saved_data();
 }
 
 void ising_model::init_random_state()
@@ -43,11 +49,31 @@ void ising_model::init_random_state()
         spin_list[i] = distribution(generator);
 
     calculate_hamiltonian();
+    reset_saved_data();
+}
+
+void ising_model::reset_saved_data()
+{
+    average_spin_list = std::vector<double>();
+    hamiltonian_list = std::vector<double>();
 }
 
 double ising_model::get_hamiltonian()
 {
     return hamiltonian_value;
+}
+
+double ising_model::average_spin()
+{
+    int sum = 0;
+    for (int spin : spin_list)
+        sum += spin;
+    double average = (double)sum / spin_list.size();
+    
+    //Convert from 0, 1 to -1, 1
+    average = 2. * average - 1.;
+
+    return average;
 }
 
 void ising_model::apply_step(mc_step* step)
@@ -60,7 +86,7 @@ void ising_model::apply_step(ising_step* step)
     const int index = step->get_index();
     spin_list[index] = !spin_list[index];
     last_step_index = index;
-    update_hamiltonian();
+    calculate_hamiltonian();//update_hamiltonian();
 }
 
 mc_object::mc_step* ising_model::get_step()
@@ -70,15 +96,7 @@ mc_object::mc_step* ising_model::get_step()
 
 void ising_model::store_data()
 {   
-    int sum = 0;
-    for (int spin : spin_list)
-        sum += spin;
-    double average = (double)sum / spin_list.size();
-    
-    //Convert from 0, 1 to -1, 1
-    average = 2. * average - 1.;
-
-    average_spin_list.push_back(average);
+    average_spin_list.push_back(average_spin());
     hamiltonian_list.push_back(get_hamiltonian());
 }
 
@@ -172,7 +190,8 @@ void ising_model::calculate_hamiltonian()
 
 void ising_model::update_hamiltonian()
 {
-    if (steps_since_last_recalc > full_recalculation_frequency)
+    //TODO: Debug
+    /*if (steps_since_last_recalc > full_recalculation_frequency)
     {
         calculate_hamiltonian();
         steps_since_last_recalc = 0;
@@ -194,7 +213,7 @@ void ising_model::update_hamiltonian()
         }
 
         steps_since_last_recalc++;
-    }
+    }*/
 }
 
 double ising_model::single_pair_value(int first_index, int second_index)

@@ -26,7 +26,7 @@ public:
     double get_temperature();
 
     std::vector<double> get_hamiltonian_list();
-    void run_iterations(int iterations, bool verbose = false);
+    void run_iterations(int iterations, int burn_in = 0, bool verbose = false);
 
 };
 
