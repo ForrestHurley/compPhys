@@ -18,6 +18,8 @@ public:
     virtual void apply_step(mc_step* step) = 0;
 
     virtual mc_step* get_step() = 0;
+
+    virtual void store_data() {}
 };
 
 #endif

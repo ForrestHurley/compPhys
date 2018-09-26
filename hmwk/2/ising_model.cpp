@@ -68,6 +68,20 @@ mc_object::mc_step* ising_model::get_step()
     return &working_step;
 }
 
+void ising_model::store_data()
+{   
+    int sum = 0;
+    for (int spin : spin_list)
+        sum += spin;
+    double average = (double)sum / spin_list.size();
+    
+    //Convert from 0, 1 to -1, 1
+    average = 2. * average - 1.;
+
+    average_spin_list.push_back(average);
+    hamiltonian_list.push_back(get_hamiltonian());
+}
+
 ising_model& ising_model::operator++()
 {
     for (int i = 0; i < size; i++)
@@ -75,11 +89,14 @@ ising_model& ising_model::operator++()
         if (spin_list[i] == 0)
         {
             spin_list[i] = 1;
+            calculate_hamiltonian();
             return *this;
         }
         
         spin_list[i] = 0;
     }
+    calculate_hamiltonian();
+    wrapped_itr = true;
     return *this;
 }
 
@@ -88,6 +105,23 @@ ising_model ising_model::operator++(int)
     ising_model temp = *this;
     ++*this;
     return temp;
+}
+
+bool ising_model::pop_wrapped()
+{
+    bool out = wrapped_itr;
+    wrapped_itr = false;
+    return out;
+}
+
+std::vector<double> ising_model::get_average_spins()
+{
+    return average_spin_list;
+}
+
+std::vector<double> ising_model::get_hamiltonian_history()
+{
+    return hamiltonian_list;
 }
 
 int ising_model::location_to_index(std::vector<int> location)

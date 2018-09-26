@@ -81,7 +81,7 @@ void monte_carlo::run_iterations(int iterations, bool verbose)
             last_hamiltonian = new_hamiltonian;
         }
 
+        working_model->store_data();
         hamiltonian_list.push_back(last_hamiltonian);
-
     }
 }

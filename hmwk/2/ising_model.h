@@ -40,6 +40,10 @@ private:
     int last_step_index;
 
     ising_step working_step;
+    
+    std::vector<double> average_spin_list;
+    std::vector<double> hamiltonian_list;
+    bool wrapped_itr = false;
 
 public:
     ising_model(int length = 4, int dims = 2);
@@ -52,8 +56,14 @@ public:
 
     mc_step* get_step() override;
 
+    void store_data() override;
+
     ising_model& operator++();
     ising_model operator++(int);
+    bool pop_wrapped();
+
+    std::vector<double> get_average_spins();
+    std::vector<double> get_hamiltonian_history();
 
 private:
     int location_to_index(std::vector<int> location);
