@@ -4,7 +4,7 @@
 #include <iostream>
 #include <math.h>
 
-void iterate_model(ising_model& model, double min_t = 0.2, double max_t = 5, double t_steps = 49)
+void iterate_model(ising_model& model, double min_t = 0.2, double max_t = 5, double t_steps = 97)
 {
     double t;
     double hamiltonian;
@@ -52,7 +52,7 @@ void iterate_model(ising_model& model, double min_t = 0.2, double max_t = 5, dou
     }
 }
 
-void mcmc_evolve_model(ising_model& model, int iterations = 200000, int burn_in = 5000, double min_t = 0.2, double max_t = 5, double t_steps = 49)
+void mcmc_evolve_model(ising_model& model, int iterations = 200000, int burn_in = 5000, double min_t = 0.2, double max_t = 5, double t_steps = 97)
 {
     model.zero_model();
     monte_carlo metropolis(&model);
@@ -60,7 +60,7 @@ void mcmc_evolve_model(ising_model& model, int iterations = 200000, int burn_in 
     double t;
 
     std::cout.precision(5);
-    std::cout << "Walking Model with dimension " << model.dimension << " and length " << model.length << std::endl;
+    std::cout << "Walking Model with dimension " << model.dimension << " and length " << model.length << " There will be " << iterations  << " iterations following a burn in of " << burn_in << std::endl;
     std::cout << "T,<H>/N,C,<|s|>" << std::endl;
 
     double t_step_size = (max_t - min_t) / (t_steps - 1);
@@ -70,7 +70,7 @@ void mcmc_evolve_model(ising_model& model, int iterations = 200000, int burn_in 
 
         model.reset_saved_data();
         metropolis.set_beta(1. / t);
-        metropolis.run_iterations(iterations, burn_in);
+        metropolis.run_iterations(iterations + burn_in, burn_in);
         
         std::vector<double> h = model.get_hamiltonian_history();
         std::vector<double> spins = model.get_average_spins();
@@ -103,11 +103,11 @@ int main()
     mcmc_evolve_model(model_itr);
 
     ising_model small_model(10, 2);
-    mcmc_evolve_model(small_model);
+    mcmc_evolve_model(small_model, 1000000);
     ising_model larger_model(20, 2);
-    mcmc_evolve_model(larger_model);
+    mcmc_evolve_model(larger_model, 1000000);
     ising_model largest_model(40, 2);
-    mcmc_evolve_model(largest_model);
+    mcmc_evolve_model(largest_model, 1000000);
 
     return 0;
 }
