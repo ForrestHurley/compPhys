@@ -8,16 +8,16 @@ public:
     class mc_step
     {
     public:
-        virtual void invert_step();
-        virtual void random_step();
-    }
+        virtual void invert_step() = 0;
+        virtual void random_step() = 0;
+    };
 
-    virtual void init_random_state();
+    virtual void init_random_state() = 0;
 
-    virtual double get_hamiltonian();
-    virtual void apply_step(mc_step* step);
+    virtual double get_hamiltonian() = 0;
+    virtual void apply_step(mc_step* step) = 0;
 
-    virtual mc_step get_step();
-}
+    virtual mc_step* get_step() = 0;
+};
 
 #endif
