@@ -1,0 +1,351 @@
+*****************************************
+Starting diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = lattice_walk<2>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000000 Force Constant Length: 0 Max length: 200
+Assume linear: 1 Datafile: 2D_lattice.csv
+Verbose: 1 Expected value verbose: 1
+Percent Done: 99.99
+Calculating expected values
+calculating expected value for index 201
+Calculating diffusion constant
+Number of points to fit before cut: 201
+Cut 5 points from start and 0 from end
+Diffusion constant: 0.500344
+Diffusion constant sigma: 4.11586e-05
+
+*****************************************
+Starting diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = lattice_walk<3>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000000 Force Constant Length: 0 Max length: 200
+Assume linear: 1 Datafile: 3D_lattice.csv
+Verbose: 1 Expected value verbose: 1
+Percent Done: 99.99
+Calculating expected values
+calculating expected value for index 201
+Calculating diffusion constant
+Number of points to fit before cut: 201
+Cut 5 points from start and 0 from end
+Diffusion constant: 0.500475
+Diffusion constant sigma: 2.75256e-05
+
+*****************************************
+Starting diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = lattice_walk<4>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000000 Force Constant Length: 0 Max length: 200
+Assume linear: 1 Datafile: 4D_lattice.csv
+Verbose: 1 Expected value verbose: 1
+Percent Done: 99.99
+Calculating expected values
+calculating expected value for index 201
+Calculating diffusion constant
+Number of points to fit before cut: 201
+Cut 5 points from start and 0 from end
+Diffusion constant: 0.500274
+Diffusion constant sigma: 4.64322e-05
+
+*****************************************
+Starting flory exponent and diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = gaussian_walk<2>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 100000 Force Constant Length: 0 Max length: 200
+Assume linear: 0 Datafile: 2D_gauss.csv
+Verbose: 1 Expected value verbose: 1
+Percent Done: 99.99
+Calculating expected values
+calculating expected value for index 201
+Number of points to fit before cut: 201
+Cut 5 points from start and 0 from end
+Flory exponent: 0.500753
+Flory exponent sigma: 7.70327e-05
+Calculating diffusion constant
+Number of points to fit before cut: 201
+Cut 5 points from start and 0 from end
+Diffusion constant: 0.498263
+Diffusion constant sigma: 0.000102821
+
+*****************************************
+Starting flory exponent and diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = normalized_gaussian_walk<2>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 100000 Force Constant Length: 0 Max length: 200
+Assume linear: 0 Datafile: 2D_gauss_norm.csv
+Verbose: 1 Expected value verbose: 1
+Percent Done: 99.99
+Calculating expected values
+calculating expected value for index 201
+Number of points to fit before cut: 201
+Cut 5 points from start and 0 from end
+Flory exponent: 0.499575
+Flory exponent sigma: 0.000142977
+Calculating diffusion constant
+Number of points to fit before cut: 201
+Cut 5 points from start and 0 from end
+Diffusion constant: 0.501354
+Diffusion constant sigma: 0.000182389
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = lattice_walk<2>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_lattice_2D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.77388
+Standard Deviation of the mean: 0.000166071
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = lattice_walk<3>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_lattice_3D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.92211
+Standard Deviation of the mean: 0.000599407
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = lattice_walk<4>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_lattice_4D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.88707
+Standard Deviation of the mean: 0.00104201
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = lattice_walk<5>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_lattice_5D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.84213
+Standard Deviation of the mean: 0.00129915
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = lattice_walk<10>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_lattice_10D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.6893
+Standard Deviation of the mean: 0.00186454
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = gaussian_walk<2>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_gauss_2D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.7712
+Standard Deviation of the mean: 0.000169143
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = gaussian_walk<3>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_gauss_3D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.93432
+Standard Deviation of the mean: 0.000579619
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = gaussian_walk<4>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_gauss_4D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.91861
+Standard Deviation of the mean: 0.00100452
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = gaussian_walk<5>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_gauss_5D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.88907
+Standard Deviation of the mean: 0.00125053
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = normalized_gaussian_walk<2>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_gaussnorm_2D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.77367
+Standard Deviation of the mean: 0.00017734
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = normalized_gaussian_walk<3>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_gaussnorm_3D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.94463
+Standard Deviation of the mean: 0.000537338
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = normalized_gaussian_walk<4>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_gaussnorm_4D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.92697
+Standard Deviation of the mean: 0.000931477
+
+*****************************************
+Starting fractal dimension calculation
+Function is void test_fractal_dim(int, int, bool, std::__cxx11::string) [with walk_type = normalized_gaussian_walk<5>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000 Walk Length: 1000000
+Datafile: fractal_gaussnorm_5D_calculations.csv
+Percent Done: 99.9
+Fractal Dimension: 1.89998
+Standard Deviation of the mean: 0.00119647
+
+*****************************************
+Starting flory exponent and diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = avoiding_counting_lattice_walk<2>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 10000 Force Constant Length: 1 Max length: 500
+Assume linear: 0 Datafile: 2D_counting_predict.csv
+Verbose: 1 Expected value verbose: 0
+Percent Done: 99.99
+Calculating expected values
+
+Number of points to fit before cut: 500
+Cut 5 points from start and 10 from end
+Flory exponent: 0.761305
+Flory exponent sigma: 0.00360811
+Calculating diffusion constant
+Number of points to fit before cut: 500
+Cut 5 points from start and 10 from end
+Diffusion constant: 0.403483
+Diffusion constant sigma: 0.00498841
+
+*****************************************
+Starting flory exponent and diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = avoiding_random_lattice_walk<2>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 4000 Force Constant Length: 1 Max length: 500
+Assume linear: 0 Datafile: 2D_random_predict.csv
+Verbose: 1 Expected value verbose: 0
+Percent Done: 99.975
+Calculating expected values
+
+Number of points to fit before cut: 500
+Cut 5 points from start and 10 from end
+Flory exponent: 0.709853
+Flory exponent sigma: 0.00693409
+Calculating diffusion constant
+Number of points to fit before cut: 500
+Cut 5 points from start and 10 from end
+Diffusion constant: 0.595527
+Diffusion constant sigma: 0.0108085
+
+*****************************************
+Starting flory exponent and diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = avoiding_random_lattice_walk<3>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 4000 Force Constant Length: 1 Max length: 500
+Assume linear: 0 Datafile: 3D_random_predict.csv
+Verbose: 1 Expected value verbose: 0
+Percent Done: 99.975
+Calculating expected values
+
+Number of points to fit before cut: 500
+Cut 5 points from start and 10 from end
+Flory exponent: 0.624382
+Flory exponent sigma: 0.0043394
+Calculating diffusion constant
+Number of points to fit before cut: 500
+Cut 5 points from start and 10 from end
+Diffusion constant: 0.421164
+Diffusion constant sigma: 0.00699984
+
+*****************************************
+Starting flory exponent and diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = avoiding_random_lattice_walk<4>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 4000 Force Constant Length: 1 Max length: 500
+Assume linear: 0 Datafile: 4D_random_predict.csv
+Verbose: 1 Expected value verbose: 0
+Percent Done: 99.975
+Calculating expected values
+
+Number of points to fit before cut: 500
+Cut 5 points from start and 10 from end
+Flory exponent: 0.509818
+Flory exponent sigma: 0.00121761
+Calculating diffusion constant
+Number of points to fit before cut: 500
+Cut 5 points from start and 10 from end
+Diffusion constant: 0.726992
+Diffusion constant sigma: 0.00323865
+
+*****************************************
+Starting flory exponent and diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = avoiding_lattice_walk<2>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000000 Force Constant Length: 0 Max length: 200
+Assume linear: 0 Datafile: 2D_avoiding_without_predict.csv
+Verbose: 1 Expected value verbose: 1
+Percent Done: 99.99
+Calculating expected values
+calculating expected value for index 125
+Number of points to fit before cut: 125
+Cut 10 points from start and 30 from end
+Flory exponent: 0.720676
+Flory exponent sigma: 0.00487727
+Calculating diffusion constant
+Number of points to fit before cut: 125
+Cut 10 points from start and 30 from end
+Diffusion constant: 0.471454
+Diffusion constant sigma: 0.00750734
+
+*****************************************
+Starting flory exponent and diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = avoiding_lattice_walk<3>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000000 Force Constant Length: 0 Max length: 200
+Assume linear: 0 Datafile: 3D_avoiding_without_predict.csv
+Verbose: 1 Expected value verbose: 1
+Percent Done: 99.99
+Calculating expected values
+calculating expected value for index 201
+Number of points to fit before cut: 201
+Cut 10 points from start and 30 from end
+Flory exponent: 0.604258
+Flory exponent sigma: 0.00105161
+Calculating diffusion constant
+Number of points to fit before cut: 201
+Cut 10 points from start and 30 from end
+Diffusion constant: 0.519814
+Diffusion constant sigma: 0.0020678
+
+*****************************************
+Starting flory exponent and diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = avoiding_lattice_walk<4>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000000 Force Constant Length: 0 Max length: 200
+Assume linear: 0 Datafile: 4D_avoiding_without_predict.csv
+Verbose: 1 Expected value verbose: 1
+Percent Done: 99.99
+Calculating expected values
+calculating expected value for index 201
+Number of points to fit before cut: 201
+Cut 10 points from start and 30 from end
+Flory exponent: 0.54092
+Flory exponent sigma: 0.00025687
+Calculating diffusion constant
+Number of points to fit before cut: 201
+Cut 10 points from start and 30 from end
+Diffusion constant: 0.58727
+Diffusion constant sigma: 0.000436812
+
+*****************************************
+Starting flory exponent and diffusion constant calculation
+Function is void weighted_flory_diffusion_calc(long unsigned int, bool, bool, std::__cxx11::string, int, bool, int, int, bool, bool) [with walk_type = avoiding_lattice_walk<5>; std::__cxx11::string = std::__cxx11::basic_string<char>]
+Iterations: 1000000 Force Constant Length: 0 Max length: 200
+Assume linear: 0 Datafile: 5D_avoiding_without_predict.csv
+Verbose: 1 Expected value verbose: 1
+Percent Done: 99.99
+Calculating expected values
+calculating expected value for index 201
+Number of points to fit before cut: 201
+Cut 10 points from start and 30 from end
+Flory exponent: 0.51591
+Flory exponent sigma: 0.000294867
+Calculating diffusion constant
+Number of points to fit before cut: 201
+Cut 10 points from start and 30 from end
+Diffusion constant: 0.604081
+Diffusion constant sigma: 0.000282786

@@ -242,8 +242,26 @@ void weighted_flory_diffusion_calc(unsigned long iterations, bool force_length =
 }
 
 int main(){
+
+  int length = 100000;
+
+  {
+  lattice_walk<2> walk;
+  walk.make_walk(length);
+  walk.write_to_file("lattice_walk_path_2d.csv");
+  }
+  {
+  normalized_gaussian_walk<2> walk;
+  walk.make_walk(length);
+  walk.write_to_file("normalized_walk_path_2d.csv");
+  }
+  {
+  gaussian_walk<2> walk;
+  walk.make_walk(length);
+  walk.write_to_file("gaussian_walk_path_2d.csv");
+  }
   //Diffusion of a 2D random walk
-  weighted_flory_diffusion_calc<lattice_walk<2>>(1000000, false, true, "2D_lattice.csv", 200, true, 5, 0, true, true);
+  /*weighted_flory_diffusion_calc<lattice_walk<2>>(1000000, false, true, "2D_lattice.csv", 200, true, 5, 0, true, true);
   weighted_flory_diffusion_calc<lattice_walk<3>>(1000000, false, true, "3D_lattice.csv", 200, true, 5, 0, true, true);
   weighted_flory_diffusion_calc<lattice_walk<4>>(1000000, false, true, "4D_lattice.csv", 200, true, 5, 0, true, true);
 
@@ -278,7 +296,7 @@ int main(){
   weighted_flory_diffusion_calc<avoiding_lattice_walk<2>>(1000000, false, false, "2D_avoiding_without_predict.csv", 200, true, 10, 30, true, true);
   weighted_flory_diffusion_calc<avoiding_lattice_walk<3>>(1000000, false, false, "3D_avoiding_without_predict.csv", 200, true, 10, 30, true, true);
   weighted_flory_diffusion_calc<avoiding_lattice_walk<4>>(1000000, false, false, "4D_avoiding_without_predict.csv", 200, true, 10, 30, true, true);
-  weighted_flory_diffusion_calc<avoiding_lattice_walk<5>>(1000000, false, false, "5D_avoiding_without_predict.csv", 200, true, 10, 30, true, true);
+  weighted_flory_diffusion_calc<avoiding_lattice_walk<5>>(1000000, false, false, "5D_avoiding_without_predict.csv", 200, true, 10, 30, true, true);*/
 
   return 0;
 }
