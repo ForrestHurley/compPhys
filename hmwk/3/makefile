@@ -56,11 +56,11 @@ BINDIR   = bin
 
 
 
-SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
+SOURCES  := $(wildcard $(SRCDIR)/*.cc)
 
 INCLUDES := $(wildcard $(SRCDIR)/*.h)
 
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+OBJECTS  := $(SOURCES:$(SRCDIR)/%.cc=$(OBJDIR)/%.o)
 
 rm       = rm -f
 
@@ -76,7 +76,7 @@ $(BINDIR)/$(TARGET): $(OBJECTS)
 
 
 
-$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cc
 
 	@$(CC) $(CFLAGS) -c $< -o $@
 
