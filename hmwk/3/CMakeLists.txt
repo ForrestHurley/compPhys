@@ -35,5 +35,5 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
     include_directories("${gtest_SOURCE_DIR}/include")
     endif()
 
-subdirs(coordinate_manipulation lennard_jones_system ode n_body)
+subdirs(coordinate_manipulation lennard_jones_system ode system_model)
 
