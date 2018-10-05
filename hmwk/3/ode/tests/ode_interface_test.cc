@@ -1,7 +1,5 @@
 
-#include "ode_interface.h"
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
+#include "ode_interface_test.h"
 
 using ::testing::An;
 using ::testing::DoubleEq;
@@ -11,15 +9,6 @@ using ::testing::Ref;
 using ::testing::_;
 using ::testing::Const;
 using ::testing::ElementsAre;
-
-class MockODEInterface : public ODEInterface
-{
-public:
-  MockODEInterface(int degree) : ODEInterface(degree) {};
-
-  using ODEInterface::CalculateHighestDerivative;
-  MOCK_METHOD2(CalculateHighestDerivative, double (const std::vector<double> &values, double time_step) );
-};
 
 TEST(ODEInterfaceTest, ConstructionTest)
 {
@@ -60,4 +49,11 @@ TEST(ODEInterfaceTest, VectorizeTestMultiple)
 
   std::vector<double> return_val = ode_interface.CalculateHighestDerivative(in_vals, 1.);
   EXPECT_EQ(out_vals, return_val);
+}
+
+TEST(ODEInterfaceTest, FailOnWrongSizeInput)
+{
+  //TODO: something different should happen if the last dimension of any of the vectors
+  //      in the vector of vectors doesn't match the degree of the ode_interface
+  FAIL();
 }

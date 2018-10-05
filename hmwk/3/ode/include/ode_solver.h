@@ -1,16 +1,22 @@
+#ifndef ODE_SOLVER_H
+#define ODE_SOLVER_H
 
 #include <vector>
+#include "ode_interface.h"
 
-class ode_solver
+class ODESolver
 {
-private:
-  const ode_interface *differential_equation;
+protected:
+  const ODEInterface &differential_equation;
+
 public:
-  ode_solver(ode_interface *differential_equation); 
+  ODESolver(const ODEInterface &differential_equation); 
 
-  virtual void step_state(std::vector< std::vector<double> > &state, double time_step) = 0;
-  virtual void step_state(std::vector<double> &state, double time_step);
+  virtual void StepState(std::vector< std::vector<double> > &state, double time_step);
+  virtual void StepState(std::vector<double> &state, double time_step) = 0;
 
-  virtual void evolve_state(std::vector< std::vector<double> > &state, double total_time, int number_of_steps);
-  virtual void evolve_state(std::vector<double> &state, double total_time, int number_of_steps);
+  virtual void EvolveState(std::vector< std::vector<double> > &state, double total_time, int number_of_steps);
+  virtual void EvolveState(std::vector<double> &state, double total_time, int number_of_steps);
 };
+
+#endif
