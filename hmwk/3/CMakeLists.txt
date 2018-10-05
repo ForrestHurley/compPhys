@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION 2.8)
 
 project(stoch_molecular_dynamics)
 
+#temporary fix to allow gmock to build. There is
+#already a pull request which should make it unnecessary (10-05-18)
+add_compile_options(-std=c++11)
+
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
