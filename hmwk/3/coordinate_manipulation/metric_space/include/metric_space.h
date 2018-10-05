@@ -8,7 +8,7 @@ public:
 
   virtual double Distance(const MetricPoint& A, const MetricPoint& B) = 0;
 
-  virtual MetricPoint& getOrigin() = 0;
+  virtual const MetricPoint& getOrigin() = 0;
 };
 
 #endif

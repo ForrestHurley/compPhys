@@ -4,6 +4,16 @@
 
 #include "euclidean_space.h"
 
+TEST(EuclideanSpaceTest, CoordinateConstructionTest)
+{
+
+}
+
+TEST(EuclideanSpaceTest, SetCoordinateTest)
+{
+
+}
+
 TEST(EuclideanSpaceTest, ConstructionTest2D)
 {
 

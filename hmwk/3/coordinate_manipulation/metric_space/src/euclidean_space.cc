@@ -1,7 +1,15 @@
 
 #include "euclidean_space.h"
 
-EuclideanSpace::EuclideanPoint::EuclideanPoint(unsigned int dimension) : coordinate(dimension) {}
+EuclideanSpace::EuclideanPoint::EuclideanPoint(unsigned int dimension) :
+    dimension(dimension), coordinate(dimension) {}
+
+Coordinate EuclideanSpace::EuclideanPoint::getCoordinate()
+{
+  return Coordinate(dimension);
+}
+
+void EuclideanSpace::EuclideanPoint::setCoordinate(const Coordinate& newCoordinate) {}
 
 EuclideanSpace::EuclideanSpace(unsigned int dimension) : dimension(dimension), euclidean_origin(dimension) {}
 
@@ -16,7 +24,7 @@ double EuclideanSpace::Distance(const EuclideanSpace::EuclideanPoint& A,
   return 0.;
 }
 
-EuclideanSpace::EuclideanPoint& EuclideanSpace::getOrigin()
+const EuclideanSpace::EuclideanPoint& EuclideanSpace::getOrigin()
 {
   return euclidean_origin;
 }

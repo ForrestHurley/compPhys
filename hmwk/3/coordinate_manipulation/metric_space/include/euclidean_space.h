@@ -9,14 +9,20 @@ class EuclideanSpace : public MetricSpace
 public:
   class EuclideanPoint : public MetricSpace::MetricPoint
   {
-  public:
+  protected:
     Coordinate coordinate;
 
+  public:
+    const unsigned int dimension;
+
     EuclideanPoint(unsigned int dimension = 2);
+
+    Coordinate getCoordinate();
+    virtual void setCoordinate(const Coordinate& newCoordinate);
   };
 
 private:
-  EuclideanPoint euclidean_origin;
+  const EuclideanPoint euclidean_origin;
 
 public:
 
@@ -27,7 +33,7 @@ public:
   double Distance(const MetricPoint& A, const MetricPoint& B) override;
   virtual double Distance(const EuclideanPoint& A, const EuclideanPoint& B);
 
-  virtual EuclideanPoint& getOrigin() override;
+  virtual const EuclideanPoint& getOrigin() override;
 };
 
 #endif
