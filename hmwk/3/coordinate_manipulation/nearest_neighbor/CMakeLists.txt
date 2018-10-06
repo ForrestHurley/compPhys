@@ -1,5 +1,8 @@
 
+cmake_minimum_required(VERSION 2.8)
 project(nearest_neighbor)
+
+add_subdirectory(tests)
 
 set(NEAREST_NEIGHBOR_SOURCES src/fixed_radius_nn.cc src/fr_nn_brute.cc src/fr_nn_cube.cc) 
 

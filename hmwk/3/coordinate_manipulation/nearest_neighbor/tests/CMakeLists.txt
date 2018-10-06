@@ -1,0 +1,9 @@
+
+cmake_minimum_required(VERSION 2.8)
+project(nearest_neighbor_tests)
+
+set(NEAREST_NEIGHBOR_TESTS_SOURCES binned_coordinates_test.cc fixed_radius_nn_test.cc fr_nn_brute_test.cc fr_nn_cube_test.cc fr_nn_cubed_torus_test.cc)
+
+add_executable(nearest_neighbor_tests ${NEAREST_NEIGHBOR_TESTS_SOURCES})
+
+target_link_libraries(nearest_neighbor_tests gmock_main nearest_neighbor)

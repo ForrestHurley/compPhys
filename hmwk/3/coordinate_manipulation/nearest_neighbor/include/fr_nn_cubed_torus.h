@@ -7,10 +7,10 @@
 class CubedTorusFixedRadiusNearestNeighbor : public CubedFixedRadiusNearestNeighbor
 {
 public:
-  CubedFixedRadiusNearestNeighbor(const FlatTorusSpace& metric,
+  CubedTorusFixedRadiusNearestNeighbor(const FlatTorusSpace& metric,
     const std::vector<FlatTorusSpace::FlatTorusPoint*> points, double radius);
 
-  virtual MetricSpace::MetricPoint& getNextNeighborSet(std::vector<MetricSpace::MetricPoint*>& neighboring_point_set) override;
+  virtual MetricSpace::MetricPoint* getNextNeighborSet(std::vector<MetricSpace::MetricPoint*>& neighboring_point_set) override;
 };
 
 #endif

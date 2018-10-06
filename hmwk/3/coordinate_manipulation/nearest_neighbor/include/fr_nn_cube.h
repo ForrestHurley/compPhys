@@ -9,6 +9,7 @@
 class CubedFixedRadiusNearestNeighbor : public FixedRadiusNearestNeighbor
 {
 protected:
+  int next_point_index;
   std::vector< std::vector<EuclideanSpace::EuclideanPoint*> > boxed_points;
   BinnedCoordinates coordinate_bins;
 
