@@ -34,7 +34,8 @@ TEST(BoundedEuclideanSpaceTest, FlippedBoundsTest)
 
 }
 
-Test(BoundedEuclideanSpaceTest, NaNZeroBoundsTest)
+TEST(BoundedEuclideanSpaceTest, NaNZeroBoundsTest)
 {
 
 }
+

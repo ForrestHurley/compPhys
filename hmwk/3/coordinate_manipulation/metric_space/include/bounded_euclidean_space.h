@@ -9,7 +9,7 @@ class BoundedEuclideanSpace : public EuclideanSpace
 public:
   class BoundedEuclideanPoint : public EuclideanSpace::EuclideanPoint
   {
-  private:
+  protected:
     const std::vector<double>& bounds;
 
   public:
@@ -20,6 +20,8 @@ public:
 
 private:
   const BoundedEuclideanPoint bounded_euclidean_origin;
+
+protected:
   std::vector<double> bounds;
 
 public:
