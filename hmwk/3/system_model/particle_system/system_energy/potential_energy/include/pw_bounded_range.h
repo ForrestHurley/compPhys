@@ -1,0 +1,18 @@
+#ifndef PW_BOUNDED_RANGE_H
+#define PW_BOUNDED_RANGE_H
+
+#include "fixed_radius_nn.h"
+
+class PairwiseBoundedRangePotentialEnergy : public PairwisePotentialEnergy
+{
+private:
+  const FixedRadiusNearestNeighbor& nearest_neighbor;
+public:
+  PairwiseBoundedRangePotentialEnergy(const std::vector<MetricSpace::MetricPoint*>& locations,
+    const PairwisePotentialFunction& pairwise_potential, const FixedRadiusNearestNeighbor& nearest_neighbor);
+
+  double getPotentialEnergy() override;
+  std::vector<double> getPartials() override;
+};
+
+#endif
