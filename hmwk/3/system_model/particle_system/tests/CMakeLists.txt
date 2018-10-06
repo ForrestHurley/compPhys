@@ -1,0 +1,9 @@
+
+cmake_minimum_required(VERSION 2.8)
+project(particle_system_tests)
+
+set(PARTICLE_SYSTEM_TESTS_SOURCES particle_system_test.cc hamiltonian_particle_system_test.cc classical_particle_system_test.cc classical_pairwise_particle_system_test.cc)
+
+add_executable(particle_system_tests ${PARTICLE_SYSTEM_TESTS_SOURCES})
+
+target_link_libraries(particle_system_tests gmock_main particle_system)
