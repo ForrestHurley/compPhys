@@ -8,5 +8,5 @@ set(PARTICLE_STATE_SOURCES src/particle_state.cc src/hamiltonian_particle_state.
 
 add_library(particle_state ${PARTICLE_STATE_SOURCES})
 
-target_include_directories(particle_state ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(particle_state coordinate_manipulation)
+target_include_directories(particle_state PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(particle_state metric_space)

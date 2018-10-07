@@ -2,6 +2,7 @@
 #define PW_BOUNDED_RANGE_H
 
 #include "fixed_radius_nn.h"
+#include "pairwise_potential_energy.h"
 
 class PairwiseBoundedRangePotentialEnergy : public PairwisePotentialEnergy
 {

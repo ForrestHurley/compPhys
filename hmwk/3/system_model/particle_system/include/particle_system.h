@@ -1,6 +1,9 @@
 #ifndef PARTICLE_SYSTEM_H
 #define PARTICLE_SYSTEM_H
 
+#include "system_energy.h"
+#include "particle_state.h"
+
 class ParticleSystem
 {
 protected:

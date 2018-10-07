@@ -1,10 +1,12 @@
 #ifndef DIAGONAL_HAMILTONIAN_ENERGY_H
 #define DIAGONAL_HAMILTONIAN_ENERGY_H
 
+#include "hamiltonian_energy.h"
+
 class DiagonalHamiltonian : public HamiltonianEnergy
 {
 public:
-  DiagonalHamiltonian(const HamiltonianState& state);
+  DiagonalHamiltonian(const HamiltonianParticleState& state);
 
   double Energy() override;
   

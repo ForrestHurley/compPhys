@@ -1,12 +1,20 @@
 #ifndef HAMILTONIAN_PARTICLE_SYSTEM_H
 #define HAMILTONIAN_PARTICLE_SYSTEM_H
 
+#include "hamiltonian_particle_state.h"
+#include "particle_system.h"
+#include "hamiltonian_energy.h"
+#include "hamiltonian_particle_state.h"
+
 class HamiltonianParticleSystem : public ParticleSystem
 {
-public:
-  HamiltonianParticleSystem(const HamiltonianEnergy& system_energy, const HamiltonianState& initial_state);
+private:
+  const HamiltonianParticleState& hamiltonian_state;
 
-  const HamiltonianState& getCurrentState() override;
+public:
+  HamiltonianParticleSystem(const HamiltonianEnergy& system_energy, const HamiltonianParticleState& initial_state);
+
+  const HamiltonianParticleState& getCurrentState() override;
 };
 
 #endif

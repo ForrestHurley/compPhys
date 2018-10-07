@@ -1,6 +1,9 @@
 #ifndef PARTICLE_STATE_H
 #define PARTICLE_STATE_H
 
+#include <vector>
+#include "coordinate.h"
+
 class ParticleState
 {
 private:

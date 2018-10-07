@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "coordinate.h"
+#include "metric_space.h"
 
 class PotentialEnergy
 {

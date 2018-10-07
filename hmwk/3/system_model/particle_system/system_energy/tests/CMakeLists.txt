@@ -1,0 +1,8 @@
+
+cmake_minimum_required(VERSION 2.8)
+project(system_energy_tests)
+
+set(SYSTEM_ENERGY_TESTS_SOURCES system_energy_test.cc hamiltonian_energy_test.cc diagonal_hamiltonian_energy_test.cc classical_hamiltonian_energy_test.cc)
+
+add_executable(system_energy_tests ${SYSTEM_ENERGY_TESTS_SOURCES})
+target_link_libraries(system_energy_tests gmock_main system_energy)

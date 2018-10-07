@@ -1,6 +1,8 @@
 #ifndef HAMILTONIAN_PARTICLE_STATE_H
 #define HAMILTONIAN_PARTICLE_STATE_H
 
+#include "particle_state.h"
+
 class HamiltonianParticleState : public ParticleState
 {
 public:
