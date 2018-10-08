@@ -6,7 +6,7 @@
 class PairwiseBruteForcePotentialEnergy : public PairwisePotentialEnergy
 {
 public:
-  PairwiseBruteForcePotentialEnergy(const std::vector<MetricSpace::MetricPoint*>& locations,
+  PairwiseBruteForcePotentialEnergy(const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& locations,
     const PairwisePotentialFunction& pairwise_potential);
 
   double getPotentialEnergy() override;

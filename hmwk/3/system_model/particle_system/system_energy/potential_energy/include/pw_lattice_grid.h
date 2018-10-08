@@ -10,7 +10,8 @@ class PairwiseLatticeGridPotentialEnergy : public PairwisePotentialEnergy
 private:
   BinnedCoordinates coordinate_bins;
   std::vector<double> lattice_energies;
-  std::vector<MetricSpace::MetricPoint*> converted_locations;
+
+  const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> converted_locations;
 
 public:
   PairwiseLatticeGridPotentialEnergy(const std::vector<EuclideanSpace::EuclideanPoint*>& locations,

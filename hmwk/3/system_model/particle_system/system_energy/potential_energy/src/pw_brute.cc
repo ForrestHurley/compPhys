@@ -1,6 +1,7 @@
 #include "pw_brute.h"
 
-PairwiseBruteForcePotentialEnergy::PairwiseBruteForcePotentialEnergy(const std::vector<MetricSpace::MetricPoint*>& locations,
+PairwiseBruteForcePotentialEnergy::PairwiseBruteForcePotentialEnergy(
+  const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& locations,
   const PairwisePotentialFunction& pairwise_potential) :
   PairwisePotentialEnergy(locations, pairwise_potential) {}
 

@@ -2,16 +2,23 @@
 
 HamiltonianParticleState::HamiltonianParticleState() {}
 
-std::vector<Coordinate> HamiltonianParticleState::getPositions()
+std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> HamiltonianParticleState::getPositions() const
 {
   return getStateComponent(0);
 }
 
-void HamiltonianParticleState::setPositions(std::vector<Coordinate> new_positions) {}
+const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>&
+  HamiltonianParticleState::getPositionReference() const
+{
+  return state.at(0);
+}
 
-std::vector<Coordinate> HamiltonianParticleState::getMomenta()
+void HamiltonianParticleState::setPositions(std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>
+  new_positions) {}
+
+std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> HamiltonianParticleState::getMomenta() const
 {
   return getStateComponent(1);
 }
 
-void HamiltonianParticleState::setMomenta(std::vector<Coordinate> new_momenta) {} 
+void HamiltonianParticleState::setMomenta(std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> new_momenta) {} 

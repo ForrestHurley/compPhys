@@ -3,17 +3,18 @@
 
 #include <vector>
 #include "coordinate.h"
+#include "smooth_coordinate_space.h"
 
 class ParticleState
 {
-private:
-  std::vector< std::vector<Coordinate> > state;
+protected:
+  std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> > state;
 public:
-  std::vector< std::vector<Coordinate> > getState();
-  void setState(std::vector< std::vector<Coordinate> > new_state);
+  std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> > getState() const;
+  void setState(std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> > new_state);
 
-  std::vector<Coordinate> getStateComponent(int component_number);
-  void setStateComponent(std::vector<Coordinate> new_component, int component_number);
+  std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> getStateComponent(int component_number) const;
+  void setStateComponent(std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> new_component, int component_number);
 };
 
 #endif

@@ -9,7 +9,8 @@ class PairwiseBoundedRangePotentialEnergy : public PairwisePotentialEnergy
 private:
   const FixedRadiusNearestNeighbor& nearest_neighbor;
 public:
-  PairwiseBoundedRangePotentialEnergy(const std::vector<MetricSpace::MetricPoint*>& locations,
+  PairwiseBoundedRangePotentialEnergy(
+    const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& locations,
     const PairwisePotentialFunction& pairwise_potential, const FixedRadiusNearestNeighbor& nearest_neighbor);
 
   double getPotentialEnergy() override;
