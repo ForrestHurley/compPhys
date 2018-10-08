@@ -20,10 +20,9 @@ private:
 public:
   FlatTorusSpace(std::vector<double> bounds);
 
-  virtual const FlatTorusPoint& getOrigin() override;
+  virtual const FlatTorusPoint& getOrigin() const override;
 
-  double Distance(const EuclideanPoint& A, const EuclideanPoint& B) override;
-  virtual double Distance(const FlatTorusPoint& A, const FlatTorusPoint& B);
+  virtual double Distance(const MetricPoint& A, const MetricPoint& B) const override;
 };
 
 #endif

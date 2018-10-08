@@ -9,7 +9,7 @@ void BoundedEuclideanSpace::BoundedEuclideanPoint::setCoordinate(const Coordinat
 BoundedEuclideanSpace::BoundedEuclideanSpace(std::vector<double> bounds) :
   EuclideanSpace(bounds.size()), bounds(bounds), bounded_euclidean_origin(bounds) {}
 
-const BoundedEuclideanSpace::BoundedEuclideanPoint& BoundedEuclideanSpace::getOrigin()
+const BoundedEuclideanSpace::BoundedEuclideanPoint& BoundedEuclideanSpace::getOrigin() const
 {
   return bounded_euclidean_origin;
 }

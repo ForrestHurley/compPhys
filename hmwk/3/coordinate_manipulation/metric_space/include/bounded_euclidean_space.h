@@ -27,7 +27,7 @@ protected:
 public:
   BoundedEuclideanSpace(std::vector<double> bounds);
 
-  virtual const BoundedEuclideanPoint& getOrigin() override;
+  virtual const BoundedEuclideanPoint& getOrigin() const override;
 
   std::vector<double> getBounds();
   void setBounds(std::vector<double> newBounds);

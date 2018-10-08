@@ -1,39 +1,26 @@
 #ifndef EUCLIDEAN_SPACE_H
 #define EUCLIDEAN_SPACE_H
 
-#include "metric_space.h"
-#include "coordinate.h"
+#include "smooth_coordinate_space.h"
 
-class EuclideanSpace : public MetricSpace
+class EuclideanSpace : public SmoothCoordinateSpace
 {
 public:
-  class EuclideanPoint : public MetricSpace::MetricPoint
+  class EuclideanPoint : public SmoothCoordinateSpace::SmoothCoordinatePoint
   {
-  protected:
-    Coordinate coordinate;
-
   public:
-    const unsigned int dimension;
-
     EuclideanPoint(unsigned int dimension = 2);
-
-    Coordinate getCoordinate();
-    virtual void setCoordinate(const Coordinate& newCoordinate);
   };
 
 private:
-  const EuclideanPoint euclidean_origin;
+  const EuclideanPoint coordinate_origin;
 
 public:
-
-  const unsigned int dimension;
-
   EuclideanSpace(unsigned int dimension = 2);
 
-  double Distance(const MetricPoint& A, const MetricPoint& B) override;
-  virtual double Distance(const EuclideanPoint& A, const EuclideanPoint& B);
+  double Distance(const MetricPoint& A, const MetricPoint& B) const override;
 
-  virtual const EuclideanPoint& getOrigin() override;
+  virtual const EuclideanPoint& getOrigin() const override;
 };
 
 #endif
