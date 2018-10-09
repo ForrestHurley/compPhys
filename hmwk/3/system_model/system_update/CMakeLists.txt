@@ -2,11 +2,11 @@
 cmake_minimum_required(VERSION 2.8)
 project(system_update)
 
-add_subdirectory(basic_update)
-add_subdirectory(dynamics_sim)
-add_subdirectory(monte_carlo)
-add_subdirectory(monte_carlo_dynamics)
+add_subdirectory(tests)
 
-add_library(system_update INTERFACE)
+set(SYSTEM_UPDATE_SOURCES src/basic_update.cc src/dynamics_update.cc src/metropolis_update.cc src/metropolis_dynamics_update.cc)
 
-target_link_libraries(system_update INTERFACE basic_update dynamics_sim monte_carlo monte_carlo_dynamics)
+add_library(system_update ${SYSTEM_UPDATE_SOURCES})
+
+target_include_directories(system_update PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(system_update particle_system ode)

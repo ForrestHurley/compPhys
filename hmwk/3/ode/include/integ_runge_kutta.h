@@ -8,7 +8,8 @@
 class RungeKuttaIntegrator : public ODESolver
 {
 public:
-  RungeKuttaIntegrator(const ODEInterface &differential_equation);
+  RungeKuttaIntegrator();
+  RungeKuttaIntegrator(ODEInterface *differential_equation);
 
   virtual void StepState(std::vector<double> &state, double time_step) override;
 };

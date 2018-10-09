@@ -8,7 +8,8 @@
 class VerletIntegrator : public ODESolver
 {
 public:
-  VerletIntegrator(const ODEInterface &differential_equation);
+  VerletIntegrator();
+  VerletIntegrator(ODEInterface *differential_equation);
 
   virtual void StepState(std::vector<double> &state, double time_step) override;
 };

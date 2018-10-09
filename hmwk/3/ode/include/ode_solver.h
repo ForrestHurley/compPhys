@@ -7,10 +7,13 @@
 class ODESolver
 {
 protected:
-  const ODEInterface &differential_equation;
+  ODEInterface *differential_equation;
 
 public:
-  ODESolver(const ODEInterface &differential_equation); 
+  ODESolver();
+  ODESolver(ODEInterface *differential_equation); 
+
+  void setDifferentialEquation(ODEInterface *differential_equation);
 
   virtual void StepState(std::vector< std::vector<double> > &state, double time_step);
   virtual void StepState(std::vector<double> &state, double time_step) = 0;
