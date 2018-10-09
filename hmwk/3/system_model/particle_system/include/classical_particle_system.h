@@ -12,6 +12,9 @@ protected:
 
 public:
   ClassicalParticleSystem(const PotentialEnergy& potential_energy, const HamiltonianParticleState& initial_state);
+  
+  virtual double getKineticEnergy() const;
+  virtual double getPotentialEnergy() const;
 };
 
 #endif

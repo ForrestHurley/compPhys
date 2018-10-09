@@ -3,3 +3,13 @@
 ClassicalParticleSystem::ClassicalParticleSystem(const PotentialEnergy& potential_energy,
   const HamiltonianParticleState& initial_state) :
   hamiltonian(initial_state, potential_energy), HamiltonianParticleSystem(hamiltonian, initial_state) {};
+
+double ClassicalParticleSystem::getKineticEnergy() const
+{
+  return 0.;
+}
+
+double ClassicalParticleSystem::getPotentialEnergy() const
+{
+  return 0.;
+}

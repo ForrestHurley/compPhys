@@ -8,7 +8,7 @@ const ParticleState& ParticleSystem::getCurrentState()
   return state;
 }
 
-double ParticleSystem::getCurrentEnergy()
+double ParticleSystem::getCurrentEnergy() const
 {
   return 0.;
 }

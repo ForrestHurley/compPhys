@@ -15,6 +15,8 @@ public:
   HamiltonianParticleSystem(const HamiltonianEnergy& system_energy, const HamiltonianParticleState& initial_state);
 
   const HamiltonianParticleState& getCurrentState() override;
+  virtual double getPositionPartial() const;
+  virtual double getMomentumPartial() const;
 };
 
 #endif
