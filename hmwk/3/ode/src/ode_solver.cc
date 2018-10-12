@@ -1,9 +1,9 @@
 
 #include "ode_solver.h"
 
-ODESolver::ODESolver();
+ODESolver::ODESolver() {}
 
-ODESolver::ODESolver(ODEInterface* differential_equation) : differential_equation(differential_equation) {};
+ODESolver::ODESolver(ODEInterface* differential_equation) : differential_equation(differential_equation) {}
 
 void setDifferentialEquation(ODEInterface *differential_equation) {}
 

@@ -5,7 +5,12 @@
 
 class MetropolisNPTUpdate : public MetropolisUpdate
 {
+public:
+  const double T, P;
 
+  MetropolisNPTUpdate(ParticleSystem& system, double T, double P);
+
+  virtual void RunUpdate() override;
 };
 
 #endif

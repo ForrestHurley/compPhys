@@ -6,7 +6,7 @@
 class MetropolisUpdate : public BasicUpdate
 {
 public:
-  DynamicsUpdate(ParticleSystem& system);
+  MetropolisUpdate(ParticleSystem& system);
 
   virtual void RunUpdate() override;
 };

@@ -4,7 +4,9 @@ project(system_update)
 
 add_subdirectory(tests)
 
-set(SYSTEM_UPDATE_SOURCES src/basic_update.cc src/dynamics_update.cc src/metropolis_update.cc src/metropolis_dynamics_update.cc)
+set(SYSTEM_UPDATE_SOURCES src/basic_update.cc src/dynamics_update.cc
+    src/metropolis_update.cc src/metropolis_nvt.cc
+    src/metropolis_npt.cc src/metropolis_uvt.cc)
 
 add_library(system_update ${SYSTEM_UPDATE_SOURCES})
 

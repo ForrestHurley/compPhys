@@ -1,3 +1,4 @@
+#include "basic_update.h"
 
 BasicUpdate::BasicUpdate(ParticleSystem& system) : system(system) {};
 

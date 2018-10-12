@@ -8,9 +8,11 @@
 
 class MockODESolver : public ODESolver
 {
+  ODEInterface *ode_function;
 public:
-  MockODESolver(int degree = 2) : ODESolver(MockODEInterface(degree)) {};
-  MockODESolver(ODEInterface &differential_equation) : ODESolver(differential_equation) {};
+  MockODESolver(int degree = 2) : ode_function(new MockODEInterface(degree)), ODESolver(ode_function) {};
+  MockODESolver(ODEInterface *differential_equation) : 
+    ode_function(differential_equation), ODESolver(ode_function) {};
 
   using ODESolver::StepState;
   MOCK_METHOD2(StepState, void (std::vector<double> &state, double time_step) );
