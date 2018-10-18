@@ -10,8 +10,8 @@ public:
   
   ODEInterface(int degree);
 
-  virtual double CalculateHighestDerivative(const std::vector<double> &values, double time_step) = 0;
-  virtual std::vector<double> CalculateHighestDerivative(const std::vector< std::vector<double> > &values, double time_step);
+  virtual double CalculateHighestDerivative(const std::vector<double> &values, double time);
+  virtual std::vector<double> CalculateHighestDerivative(const std::vector< std::vector<double> > &values, double time) = 0;
 };
 
 #endif

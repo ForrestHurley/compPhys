@@ -15,7 +15,7 @@ public:
     ode_function(differential_equation), ODESolver(ode_function) {};
 
   using ODESolver::StepState;
-  MOCK_METHOD2(StepState, void (std::vector<double> &state, double time_step) );
+  MOCK_METHOD2(StepState, void (std::vector< std::vector<double> > &state, double time_step) );
 };
 
 #endif

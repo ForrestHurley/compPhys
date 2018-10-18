@@ -7,11 +7,19 @@
 
 class RungeKuttaIntegrator : public ODESolver
 {
+private:
+  std::vector< std::vector<double> > CalculateFullDerivative(std::vector< std::vector<double> > state, double time);
+
+  void multiply(std::vector< std::vector<double> > &vect, double scalar);
+  void add(std::vector< std::vector<double> > &A, const std::vector< std::vector<double> > &B);
+
+protected:
+  virtual void StepState(std::vector< std::vector<double> > &state, double time_step, double time = 0) override;
+
 public:
   RungeKuttaIntegrator();
   RungeKuttaIntegrator(ODEInterface *differential_equation);
 
-  virtual void StepState(std::vector<double> &state, double time_step) override;
 };
 
 #endif

@@ -3,7 +3,10 @@
 
 ODEInterface::ODEInterface(int degree) : degree(degree) {}
 
-std::vector<double> ODEInterface::CalculateHighestDerivative(const std::vector< std::vector<double> > &values, double time_step)
+double ODEInterface::CalculateHighestDerivative(const std::vector<double> &values, double time)
 {
-  return std::vector<double>();  
+  std::vector< std::vector<double> > manip_vect;
+  manip_vect.push_back(values);
+
+  return CalculateHighestDerivative(manip_vect, time).at(0);
 }

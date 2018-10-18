@@ -11,7 +11,8 @@ public:
   MockODEInterface(int degree) : ODEInterface(degree) {};
 
   using ODEInterface::CalculateHighestDerivative;
-  MOCK_METHOD2(CalculateHighestDerivative, double (const std::vector<double> &values, double time_step) );
+  MOCK_METHOD2(CalculateHighestDerivative, 
+    std::vector<double> (const std::vector< std::vector<double> > &values, double time) );
 };
 
 #endif
