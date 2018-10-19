@@ -3,19 +3,19 @@
 HamiltonianParticleSystem::HamiltonianParticleSystem(
   const HamiltonianEnergy& system_energy,
   const HamiltonianParticleState& initial_state) :
-  ParticleSystem(system_energy, initial_state), hamiltonian_state(initial_state) {}
+  ParticleSystem(system_energy, initial_state) {}
 
-const HamiltonianParticleState& HamiltonianParticleSystem::getCurrentState()
+const HamiltonianParticleState& HamiltonianParticleSystem::getCurrentState() const
 {
-  return hamiltonian_state;
+  return static_cast<const HamiltonianParticleState&>(state);
 }
 
-double HamiltonianParticleSystem::getPositionPartial() const
+std::vector<Coordinate> HamiltonianParticleSystem::getPositionPartial() const
 {
-  0.;
+  return getHamiltonianEnergy().PositionPartial();
 }
 
-double HamiltonianParticleSystem::getMomentumPartial() const
+std::vector<Coordinate> HamiltonianParticleSystem::getMomentumPartial() const
 {
-  0.;
+  return getHamiltonianEnergy().MomentumPartial();
 }

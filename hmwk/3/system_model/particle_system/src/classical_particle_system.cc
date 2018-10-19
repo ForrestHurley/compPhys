@@ -6,10 +6,10 @@ ClassicalParticleSystem::ClassicalParticleSystem(const PotentialEnergy& potentia
 
 double ClassicalParticleSystem::getKineticEnergy() const
 {
-  return 0.;
+  return hamiltonian.MomentumEnergy();
 }
 
 double ClassicalParticleSystem::getPotentialEnergy() const
 {
-  return 0.;
+  return hamiltonian.PositionEnergy();
 }

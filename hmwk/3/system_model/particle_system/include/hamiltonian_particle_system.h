@@ -8,15 +8,15 @@
 
 class HamiltonianParticleSystem : public ParticleSystem
 {
-private:
-  const HamiltonianParticleState& hamiltonian_state;
+protected:
+  const HamiltonianEnergy& getHamiltonianEnergy() const;
 
 public:
   HamiltonianParticleSystem(const HamiltonianEnergy& system_energy, const HamiltonianParticleState& initial_state);
 
-  const HamiltonianParticleState& getCurrentState() override;
-  virtual double getPositionPartial() const;
-  virtual double getMomentumPartial() const;
+  const HamiltonianParticleState& getCurrentState() const override;
+  virtual std::vector<Coordinate> getPositionPartial() const;
+  virtual std::vector<Coordinate> getMomentumPartial() const;
 };
 
 #endif
