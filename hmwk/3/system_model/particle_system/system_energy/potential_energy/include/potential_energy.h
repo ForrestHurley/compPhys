@@ -12,7 +12,7 @@ public:
   PotentialEnergy(const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& locations);
 
   virtual double getPotentialEnergy() = 0;
-  virtual std::vector<double> getPartials() = 0;
+  virtual std::vector<Coordinate> getPartials() = 0;
 };
 
 #endif

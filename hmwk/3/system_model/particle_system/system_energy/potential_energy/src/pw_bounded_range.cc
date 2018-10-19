@@ -10,7 +10,7 @@ double PairwiseBoundedRangePotentialEnergy::getPotentialEnergy()
   return 0.;
 }
 
-std::vector<double> PairwiseBoundedRangePotentialEnergy::getPartials()
+std::vector<Coordinate> PairwiseBoundedRangePotentialEnergy::getPartials()
 {
-  return std::vector<double>();
+  return std::vector<Coordinate>();
 }

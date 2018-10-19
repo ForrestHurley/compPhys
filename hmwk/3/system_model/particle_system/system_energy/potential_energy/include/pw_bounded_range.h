@@ -14,7 +14,7 @@ public:
     const PairwisePotentialFunction& pairwise_potential, const FixedRadiusNearestNeighbor& nearest_neighbor);
 
   double getPotentialEnergy() override;
-  std::vector<double> getPartials() override;
+  std::vector<Coordinate> getPartials() override;
 };
 
 #endif

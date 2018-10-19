@@ -10,7 +10,7 @@ public:
     const PairwisePotentialFunction& pairwise_potential);
 
   double getPotentialEnergy() override;
-  std::vector<double> getPartials() override;
+  std::vector<Coordinate> getPartials() override;
 };
 
 #endif

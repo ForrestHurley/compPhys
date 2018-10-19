@@ -12,7 +12,7 @@ double PairwiseLatticeGridPotentialEnergy::getPotentialEnergy()
   return 0.;
 }
 
-std::vector<double> PairwiseLatticeGridPotentialEnergy::getPartials()
+std::vector<Coordinate> PairwiseLatticeGridPotentialEnergy::getPartials()
 {
-  return std::vector<double>();
+  return std::vector<Coordinate>();
 }

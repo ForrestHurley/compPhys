@@ -16,7 +16,7 @@ public:
   Coordinate(unsigned int dimension);
   Coordinate(const std::vector<double>& values);
 
-  static Coordinate Zero(unsigned int dimesnion);
+  static Coordinate Zero(unsigned int dimension);
   static Coordinate ForwardUnit(unsigned int dimension);
   static Coordinate INF(unsigned int dimension);
 

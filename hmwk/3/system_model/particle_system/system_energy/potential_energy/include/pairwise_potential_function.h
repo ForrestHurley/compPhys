@@ -6,8 +6,8 @@
 class PairwisePotentialFunction
 {
 public:
-  virtual double getPotential(const Coordinate& A, const Coordinate& B) = 0;
-  virtual std::vector<double> getPartials(const Coordinate& A, const Coordinate& B) = 0;
+  virtual double getPotential(const Coordinate& A, const Coordinate& B) const = 0;
+  virtual Coordinate getPartials(const Coordinate& A, const Coordinate& B) const = 0;
 }; 
 
 #endif
