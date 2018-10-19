@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <random>
+#include <assert.h>
 
 class Coordinate
 {
@@ -15,12 +16,12 @@ public:
   Coordinate(unsigned int dimension);
   Coordinate(const std::vector<double>& values);
 
-  static Coordinate Zero(unsigned int dimesnion) const;
-  static Coordinate ForwardUnit(unsigned int dimension) const;
-  static Coordinate INF(unsigned int dimension) const;
+  static Coordinate Zero(unsigned int dimesnion);
+  static Coordinate ForwardUnit(unsigned int dimension);
+  static Coordinate INF(unsigned int dimension);
 
   template< class RNG >
-  static Coordinate RandomUnit(unsigned int dimension, RNG& generator) const
+  static Coordinate RandomUnit(unsigned int dimension, RNG& generator)
   {
     std::vector<double> random_vector;
     random_vector.reserve(dimension);
@@ -33,16 +34,18 @@ public:
     return Coordinate(random_vector).getNormalized();
   }
 
-  Coordinate operator+(const Coordinate& other);
-  Coordinate operator-(const Coordinate& other);
-  Coordinate operator*(const Coordinate& other);
-  Coordinate operator/(const Coordinate& other);
-  Coordinate operator%(const Coordinate& other);
-  Coordinate operator+(double other);
-  Coordinate operator-(double other);
-  Coordinate operator*(double other);
-  Coordinate operator/(double other);
-  Coordinate operator%(double other);
+  Coordinate& operator=(const Coordinate&coordinate);
+
+  Coordinate operator+(const Coordinate& other) const;
+  Coordinate operator-(const Coordinate& other) const;
+  Coordinate operator*(const Coordinate& other) const;
+  Coordinate operator/(const Coordinate& other) const;
+  Coordinate operator%(const Coordinate& other) const;
+  Coordinate operator+(double other) const;
+  Coordinate operator-(double other) const;
+  Coordinate operator*(double other) const;
+  Coordinate operator/(double other) const;
+  Coordinate operator%(double other) const;
 
   double dot(const Coordinate& other);
   Coordinate cross(const Coordinate& other);
@@ -51,7 +54,7 @@ public:
   double getMagnitudeSquared();
 
   template< typename Func >
-  Coordinate ApplyFunction(Func foo)
+  Coordinate ApplyFunction(const Func& foo) const
   {
     std::vector<double> out;
     out.reserve(dimension);
@@ -63,9 +66,9 @@ public:
   }
 
   template< typename Func >
-  Coordinate ApplyFunction(Func foo, const Coordinate& other)
+  Coordinate ApplyFunction(const Func& foo, const Coordinate& other) const
   {
-    assert(dimension == other.dimension)
+    assert(dimension == other.dimension);
     std::vector<double> out;
     out.reserve(dimension);
 

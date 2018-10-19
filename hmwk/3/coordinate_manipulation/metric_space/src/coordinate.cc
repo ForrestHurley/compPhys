@@ -3,18 +3,19 @@
 #include <assert.h>
 #include <limits>
 #include <random>
+#include <cmath>
 
 Coordinate::Coordinate(unsigned int dimension) : dimension(dimension) {}
 
 Coordinate::Coordinate(const std::vector<double>& values) : values(values), dimension(values.size()) {}
 
-Coordinate Coordinate::Zero(unsigned int dimension) const
+Coordinate Coordinate::Zero(unsigned int dimension)
 {
   std::vector<double> zero_vector(dimension, 0.);
   return zero_vector;
 }
 
-Coordinate Coordinate::ForwardUnit(unsigned int dimension) const
+Coordinate Coordinate::ForwardUnit(unsigned int dimension)
 {
   assert(dimension >= 1);
   std::vector<double> unit_vector(dimension, 0.);
@@ -23,14 +24,25 @@ Coordinate Coordinate::ForwardUnit(unsigned int dimension) const
   return Coordinate(unit_vector);
 }
 
-Coordinate Coordinate::INF(unsigned int dimension) const
+Coordinate Coordinate::INF(unsigned int dimension)
 {
   std::vector<double> inf_values(dimension, std::numeric_limits<double>::infinity());
 
   return Coordinate(inf_values);
 }
 
-Coordinate Coordinate::operator+(const Coordinate& other)
+Coordinate& Coordinate::operator=(const Coordinate& coordinate)
+{
+  if (this == &coordinate)
+    return *this;
+  assert(coordinate.dimension == dimension);
+
+  values = coordinate.values;
+
+  return *this;
+}
+
+Coordinate Coordinate::operator+(const Coordinate& other) const
 {
   assert(other.dimension == dimension);
 
@@ -41,7 +53,7 @@ Coordinate Coordinate::operator+(const Coordinate& other)
   return Coordinate(new_values);
 }
 
-Coordinate Coordinate::operator-(const Coordinate& other)
+Coordinate Coordinate::operator-(const Coordinate& other) const
 {
   assert(other.dimension == dimension);
 
@@ -52,7 +64,7 @@ Coordinate Coordinate::operator-(const Coordinate& other)
   return Coordinate(new_values);
 }
 
-Coordinate Coordinate::operator*(const Coordinate& other)
+Coordinate Coordinate::operator*(const Coordinate& other) const
 {
   assert(other.dimension == dimension);
 
@@ -63,7 +75,7 @@ Coordinate Coordinate::operator*(const Coordinate& other)
   return Coordinate(new_values);
 }
 
-Coordinate Coordinate::operator/(const Coordinate& other)
+Coordinate Coordinate::operator/(const Coordinate& other) const
 {
   assert(other.dimension == dimension);
 
@@ -74,18 +86,19 @@ Coordinate Coordinate::operator/(const Coordinate& other)
   return Coordinate(new_values);
 }
 
-Coordinate Coordinate::operator%(const Coordinate& other)
+Coordinate Coordinate::operator%(const Coordinate& other) const
 {
   assert(other.dimension == dimension);
 
   std::vector<double> new_values = values;
   for (int i = 0; i < dimension; i++)
-    new_values.at(i) %= other.values.at(i);
+    new_values.at(i) = 
+      std::fmod(new_values.at(i), other.values.at(i));
 
   return Coordinate(new_values);
 }
 
-Coordinate Coordinate::operator+(double other)
+Coordinate Coordinate::operator+(double other) const
 {
   std::vector<double> new_values = values;
   for (int i = 0; i < dimension; i++)
@@ -94,7 +107,7 @@ Coordinate Coordinate::operator+(double other)
   return Coordinate(new_values);
 }
 
-Coordinate Coordinate::operator-(double other)
+Coordinate Coordinate::operator-(double other) const
 {
   std::vector<double> new_values = values;
   for (int i = 0; i < dimension; i++)
@@ -103,7 +116,7 @@ Coordinate Coordinate::operator-(double other)
   return Coordinate(new_values);
 }
 
-Coordinate Coordinate::operator*(double other)
+Coordinate Coordinate::operator*(double other) const
 {
   std::vector<double> new_values = values;
   for (int i = 0; i < dimension; i++)
@@ -112,7 +125,7 @@ Coordinate Coordinate::operator*(double other)
   return Coordinate(new_values);
 }
 
-Coordinate Coordinate::operator/(double other)
+Coordinate Coordinate::operator/(double other) const
 {
   std::vector<double> new_values = values;
   for (int i = 0; i < dimension; i++)
@@ -121,11 +134,12 @@ Coordinate Coordinate::operator/(double other)
   return Coordinate(new_values);
 }
 
-Coordinate Coordinate::operator%(double other)
+Coordinate Coordinate::operator%(double other) const
 {
   std::vector<double> new_values = values;
   for (int i = 0; i < dimension; i++)
-    new_values.at(i) %= other;
+    new_values.at(i) = 
+      std::fmod(new_values.at(i), other);
 
   return Coordinate(new_values);
 }

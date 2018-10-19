@@ -26,7 +26,8 @@ public:
 
   virtual const FlatTorusPoint& getOrigin() const override;
 
-  virtual double Distance(const MetricPoint& A, const MetricPoint& B) const override;
+  virtual Coordinate DisplacementVector(
+    const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const override;
 };
 
 #endif

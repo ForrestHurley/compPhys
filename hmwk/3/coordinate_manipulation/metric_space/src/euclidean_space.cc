@@ -17,12 +17,18 @@ EuclideanSpace::EuclideanSpace(const Coordinate& zero_coordinate) :
 
 double EuclideanSpace::Distance(const MetricPoint& A, const MetricPoint& B) const
 {
-  const EuclideanPoint& a_euclidean = 
-    dynamic_cast<const EuclideanPoint&>(A);
-  const EuclideanPoint& b_euclidean = 
-    dynamic_cast<const EuclideanPoint&>(B);
+  const SmoothCoordinatePoint& a_coordinate = 
+    dynamic_cast<const SmoothCoordinatePoint&>(A);
+  const SmoothCoordinatePoint& b_coordinate = 
+    dynamic_cast<const SmoothCoordinatePoint&>(B);
 
-  return (a_euclidean.getCoordinate() - b_euclidean.getCoordinate).getMagnitude(); 
+  return DisplacementVector(a_coordinate, b_coordinate).getMagnitude(); 
+}
+
+Coordinate EuclideanSpace::DisplacementVector(
+  const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const 
+{
+  return A.getCoordinate() - B.getCoordinate(); 
 }
 
 const EuclideanSpace::EuclideanPoint& EuclideanSpace::getOrigin() const

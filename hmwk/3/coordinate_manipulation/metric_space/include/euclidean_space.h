@@ -20,7 +20,9 @@ public:
   EuclideanSpace(unsigned int dimension = 2);
   EuclideanSpace(const Coordinate& zero_coordinate);
 
-  double Distance(const MetricPoint& A, const MetricPoint& B) const override;
+  virtual double Distance(const MetricPoint& A, const MetricPoint& B) const override;
+  virtual Coordinate DisplacementVector(
+    const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const override;
 
   virtual const EuclideanPoint& getOrigin() const override;
 };

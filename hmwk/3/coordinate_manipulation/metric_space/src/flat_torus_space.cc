@@ -21,18 +21,22 @@ const FlatTorusSpace::FlatTorusPoint& FlatTorusSpace::getOrigin() const
   return flat_torus_origin;
 }
 
-double FlatTorusSpace::Distance(const MetricPoint& A, const MetricPoint& B) const
+Coordinate FlatTorusSpace::DisplacementVector(
+  const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const
 {
   const FlatTorusPoint& a_torus = 
     dynamic_cast<const FlatTorusPoint&>(A);
   const FlatTorusPoint& b_torus = 
     dynamic_cast<const FlatTorusPoint&>(B);
 
-  Coordinate difference_vector = b_torus - a_torus;
+  Coordinate difference_vector = b_torus.getCoordinate() - a_torus.getCoordinate();
   Coordinate alternative_difference = Coordinate(bounds) - difference_vector;
+  double c = std::min<double>(1, 2);
   Coordinate minimum_differences = 
-    difference_vector.ApplyFunction(&std::min, alternative_difference);
+    difference_vector.ApplyFunction(
+      static_cast<const double& (*) (const double&, const double&)>(std::min<double>),
+      alternative_difference);
 
-  return minimum_differences.getMagnitude();
+  return minimum_differences;
 }
 

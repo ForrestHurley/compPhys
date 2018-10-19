@@ -4,7 +4,11 @@
 class MetricSpace
 {
 public:
-  class MetricPoint {};
+  class MetricPoint
+  {
+  public:
+    virtual ~MetricPoint() = default;
+  };
 
   virtual double Distance(const MetricPoint& A, const MetricPoint& B) const = 0;
 

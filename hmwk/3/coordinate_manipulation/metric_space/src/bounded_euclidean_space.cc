@@ -17,14 +17,20 @@ void BoundedEuclideanSpace::BoundedEuclideanPoint::setCoordinate(const Coordinat
   Coordinate coordinate_bounds(bounds);
   Coordinate bounded_coordinate = 
     ( ( (new_coordinate % coordinate_bounds) + coordinate_bounds) % coordinate_bounds);
-  base::setCoordinate(bounded_coordinate);
+  EuclideanPoint::setCoordinate(bounded_coordinate);
 }
 
 BoundedEuclideanSpace::BoundedEuclideanSpace(const std::vector<double>& bounds) :
-  EuclideanSpace(bounds.size()), bounds(bounds), bounded_euclidean_origin(bounds) {}
+  EuclideanSpace(bounds.size()), bounds(bounds),
+  bounded_euclidean_origin(bounds) {}
 
-BoundedEuclideanSpace::BoundedEuclideanSpace(const std::vector<double>& bounds) :
-  EuclideanSpace(bounds.size()), bounds(bounds), bounded_euclidean_origin(bounds) {}
+BoundedEuclideanSpace::BoundedEuclideanSpace(const std::vector<double>& bounds,
+  const Coordinate& zero_coordinate) :
+  EuclideanSpace(zero_coordinate), bounds(bounds),
+  bounded_euclidean_origin(bounds, zero_coordinate)
+{
+  assert(bounds.size() == zero_coordinate.dimension);
+}
 
 const BoundedEuclideanSpace::BoundedEuclideanPoint& BoundedEuclideanSpace::getOrigin() const
 {
