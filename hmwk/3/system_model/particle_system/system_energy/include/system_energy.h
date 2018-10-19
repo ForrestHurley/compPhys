@@ -11,7 +11,7 @@ protected:
 public:
   SystemEnergy(const ParticleState& state);
 
-  virtual double Energy() = 0;
+  virtual double Energy() const = 0;
 };
 
 #endif

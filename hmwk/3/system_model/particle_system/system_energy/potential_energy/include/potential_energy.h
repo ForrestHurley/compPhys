@@ -11,8 +11,8 @@ protected:
 public:
   PotentialEnergy(const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& locations);
 
-  virtual double getPotentialEnergy() = 0;
-  virtual std::vector<Coordinate> getPartials() = 0;
+  virtual double getPotentialEnergy() const = 0;
+  virtual std::vector<Coordinate> getPartials() const = 0;
 };
 
 #endif

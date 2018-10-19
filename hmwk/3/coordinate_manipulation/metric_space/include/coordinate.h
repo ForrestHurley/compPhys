@@ -47,11 +47,11 @@ public:
   Coordinate operator/(double other) const;
   Coordinate operator%(double other) const;
 
-  double dot(const Coordinate& other);
-  Coordinate cross(const Coordinate& other);
+  double dot(const Coordinate& other) const;
+  Coordinate cross(const Coordinate& other) const;
 
-  double getMagnitude();
-  double getMagnitudeSquared();
+  double getMagnitude() const;
+  double getMagnitudeSquared() const;
 
   template< typename Func >
   Coordinate ApplyFunction(const Func& foo) const
@@ -78,7 +78,7 @@ public:
     return out;
   }
 
-  Coordinate getNormalized();
+  Coordinate getNormalized() const;
 };
 
 #endif

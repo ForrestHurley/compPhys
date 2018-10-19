@@ -9,8 +9,8 @@ class HamiltonianEnergy : public SystemEnergy
 public:
   HamiltonianEnergy(const HamiltonianParticleState& state);
 
-  virtual double MomentumPartial() = 0;
-  virtual double PositionPartial() = 0;
+  virtual std::vector<Coordinate> MomentumPartial() const = 0;
+  virtual std::vector<Coordinate> PositionPartial() const = 0;
 };
 
 #endif

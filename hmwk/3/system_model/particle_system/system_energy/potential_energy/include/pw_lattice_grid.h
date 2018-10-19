@@ -17,8 +17,8 @@ public:
   PairwiseLatticeGridPotentialEnergy(const std::vector<EuclideanSpace::EuclideanPoint*>& locations,
     const PairwisePotentialFunction& pairwise_potential);
 
-  double getPotentialEnergy() override;
-  std::vector<Coordinate> getPartials() override;
+  double getPotentialEnergy() const override;
+  std::vector<Coordinate> getPartials() const override;
 };
 
 #endif

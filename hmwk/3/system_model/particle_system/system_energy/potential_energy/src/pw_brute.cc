@@ -5,7 +5,7 @@ PairwiseBruteForcePotentialEnergy::PairwiseBruteForcePotentialEnergy(
   const PairwisePotentialFunction& pairwise_potential) :
   PairwisePotentialEnergy(locations, pairwise_potential) {}
 
-double PairwiseBruteForcePotentialEnergy::getPotentialEnergy()
+double PairwiseBruteForcePotentialEnergy::getPotentialEnergy() const
 {
   double energy = 0.;
 
@@ -23,7 +23,7 @@ double PairwiseBruteForcePotentialEnergy::getPotentialEnergy()
   return energy;
 }
 
-std::vector<Coordinate> PairwiseBruteForcePotentialEnergy::getPartials()
+std::vector<Coordinate> PairwiseBruteForcePotentialEnergy::getPartials() const
 {
   std::vector<Coordinate> partial_derivatives;
   partial_derivatives.reserve(locations.size());

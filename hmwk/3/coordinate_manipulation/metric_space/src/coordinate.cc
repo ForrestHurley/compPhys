@@ -144,7 +144,7 @@ Coordinate Coordinate::operator%(double other) const
   return Coordinate(new_values);
 }
 
-double Coordinate::dot(const Coordinate& other)
+double Coordinate::dot(const Coordinate& other) const
 {
   assert(other.dimension == dimension);
 
@@ -155,7 +155,7 @@ double Coordinate::dot(const Coordinate& other)
   return dot_product;
 }
 
-Coordinate Coordinate::cross(const Coordinate& other)
+Coordinate Coordinate::cross(const Coordinate& other) const
 {
   assert(dimension == 3);
   assert(other.dimension == 3);
@@ -170,12 +170,12 @@ Coordinate Coordinate::cross(const Coordinate& other)
   return Coordinate(cross_product);
 }
 
-double Coordinate::getMagnitude()
+double Coordinate::getMagnitude() const
 {
   return sqrt(getMagnitudeSquared());
 }
 
-double Coordinate::getMagnitudeSquared()
+double Coordinate::getMagnitudeSquared() const
 {
   double magnitude_squared = 0;
 
@@ -185,7 +185,7 @@ double Coordinate::getMagnitudeSquared()
   return magnitude_squared;
 }
 
-Coordinate Coordinate::getNormalized()
+Coordinate Coordinate::getNormalized() const
 {
   double magnitude = getMagnitude();
   if (magnitude < 1e-10)

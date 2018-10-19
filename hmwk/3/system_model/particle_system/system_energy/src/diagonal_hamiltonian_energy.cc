@@ -2,7 +2,7 @@
 
 DiagonalHamiltonian::DiagonalHamiltonian(const HamiltonianParticleState& state) : HamiltonianEnergy(state) {}
 
-double DiagonalHamiltonian::Energy()
+double DiagonalHamiltonian::Energy() const
 {
-  return 0.;
+  return MomentumEnergy() + PositionEnergy();
 }

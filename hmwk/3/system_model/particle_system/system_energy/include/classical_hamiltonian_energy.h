@@ -12,11 +12,11 @@ private:
 public:
   ClassicalHamiltonian(const HamiltonianParticleState& state, const PotentialEnergy& potential);
 
-  double MomentumPartial() override;
-  double PositionPartial() override;
+  std::vector<Coordinate> MomentumPartial() const override;
+  std::vector<Coordinate> PositionPartial() const override;
 
-  double MomentumEnergy() override;
-  double PositionEnergy() override;
+  double MomentumEnergy() const override;
+  double PositionEnergy() const override;
 };
 
 #endif

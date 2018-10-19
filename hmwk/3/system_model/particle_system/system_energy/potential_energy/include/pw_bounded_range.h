@@ -13,8 +13,8 @@ public:
     const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& locations,
     const PairwisePotentialFunction& pairwise_potential, const FixedRadiusNearestNeighbor& nearest_neighbor);
 
-  double getPotentialEnergy() override;
-  std::vector<Coordinate> getPartials() override;
+  double getPotentialEnergy() const override;
+  std::vector<Coordinate> getPartials() const override;
 };
 
 #endif

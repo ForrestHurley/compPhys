@@ -7,12 +7,12 @@ PairwiseLatticeGridPotentialEnergy::PairwiseLatticeGridPotentialEnergy(
   PairwisePotentialEnergy(converted_locations, pairwise_potential),
   coordinate_bins(std::vector<int>()) {} 
 
-double PairwiseLatticeGridPotentialEnergy::getPotentialEnergy()
+double PairwiseLatticeGridPotentialEnergy::getPotentialEnergy() const
 {
   return 0.;
 }
 
-std::vector<Coordinate> PairwiseLatticeGridPotentialEnergy::getPartials()
+std::vector<Coordinate> PairwiseLatticeGridPotentialEnergy::getPartials() const
 {
   return std::vector<Coordinate>();
 }

@@ -8,10 +8,10 @@ class DiagonalHamiltonian : public HamiltonianEnergy
 public:
   DiagonalHamiltonian(const HamiltonianParticleState& state);
 
-  double Energy() override;
+  double Energy() const override;
   
-  virtual double MomentumEnergy() = 0;
-  virtual double PositionEnergy() = 0;
+  virtual double MomentumEnergy() const = 0;
+  virtual double PositionEnergy() const = 0;
 };
 
 #endif
