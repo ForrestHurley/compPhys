@@ -16,8 +16,9 @@ public:
     const unsigned int dimension;
     
     SmoothCoordinatePoint(unsigned int dimension = 2);
+    SmoothCoordinatePoint(const Coordinate& coordinate);
 
-    Coordinate getCoordinate() const;
+    const Coordinate& getCoordinate() const;
     virtual void setCoordinate(const Coordinate& newCoordinate);
   };
 
@@ -28,6 +29,7 @@ public:
   const unsigned int dimension;
 
   SmoothCoordinateSpace(unsigned int dimension = 2);
+  SmoothCoordinateSpace(const Coordinate& zero_coordinate);
 
   virtual const SmoothCoordinatePoint& getOrigin() const override;
 };

@@ -10,6 +10,8 @@ public:
   {
   public:
     FlatTorusPoint(const std::vector<double>& bounds);
+    FlatTorusPoint(const std::vector<double>& bounds,
+      const Coordinate& coordinate);
 
     virtual void setCoordinate(const Coordinate& newCoordinate) override;
   };
@@ -18,7 +20,9 @@ private:
   const FlatTorusPoint flat_torus_origin;
 
 public:
-  FlatTorusSpace(std::vector<double> bounds);
+  FlatTorusSpace(const std::vector<double>& bounds);
+  FlatTorusSpace(const std::vector<double>& bounds,
+    const Coordinate& zero_coordinate);
 
   virtual const FlatTorusPoint& getOrigin() const override;
 

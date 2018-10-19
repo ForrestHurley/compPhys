@@ -14,8 +14,10 @@ public:
 
   public:
     BoundedEuclideanPoint(const std::vector<double>& bounds);
+    BoundedEuclideanPoint(const std::vector<double>& bounds,
+      const Coordinate& coordinate);
 
-    virtual void setCoordinate(const Coordinate& newCoordinate) override;
+    virtual void setCoordinate(const Coordinate& new_coordinate) override;
   };
 
 private:
@@ -25,12 +27,14 @@ protected:
   std::vector<double> bounds;
 
 public:
-  BoundedEuclideanSpace(std::vector<double> bounds);
+  BoundedEuclideanSpace(const std::vector<double>& bounds);
+  BoundedEuclideanSpace(const std::vector<double>& bounds,
+    const Coordinate& zero_coordinate);
 
   virtual const BoundedEuclideanPoint& getOrigin() const override;
 
-  std::vector<double> getBounds();
-  void setBounds(std::vector<double> newBounds);
+  const std::vector<double>& getBounds() const;
+  void setBounds(const std::vector<double>& newBounds);
 };
 
 #endif

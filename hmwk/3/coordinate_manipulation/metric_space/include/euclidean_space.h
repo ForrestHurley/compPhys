@@ -10,6 +10,7 @@ public:
   {
   public:
     EuclideanPoint(unsigned int dimension = 2);
+    EuclideanPoint(const Coordinate& coordinate);
   };
 
 private:
@@ -17,6 +18,7 @@ private:
 
 public:
   EuclideanSpace(unsigned int dimension = 2);
+  EuclideanSpace(const Coordinate& zero_coordinate);
 
   double Distance(const MetricPoint& A, const MetricPoint& B) const override;
 
