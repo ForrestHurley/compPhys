@@ -14,8 +14,11 @@ protected:
   BinnedCoordinates coordinate_bins;
 
 public:
-  CubedFixedRadiusNearestNeighbor(const EuclideanSpace& metric,
-    const std::vector<EuclideanSpace::EuclideanPoint*> points, double radius);
+  CubedFixedRadiusNearestNeighbor(
+    const EuclideanSpace& metric,
+    const std::vector<EuclideanSpace::EuclideanPoint*> points,
+    double radius,
+    bool repeat_adjacencies = true);
 
   virtual MetricSpace::MetricPoint* getNextNeighborSet(std::vector<MetricSpace::MetricPoint*>& neighboring_point_set) override; 
 };
