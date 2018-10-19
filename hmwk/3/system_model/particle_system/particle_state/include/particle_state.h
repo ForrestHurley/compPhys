@@ -10,11 +10,13 @@ class ParticleState
 protected:
   std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> > state;
 public:
-  std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> > getState() const;
-  void setState(std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> > new_state);
+  const std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> >& getState() const;
+  void setState(const std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> >& new_state);
 
-  std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> getStateComponent(int component_number) const;
-  void setStateComponent(std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> new_component, int component_number);
+  const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& getStateComponent(int component_number) const;
+  void setStateComponent(
+    const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& new_component,
+    int component_number);
 };
 
 #endif

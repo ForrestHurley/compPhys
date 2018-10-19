@@ -1,15 +1,25 @@
 #include "particle_state.h"
 
-std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> > ParticleState::getState() const
+const std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> >& ParticleState::getState() const
 {
   return state;
 }
 
-void ParticleState::setState(std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> > new_state) {}
-
-std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> ParticleState::getStateComponent(int component_number) const
+void ParticleState::setState(
+  const std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> >& new_state) 
 {
-  return state.at(0);
+  state = new_state;
 }
 
-void ParticleState::setStateComponent(std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> new_component, int component_number) {}
+const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& ParticleState::getStateComponent(
+  int component_number) const
+{
+  return state.at(component_number);
+}
+
+void ParticleState::setStateComponent(
+  const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& new_component,
+  int component_number)
+{
+  state.at(component_number) = new_component;
+}

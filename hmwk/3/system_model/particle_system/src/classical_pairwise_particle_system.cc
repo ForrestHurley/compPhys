@@ -3,5 +3,5 @@
 ClassicalPairwiseParticleSystem::ClassicalPairwiseParticleSystem(
   const PairwisePotentialFunction& pairwise_potential,
   const HamiltonianParticleState& initial_state) :
-  pairwise_potential_energy(initial_state.getPositionReference(), pairwise_potential), 
+  pairwise_potential_energy(initial_state.getPositions(), pairwise_potential), 
   ClassicalParticleSystem(pairwise_potential_energy, initial_state) {}
