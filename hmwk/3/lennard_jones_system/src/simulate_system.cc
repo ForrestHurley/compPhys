@@ -12,15 +12,20 @@ int main()
   LennardJonesPotential pairwise_potential = LennardJonesPotential();
   RungeKuttaIntegrator integrator = RungeKuttaIntegrator(false);
 
+  //Initialize coordinate systems
   std::vector<double> bounds{ 10., 10. };
   FlatTorusSpace position_coordinate_system = FlatTorusSpace(bounds);
   EuclideanSpace momentum_coordinate_system = EuclideanSpace(bounds.size());
 
+  //Create particle state
   HamiltonianParticleState state = HamiltonianParticleState(
     &position_coordinate_system,
     &momentum_coordinate_system);
 
   //Add particles to state
+  for (int i = 0; i < 16; i++)
+    state.AddStationaryParticle(
+      Coordinate(std::vector<double>{i % 4, i / 4}));
 
   //Initialize the state-energy pair (system)
   ClassicalPairwiseParticleSystem system =
