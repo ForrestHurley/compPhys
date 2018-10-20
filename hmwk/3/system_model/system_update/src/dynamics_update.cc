@@ -1,5 +1,56 @@
 #include "dynamics_update.h"
 
+DynamicsUpdate::ClassicalDynamicsODE::ClassicalDynamicsODE(
+  ClassicalParticleSystem& system, bool preserve_state) :
+  ODEInterface(2),
+  system(system), preserve_state(preserve_state) {}
+
+std::vector<double> DynamicsUpdate:ClassicalDynamicsODE:CalculateHighestDerivative(
+  const std::vector< std::vector<double> > &values, double time)
+{
+  std::vector<double> positions, momenta;
+  positions.reserve(values.size());
+
+  for(int i = 0; i < values.size(); i++)
+  {
+    assert(values.at(i).size() == 2);
+    positions.push_back(values.at(i).at(0));
+  }
+
+  HamiltonianParticleState& state = 
+    static_cast<HamiltonianParticleState&>(system.getState());
+
+  //Save the current state to be reset after partial derivative calculations if necessary
+  std::vector<double> temp_positions;
+  if (preserve_state)
+    temp_positions = DynamicsUpdate::toVector(state.getPositions());
+
+  DynamicsUpdate::fromVector(state.getPositions(), positions);
+
+  std::vector<Coordinate> position_partial = system.getPositionPartial();
+
+  //restore the state if necessary
+  if(preserve_state)
+    DynamicsUpdate::fromVector(state.getPositions(), temp_positions);
+
+  std::vector<double> position_double_vect;
+  position_double_vect.reserve(particle_count);
+
+  for (int i = 0; i < particle_count; i++)
+  {
+    position_double_vect.insert(position_double_vect.end(),
+      position_partial.at(i).asVector().begin(), position_partial.at(i).asVector().end());
+  }
+
+  assert(position_double_vect.size() == state.size());
+
+  //multiply position partial by negative 1
+  for (int i = 0; i < particle_count; i++)
+    position_double_vect.at(i) *= -1.;
+
+  return position_double_vect;
+}
+
 DynamicsUpdate::DynamicsODE::DynamicsODE(
   HamiltonianParticleSystem& system, bool preserve_state) :
   ODEInterface(1),
@@ -79,7 +130,25 @@ std::vector<double> DynamicsUpdate::DynamicsODE::CalculateHighestDerivative(
 DynamicsUpdate::DynamicsUpdate(HamiltonianParticleSystem& system, ODESolver& solver, double step_time, double initial_time) :
   BasicUpdate(system), solver(solver), ode(system), step_time(step_time), total_time(initial_time)
 {
+  ode = new DynamicsODE(system);
   solver.setDifferentialEquation(&ode);
+}
+
+DynamicsUpdate::DynamicsUpdate(ClassicalParticleSystem& system, ODESolver& solver,
+  double step_time, double initial_time, bool use_classical_ode) :
+  BasicUpdate(system), solver(solver), ode(system),
+  step_time(step_time), total_time(initial_time), use_classical_ode(use_classical_ode)
+{
+  if (use_classical_ode)
+    ode = new ClassicalDynamicsODE(system);
+  else
+    ode = new DynamicsODE(system);
+  solver.setDifferentialEquation(&ode);
+}
+
+DynamicsUpdate::~DynamicsUpdate()
+{
+  delete ode;
 }
 
 void DynamicsUpdate::RunUpdate()
@@ -99,26 +168,24 @@ void DynamicsUpdate::RunUpdate()
 
   int position_count = position_vector.size();
 
-  std::vector<double> state_vector = position_vector;
-  state_vector.insert(state_vector.end(),
-    momentum_vector.begin(), momentum_vector.end());
-
-  std::vector< std::vector<double> > layered_state_vector;
-  for (double value : state_vector)
-    layered_state_vector.push_back(std::vector<double>{value});
+  std::vector< std::vector<double> > state_vector;
+  state_vector.reserve(position_count);
+  for (int i = 0; i < position_count; i++)
+    state_vector.push_back(std::vector<double>{position_vector.at(i), momentum_vector.at(i)});
 
   //Actually calling the code to update the state by one step
-  solver.EvolveState(layered_state_vector, step_time, 1, total_time);
+  solver.EvolveState(state_vector, step_time, 1, total_time);
   total_time += step_time;
 
-  state_vector.clear();
-  for (std::vector<double> value : layered_state_vector)
-    state_vector.push_back(value.at(0));
+  position_vector.clear();
+  momentum_vector.clear();
 
-  position_vector = 
-    std::vector<double>(state_vector.begin(), state_vector.begin() + position_count);
-  momentum_vector = 
-    std::vector<double>(state_vector.begin() + position_count, state_vector.end());
+  assert(position_count == state_vector.size());
+  for (int i = 0; i < position_count; i++)
+  {
+    position_vector.push_back(state_vector.at(i).at(0));
+    momentum_vector.push_back(state_vector.at(i).at(1));
+  }
 
   DynamicsUpdate::fromVector(state.getPositions(), position_vector);
   DynamicsUpdate::fromVector(state.getMomenta(), momentum_vector);

@@ -8,7 +8,7 @@ class ODEInterface
 public:
   const int degree;
   
-  ODEInterface(int degree);
+  ODEInterface(int degree = -1);
 
   virtual double CalculateHighestDerivative(const std::vector<double> &values, double time);
   virtual std::vector<double> CalculateHighestDerivative(const std::vector< std::vector<double> > &values, double time) = 0;

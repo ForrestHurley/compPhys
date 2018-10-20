@@ -8,6 +8,7 @@ class ODESolver
 {
 protected:
   ODEInterface *differential_equation;
+  bool flatten_input_state;
 
   virtual void StepState(
     std::vector< std::vector<double> > &state, double time_step, double time = 0) = 0;
@@ -15,8 +16,8 @@ protected:
     std::vector<double> &state, double time_step, double time = 0);
 
 public:
-  ODESolver();
-  ODESolver(ODEInterface *differential_equation); 
+  ODESolver(bool flatten_input_state = false);
+  ODESolver(ODEInterface *differential_equation, bool flatten_input_state = false); 
 
   void setDifferentialEquation(ODEInterface *differential_equation);
 

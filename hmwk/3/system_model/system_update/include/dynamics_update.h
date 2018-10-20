@@ -8,8 +8,21 @@
 class DynamicsUpdate : public BasicUpdate
 {
 private:
+  class ClassicalDynamicsODE : public ODEInterface
+  {
+    ClassicalParticleSystem& system;
+  public:
+    bool preserve_state;
+
+    ClassicalDynamicsODE(ClassicalParticleSystem& system, bool preserve_state = false);
+
+    std::vector<double> CalculateHighestDerivative(
+      const std::vector< std::vector<double> &values, double time) override;
+  };
+
   class DynamicsODE : public ODEInterface
   {
+  private:
     HamiltonianParticleSystem& system;
   public:
     bool preserve_state;
@@ -21,13 +34,19 @@ private:
   };
 
   ODESolver& solver;
-  DynamicsODE ode;
+  ODEInterface& ode;
 
 public:
   double step_time;
   double total_time;
+  const bool use_classical_ode;
 
-  DynamicsUpdate(HamiltonianParticleSystem& system, ODESolver& solver, double step_time = 1., double initial_time = 0.);
+  DynamicsUpdate(HamiltonianParticleSystem& system, ODESolver& solver,
+    double step_time = 1., double initial_time = 0.);
+  DynamicsUpdate(ClassicalParticleSystem& system, ODESolver& solver,
+    double step_time = 1., double initial_time = 0., bool use_classical_ode = true);
+
+  ~DynamicsUpdate()
 
   virtual void RunUpdate() override;
 

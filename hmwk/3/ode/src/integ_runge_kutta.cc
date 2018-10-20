@@ -3,10 +3,12 @@
 #include <algorithm>
 #include <functional>
 
-RungeKuttaIntegrator::RungeKuttaIntegrator() {}
+RungeKuttaIntegrator::RungeKuttaIntegrator(bool flatten_input_state) :
+  ODESolver(flatten_input_state) {}
 
-RungeKuttaIntegrator::RungeKuttaIntegrator(ODEInterface *differential_equation) : 
-  ODESolver(differential_equation) {}
+RungeKuttaIntegrator::RungeKuttaIntegrator(
+  ODEInterface *differential_equation, bool flatten_input_state) : 
+  ODESolver(differential_equation, flatten_input_state) {}
 
 std::vector< std::vector<double> > RungeKuttaIntegrator::CalculateFullDerivative(
   std::vector< std::vector<double> > state, double time)

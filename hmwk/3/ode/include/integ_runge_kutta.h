@@ -17,9 +17,11 @@ protected:
   virtual void StepState(std::vector< std::vector<double> > &state, double time_step, double time = 0) override;
 
 public:
-  RungeKuttaIntegrator();
-  RungeKuttaIntegrator(ODEInterface *differential_equation);
+  RungeKuttaIntegrator(bool flatten_input_state = false);
+  RungeKuttaIntegrator(ODEInterface *differential_equation, bool flatten_input_state = false);
 
+  void setFlattenState(bool new_flatten);
+  bool getFlattenState() const;
 };
 
 #endif
