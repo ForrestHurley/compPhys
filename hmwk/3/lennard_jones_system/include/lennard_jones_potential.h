@@ -11,8 +11,8 @@ public:
 
   explicit LennardJonesPotential(double potential_depth = 1., double maximum_potential_distance = 1.);
 
-  double getPotential(const Coordinate& A, const Coordinate& B) const override;
-  Coordinate getPartials(const Coordinate& A, const Coordinate& B) const override;
-}
+  double getPotential(double distance) const override;
+  Coordinate getPartials(const Coordinate& displacement) const override;
+};
 
 #endif

@@ -13,11 +13,18 @@ public:
     const std::vector<double>& bounds;
 
   public:
-    BoundedEuclideanPoint(const std::vector<double>& bounds);
-    BoundedEuclideanPoint(const std::vector<double>& bounds,
+    BoundedEuclideanPoint(
+      BoundedEuclideanSpace* space,
+      const std::vector<double>& bounds);
+    BoundedEuclideanPoint(
+      BoundedEuclideanSpace* space,
+      const std::vector<double>& bounds,
       const Coordinate& coordinate);
 
     virtual void setCoordinate(const Coordinate& new_coordinate) override;
+
+    const BoundedEuclideanSpace* getSpace() const
+      { return static_cast<const BoundedEuclideanSpace*>(MetricPoint::getSpace()); }
   };
 
 private:

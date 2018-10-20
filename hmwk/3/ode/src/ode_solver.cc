@@ -46,7 +46,7 @@ void ODESolver::EvolveState(std::vector< std::vector<double> > &state, double to
     for (int i = 0; i < size; i++)
     {
       state.push_back(
-        std::vector{
+        std::vector<double>{
           temp_state.at(i % particle_count).at(i / particle_count)});
     }
   }
@@ -64,7 +64,7 @@ void ODESolver::EvolveState(std::vector< std::vector<double> > &state, double to
 
     for (int i = 0; i < particle_count; i++)
     {
-      state.push_back(std::vector());
+      state.push_back(std::vector<double>());
     }
 
     for (int i = 0; i < size; i++)

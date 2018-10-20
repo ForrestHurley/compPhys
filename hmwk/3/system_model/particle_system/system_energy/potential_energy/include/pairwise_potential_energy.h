@@ -9,7 +9,8 @@ class PairwisePotentialEnergy : public PotentialEnergy
 protected:
   const PairwisePotentialFunction& pairwise_potential;
 public:
-  PairwisePotentialEnergy(const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& locations,
+  PairwisePotentialEnergy(
+    const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& locations,
     const PairwisePotentialFunction& pairwise_potential);
 };
 

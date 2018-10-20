@@ -6,12 +6,13 @@ LennardJonesPotential::LennardJonesPotential(
   maximum_potential_distance(maximum_potential_distance) {}
 
 double LennardJonesPotential::getPotential(
-  const Coordinate& A, const Coordinate& B) const
+  double distance) const
 {
-  const double distance_squared = (A - B).getMagnitudeSquared();
-  const double recip_squared =
-    maximum_potential_distance * maximum_potential_distance / distance_squared;
-  
+  const double distance_squared = distance * distance;
+  const double recip =
+    maximum_potential_distance / distance_squared;
+  const double recip_squared = recip * recip;
+
   const double sixth_pow = recip_squared * recip_squared * recip_squared;
   const double twelth_pow = sixth_pow * sixth_pow;
 
@@ -21,10 +22,9 @@ double LennardJonesPotential::getPotential(
 }
 
 Coordinate LennardJonesPotential::getPartials(
-  const Coordinate& A, const Coordinate& B) const
+  const Coordinate& displacement) const
 {
-  const Coordinate displacement = B - A;
-  const Coordiante unit_displacement = displacement.getNormalized();
+  const Coordinate unit_displacement = displacement.getNormalized();
 
   const double distance_squared = displacement.getMagnitudeSquared();
   const double distance = sqrt(distance_squared);

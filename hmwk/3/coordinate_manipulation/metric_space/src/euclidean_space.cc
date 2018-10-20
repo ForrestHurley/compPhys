@@ -1,19 +1,21 @@
 
 #include "euclidean_space.h"
 
-EuclideanSpace::EuclideanPoint::EuclideanPoint(unsigned int dimension) :
-  SmoothCoordinatePoint(dimension) {}
+EuclideanSpace::EuclideanPoint::EuclideanPoint(
+  EuclideanSpace* space) :
+  SmoothCoordinatePoint(space) {}
 
-EuclideanSpace::EuclideanPoint::EuclideanPoint(const Coordinate& coordinate) :
-  SmoothCoordinatePoint(coordinate) {}
+EuclideanSpace::EuclideanPoint::EuclideanPoint(
+  EuclideanSpace* space, const Coordinate& coordinate) :
+  SmoothCoordinatePoint(space, coordinate) {}
 
 EuclideanSpace::EuclideanSpace(unsigned int dimension) : 
   SmoothCoordinateSpace(dimension),
-  coordinate_origin(dimension) {}
+  coordinate_origin(this, Coordinate::Zero(dimension)) {}
 
 EuclideanSpace::EuclideanSpace(const Coordinate& zero_coordinate) :
   SmoothCoordinateSpace(zero_coordinate),
-  coordinate_origin(zero_coordinate) {}
+  coordinate_origin(this, zero_coordinate) {}
 
 double EuclideanSpace::Distance(const MetricPoint& A, const MetricPoint& B) const
 {

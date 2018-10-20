@@ -13,13 +13,16 @@ public:
     Coordinate coordinate;
 
   public:
-    const unsigned int dimension;
-    
-    SmoothCoordinatePoint(unsigned int dimension = 2);
-    SmoothCoordinatePoint(const Coordinate& coordinate);
+    SmoothCoordinatePoint(SmoothCoordinateSpace* space);
+    SmoothCoordinatePoint(SmoothCoordinateSpace* space, const Coordinate& coordinate);
 
     const Coordinate& getCoordinate() const;
     virtual void setCoordinate(const Coordinate& newCoordinate);
+
+    int getDimension() const;
+
+    const SmoothCoordinateSpace* getSpace() const
+      { return static_cast<const SmoothCoordinateSpace*>(MetricPoint::getSpace()); }
   };
 
 private:
@@ -34,6 +37,8 @@ public:
   virtual const SmoothCoordinatePoint& getOrigin() const override;
   virtual Coordinate DisplacementVector(
     const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const = 0;
+
+  int getDimension() const { return dimension; }
 };
 
 #endif

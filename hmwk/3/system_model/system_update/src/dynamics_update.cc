@@ -5,7 +5,7 @@ DynamicsUpdate::ClassicalDynamicsODE::ClassicalDynamicsODE(
   ODEInterface(2),
   system(system), preserve_state(preserve_state) {}
 
-std::vector<double> DynamicsUpdate:ClassicalDynamicsODE:CalculateHighestDerivative(
+std::vector<double> DynamicsUpdate::ClassicalDynamicsODE::CalculateHighestDerivative(
   const std::vector< std::vector<double> > &values, double time)
 {
   std::vector<double> positions, momenta;
@@ -34,18 +34,18 @@ std::vector<double> DynamicsUpdate:ClassicalDynamicsODE:CalculateHighestDerivati
     DynamicsUpdate::fromVector(state.getPositions(), temp_positions);
 
   std::vector<double> position_double_vect;
-  position_double_vect.reserve(particle_count);
+  position_double_vect.reserve(values.size());
 
-  for (int i = 0; i < particle_count; i++)
+  for (int i = 0; i < position_partial.size(); i++)
   {
     position_double_vect.insert(position_double_vect.end(),
       position_partial.at(i).asVector().begin(), position_partial.at(i).asVector().end());
   }
 
-  assert(position_double_vect.size() == state.size());
+  assert(position_double_vect.size() == values.size());
 
   //multiply position partial by negative 1
-  for (int i = 0; i < particle_count; i++)
+  for (int i = 0; i < values.size(); i++)
     position_double_vect.at(i) *= -1.;
 
   return position_double_vect;
@@ -128,22 +128,22 @@ std::vector<double> DynamicsUpdate::DynamicsODE::CalculateHighestDerivative(
 }
 
 DynamicsUpdate::DynamicsUpdate(HamiltonianParticleSystem& system, ODESolver& solver, double step_time, double initial_time) :
-  BasicUpdate(system), solver(solver), ode(system), step_time(step_time), total_time(initial_time)
+  BasicUpdate(system), solver(solver), step_time(step_time), total_time(initial_time), use_classical_ode(false)
 {
   ode = new DynamicsODE(system);
-  solver.setDifferentialEquation(&ode);
+  solver.setDifferentialEquation(ode);
 }
 
 DynamicsUpdate::DynamicsUpdate(ClassicalParticleSystem& system, ODESolver& solver,
   double step_time, double initial_time, bool use_classical_ode) :
-  BasicUpdate(system), solver(solver), ode(system),
+  BasicUpdate(system), solver(solver),
   step_time(step_time), total_time(initial_time), use_classical_ode(use_classical_ode)
 {
   if (use_classical_ode)
     ode = new ClassicalDynamicsODE(system);
   else
     ode = new DynamicsODE(system);
-  solver.setDifferentialEquation(&ode);
+  solver.setDifferentialEquation(ode);
 }
 
 DynamicsUpdate::~DynamicsUpdate()
@@ -216,12 +216,12 @@ void DynamicsUpdate::fromVector(
   {
     std::vector<double> new_coordinate_vector(
       new_state.begin() + vector_index,
-      new_state.begin() + vector_index + single_point->dimension);
+      new_state.begin() + vector_index + single_point->getDimension());
 
     single_point->setCoordinate(
       Coordinate(new_coordinate_vector));
 
-    vector_index += single_point->dimension;
+    vector_index += single_point->getDimension();
   }
 
   assert(vector_index == new_state.size());

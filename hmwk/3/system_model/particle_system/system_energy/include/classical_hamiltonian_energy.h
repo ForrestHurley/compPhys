@@ -1,5 +1,5 @@
 #ifndef CLASSICAL_HAMILTONIAN_ENERGY_H
-#define CLASSICAL_HAMILTONAIN_ENERGY_H
+#define CLASSICAL_HAMILTONIAN_ENERGY_H
 
 #include "diagonal_hamiltonian_energy.h"
 #include "potential_energy.h"

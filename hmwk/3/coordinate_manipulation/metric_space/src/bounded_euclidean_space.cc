@@ -2,14 +2,21 @@
 #include "bounded_euclidean_space.h"
 #include <assert.h>
 
-BoundedEuclideanSpace::BoundedEuclideanPoint::BoundedEuclideanPoint(const std::vector<double>& bounds) :
-  EuclideanPoint(bounds.size()), bounds(bounds) {}
+BoundedEuclideanSpace::BoundedEuclideanPoint::BoundedEuclideanPoint(
+  BoundedEuclideanSpace* space, const std::vector<double>& bounds) :
+  EuclideanPoint(space, Coordinate::Zero(getDimension())), bounds(bounds)
+{
+  assert(getDimension() == bounds.size());  
+}
 
-BoundedEuclideanSpace::BoundedEuclideanPoint::BoundedEuclideanPoint(const std::vector<double>& bounds,
+BoundedEuclideanSpace::BoundedEuclideanPoint::BoundedEuclideanPoint(
+  BoundedEuclideanSpace* space,
+  const std::vector<double>& bounds,
   const Coordinate& coordinate) :
-  EuclideanPoint(coordinate), bounds(bounds)
+  EuclideanPoint(space, coordinate), bounds(bounds)
 {
   assert(bounds.size() == coordinate.dimension);
+  assert(getDimension() == bounds.size());
 }
 
 void BoundedEuclideanSpace::BoundedEuclideanPoint::setCoordinate(const Coordinate& new_coordinate)
@@ -22,12 +29,12 @@ void BoundedEuclideanSpace::BoundedEuclideanPoint::setCoordinate(const Coordinat
 
 BoundedEuclideanSpace::BoundedEuclideanSpace(const std::vector<double>& bounds) :
   EuclideanSpace(bounds.size()), bounds(bounds),
-  bounded_euclidean_origin(bounds) {}
+  bounded_euclidean_origin(this, bounds) {}
 
 BoundedEuclideanSpace::BoundedEuclideanSpace(const std::vector<double>& bounds,
   const Coordinate& zero_coordinate) :
   EuclideanSpace(zero_coordinate), bounds(bounds),
-  bounded_euclidean_origin(bounds, zero_coordinate)
+  bounded_euclidean_origin(this, bounds, zero_coordinate)
 {
   assert(bounds.size() == zero_coordinate.dimension);
 }

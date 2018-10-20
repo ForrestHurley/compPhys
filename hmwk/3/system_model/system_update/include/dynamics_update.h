@@ -4,6 +4,7 @@
 #include "basic_update.h"
 #include "ode_solver.h"
 #include "hamiltonian_particle_system.h"
+#include "classical_particle_system.h"
 
 class DynamicsUpdate : public BasicUpdate
 {
@@ -17,7 +18,7 @@ private:
     ClassicalDynamicsODE(ClassicalParticleSystem& system, bool preserve_state = false);
 
     std::vector<double> CalculateHighestDerivative(
-      const std::vector< std::vector<double> &values, double time) override;
+      const std::vector< std::vector<double> > &values, double time) override;
   };
 
   class DynamicsODE : public ODEInterface
@@ -34,7 +35,7 @@ private:
   };
 
   ODESolver& solver;
-  ODEInterface& ode;
+  ODEInterface* ode;
 
 public:
   double step_time;
@@ -46,7 +47,7 @@ public:
   DynamicsUpdate(ClassicalParticleSystem& system, ODESolver& solver,
     double step_time = 1., double initial_time = 0., bool use_classical_ode = true);
 
-  ~DynamicsUpdate()
+  ~DynamicsUpdate();
 
   virtual void RunUpdate() override;
 

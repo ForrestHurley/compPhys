@@ -9,8 +9,11 @@ public:
   class EuclideanPoint : public SmoothCoordinateSpace::SmoothCoordinatePoint
   {
   public:
-    EuclideanPoint(unsigned int dimension = 2);
-    EuclideanPoint(const Coordinate& coordinate);
+    EuclideanPoint(EuclideanSpace* space);
+    EuclideanPoint(EuclideanSpace* space, const Coordinate& coordinate);
+
+    const EuclideanSpace* getSpace() const
+      { return static_cast<const EuclideanSpace*>(MetricPoint::getSpace()); }
   };
 
 private:

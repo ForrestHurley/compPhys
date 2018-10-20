@@ -11,12 +11,15 @@ double PairwiseBruteForcePotentialEnergy::getPotentialEnergy() const
 
   for (int i = 0; i < locations.size(); i++)
   {
+    const SmoothCoordinateSpace* space = locations.at(i)->getSpace();
     for (int j = i + 1; j < locations.size(); j++)
     {
+      assert(space == locations.at(j)->getSpace());
+
       //Multiply by two becaus the potential is from the perspective of a single particle
       energy += 2 * pairwise_potential.getPotential(
-        locations.at(i)->getCoordinate(),
-        locations.at(j)->getCoordinate());
+        space->Distance(
+          *locations.at(i), *locations.at(j)));
     }
   }
 
@@ -31,17 +34,20 @@ std::vector<Coordinate> PairwiseBruteForcePotentialEnergy::getPartials() const
   //Initialize the partial derivative vector
   for (
     SmoothCoordinateSpace::SmoothCoordinatePoint* particle_location : locations)
-    partial_derivatives.push_back(Coordinate::Zero(particle_location->dimension));
+    partial_derivatives.push_back(Coordinate::Zero(particle_location->getDimension()));
 
   for(int i = 0; i < locations.size(); i++)
   {
+    const SmoothCoordinateSpace* space = locations.at(i)->getSpace();
     for (int j = 0; j < locations.size(); j++)
     {
+      assert(space == locations.at(j)->getSpace());
+
       partial_derivatives.at(i) =
         partial_derivatives.at(i) +
         pairwise_potential.getPartials(
-          locations.at(i)->getCoordinate(),
-          locations.at(j)->getCoordinate());
+          space->DisplacementVector(
+            *locations.at(i), *locations.at(j)));
     }
   }
 

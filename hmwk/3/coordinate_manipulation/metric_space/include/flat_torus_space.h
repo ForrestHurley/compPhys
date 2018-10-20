@@ -9,11 +9,18 @@ public:
   class FlatTorusPoint : public BoundedEuclideanSpace::BoundedEuclideanPoint
   {
   public:
-    FlatTorusPoint(const std::vector<double>& bounds);
-    FlatTorusPoint(const std::vector<double>& bounds,
+    FlatTorusPoint(
+      FlatTorusSpace* space,
+      const std::vector<double>& bounds);
+    FlatTorusPoint(
+      FlatTorusSpace* space,
+      const std::vector<double>& bounds,
       const Coordinate& coordinate);
 
     virtual void setCoordinate(const Coordinate& newCoordinate) override;
+
+    const FlatTorusSpace* getSpace() const
+      { return static_cast<const FlatTorusSpace*>(MetricPoint::getSpace()); }
   };
 
 private:

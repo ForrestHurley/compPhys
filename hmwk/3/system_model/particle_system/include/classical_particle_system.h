@@ -1,5 +1,5 @@
 #ifndef CLASSICAL_PARTICLE_SYSTEM_H
-#define CLASSICAL_PARTILCE_SYSTEM_H
+#define CLASSICAL_PARTICLE_SYSTEM_H
 
 #include "hamiltonian_particle_system.h"
 #include "potential_energy.h"

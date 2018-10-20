@@ -6,8 +6,8 @@
 class PairwisePotentialFunction
 {
 public:
-  virtual double getPotential(const Coordinate& A, const Coordinate& B) const = 0;
-  virtual Coordinate getPartials(const Coordinate& A, const Coordinate& B) const = 0;
+  virtual double getPotential(double distance) const = 0;
+  virtual Coordinate getPartials(const Coordinate& displacement) const = 0;
 }; 
 
 #endif

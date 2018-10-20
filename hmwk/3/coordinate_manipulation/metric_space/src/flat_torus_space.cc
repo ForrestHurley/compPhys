@@ -2,19 +2,24 @@
 #include "flat_torus_space.h"
 #include <algorithm>
 
-FlatTorusSpace::FlatTorusPoint::FlatTorusPoint(const std::vector<double>& bounds) :
-  BoundedEuclideanSpace::BoundedEuclideanPoint(bounds) {}
+FlatTorusSpace::FlatTorusPoint::FlatTorusPoint(
+  FlatTorusSpace* space,
+  const std::vector<double>& bounds) :
+  BoundedEuclideanSpace::BoundedEuclideanPoint(space, bounds) {}
 
-FlatTorusSpace::FlatTorusPoint::FlatTorusPoint(const std::vector<double>& bounds,
+FlatTorusSpace::FlatTorusPoint::FlatTorusPoint(
+  FlatTorusSpace* space,
+  const std::vector<double>& bounds,
   const Coordinate& coordinate) :
-  BoundedEuclideanSpace::BoundedEuclideanPoint(bounds, coordinate) {}
+  BoundedEuclideanSpace::BoundedEuclideanPoint(space, bounds, coordinate) {}
 
 FlatTorusSpace::FlatTorusSpace(const std::vector<double>& bounds) :
-  BoundedEuclideanSpace(bounds), flat_torus_origin(bounds) {}
+  BoundedEuclideanSpace(bounds), flat_torus_origin(this, bounds) {}
 
 FlatTorusSpace::FlatTorusSpace(const std::vector<double>& bounds,
   const Coordinate& zero_coordinate) :
-  BoundedEuclideanSpace(bounds, zero_coordinate), flat_torus_origin(bounds, zero_coordinate){}
+  BoundedEuclideanSpace(bounds, zero_coordinate),
+  flat_torus_origin(this, bounds, zero_coordinate) {}
 
 const FlatTorusSpace::FlatTorusPoint& FlatTorusSpace::getOrigin() const
 {
