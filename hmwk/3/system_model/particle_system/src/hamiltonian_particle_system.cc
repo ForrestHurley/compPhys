@@ -5,6 +5,11 @@ HamiltonianParticleSystem::HamiltonianParticleSystem(
   HamiltonianParticleState& initial_state) :
   ParticleSystem(system_energy, initial_state) {}
 
+const HamiltonianEnergy& HamiltonianParticleSystem::getHamiltonianEnergy() const
+{
+  return static_cast<const HamiltonianEnergy&>(system_energy);
+}
+
 HamiltonianParticleState& HamiltonianParticleSystem::getState()
 {
   return static_cast<HamiltonianParticleState&>(state);
