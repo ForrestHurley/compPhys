@@ -44,6 +44,14 @@ const BoundedEuclideanSpace::BoundedEuclideanPoint& BoundedEuclideanSpace::getOr
   return bounded_euclidean_origin;
 }
 
+BoundedEuclideanSpace::BoundedEuclideanPoint& BoundedEuclideanSpace::CreatePoint(
+  const Coordinate& coordinate)
+{
+  BoundedEuclideanPoint* point = new BoundedEuclideanPoint(this, bounds, coordinate);
+  addPoint(point);
+  return *point;
+}
+
 const std::vector<double>& BoundedEuclideanSpace::getBounds() const
 {
   return bounds;

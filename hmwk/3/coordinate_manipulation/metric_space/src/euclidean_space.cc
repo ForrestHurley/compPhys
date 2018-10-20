@@ -37,3 +37,11 @@ const EuclideanSpace::EuclideanPoint& EuclideanSpace::getOrigin() const
 {
   return coordinate_origin;
 }
+
+EuclideanSpace::EuclideanPoint& EuclideanSpace::CreatePoint(
+  const Coordinate& coordinate)
+{
+  EuclideanPoint* point = new EuclideanPoint(this, coordinate);
+  addPoint(point);
+  return *point;
+}

@@ -39,6 +39,7 @@ public:
     const Coordinate& zero_coordinate);
 
   virtual const BoundedEuclideanPoint& getOrigin() const override;
+  virtual BoundedEuclideanPoint& CreatePoint(const Coordinate& coordinate) override;
 
   const std::vector<double>& getBounds() const;
   void setBounds(const std::vector<double>& newBounds);

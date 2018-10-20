@@ -35,6 +35,8 @@ public:
   SmoothCoordinateSpace(const Coordinate& zero_coordinate);
 
   virtual const SmoothCoordinatePoint& getOrigin() const override;
+  virtual SmoothCoordinatePoint& CreatePoint(const Coordinate& coordinate);
+
   virtual Coordinate DisplacementVector(
     const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const = 0;
 

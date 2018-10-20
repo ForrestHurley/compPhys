@@ -38,3 +38,10 @@ const SmoothCoordinateSpace::SmoothCoordinatePoint& SmoothCoordinateSpace::getOr
   return coordinate_origin;
 }
 
+SmoothCoordinateSpace::SmoothCoordinatePoint& SmoothCoordinateSpace::CreatePoint(
+  const Coordinate& coordinate)
+{
+  SmoothCoordinatePoint* point = new SmoothCoordinatePoint(this, coordinate);
+  addPoint(point);
+  return *point;
+}

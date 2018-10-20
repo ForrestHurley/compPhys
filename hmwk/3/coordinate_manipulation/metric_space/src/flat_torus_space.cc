@@ -26,6 +26,14 @@ const FlatTorusSpace::FlatTorusPoint& FlatTorusSpace::getOrigin() const
   return flat_torus_origin;
 }
 
+FlatTorusSpace::FlatTorusPoint& FlatTorusSpace::CreatePoint(
+  const Coordinate& coordinate)
+{
+  FlatTorusPoint* point = new FlatTorusPoint(this, bounds, coordinate);
+  addPoint(point);
+  return *point;
+}
+
 Coordinate FlatTorusSpace::DisplacementVector(
   const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const
 {

@@ -28,6 +28,7 @@ public:
     const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const override;
 
   virtual const EuclideanPoint& getOrigin() const override;
+  virtual EuclideanPoint& CreatePoint(const Coordinate& coordinate) override;
 };
 
 #endif
