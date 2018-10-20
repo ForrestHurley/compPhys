@@ -14,7 +14,7 @@ public:
   public:
     MetricPoint(MetricSpace* space) : space(space) {}
 
-    virtual ~MetricPoint() = default;
+    virtual ~MetricPoint() {}
 
     const MetricSpace* getSpace() const { return space; } 
   };

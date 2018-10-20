@@ -9,14 +9,16 @@ class ParticleState
 {
 protected:
   std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> > state;
+  std::vector< SmoothCoordinateSpace* > coordinate_spaces;
 public:
-  const std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> >& getState() const;
-  void setState(const std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> >& new_state);
+  ParticleState(const std::vector<SmoothCoordinateSpace* >& coordinate_spaces);
+  virtual ~ParticleState();
 
+  void AddOriginParticle();
+  void AddParticle(const std::vector<Coordinate>& particle_state);
+
+  const std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> >& getState() const;
   const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& getStateComponent(int component_number) const;
-  void setStateComponent(
-    const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& new_component,
-    int component_number);
 };
 
 #endif

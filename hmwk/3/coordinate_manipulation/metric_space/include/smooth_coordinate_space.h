@@ -15,6 +15,7 @@ public:
   public:
     SmoothCoordinatePoint(SmoothCoordinateSpace* space);
     SmoothCoordinatePoint(SmoothCoordinateSpace* space, const Coordinate& coordinate);
+    virtual ~SmoothCoordinatePoint() {}
 
     const Coordinate& getCoordinate() const;
     virtual void setCoordinate(const Coordinate& newCoordinate);
@@ -33,6 +34,7 @@ public:
 
   SmoothCoordinateSpace(unsigned int dimension = 2);
   SmoothCoordinateSpace(const Coordinate& zero_coordinate);
+  virtual ~SmoothCoordinateSpace() {}
 
   virtual const SmoothCoordinatePoint& getOrigin() const override;
   virtual SmoothCoordinatePoint& CreatePoint(const Coordinate& coordinate);

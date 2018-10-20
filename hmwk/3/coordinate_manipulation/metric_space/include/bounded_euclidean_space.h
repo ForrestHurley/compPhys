@@ -4,6 +4,7 @@
 #include "euclidean_space.h"
 #include <vector>
 
+//TODO: Support minimum bounds other than 0
 class BoundedEuclideanSpace : public EuclideanSpace
 {
 public:
@@ -20,6 +21,7 @@ public:
       BoundedEuclideanSpace* space,
       const std::vector<double>& bounds,
       const Coordinate& coordinate);
+    virtual ~BoundedEuclideanPoint() {}
 
     virtual void setCoordinate(const Coordinate& new_coordinate) override;
 
@@ -37,6 +39,7 @@ public:
   BoundedEuclideanSpace(const std::vector<double>& bounds);
   BoundedEuclideanSpace(const std::vector<double>& bounds,
     const Coordinate& zero_coordinate);
+  virtual ~BoundedEuclideanSpace() {}
 
   virtual const BoundedEuclideanPoint& getOrigin() const override;
   virtual BoundedEuclideanPoint& CreatePoint(const Coordinate& coordinate) override;

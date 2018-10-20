@@ -13,6 +13,14 @@ FlatTorusSpace::FlatTorusPoint::FlatTorusPoint(
   const Coordinate& coordinate) :
   BoundedEuclideanSpace::BoundedEuclideanPoint(space, bounds, coordinate) {}
 
+void FlatTorusSpace::FlatTorusPoint::setCoordinate(const Coordinate& new_coordinate)
+{
+  Coordinate coordinate_bounds = Coordinate(bounds);
+  Coordinate bounded_coordinate = 
+    ( ( (new_coordinate % coordinate_bounds) + coordinate_bounds) % coordinate_bounds);
+  EuclideanPoint::setCoordinate(bounded_coordinate);
+}
+
 FlatTorusSpace::FlatTorusSpace(const std::vector<double>& bounds) :
   BoundedEuclideanSpace(bounds), flat_torus_origin(this, bounds) {}
 

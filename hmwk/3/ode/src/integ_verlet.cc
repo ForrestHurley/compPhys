@@ -31,6 +31,7 @@ void VerletIntegrator::InitializeFirstState(std::vector< std::vector<double> > &
   initial_solver.EvolveState(state, time_step, 1, initial_time);
 }
 
+//TODO: Modify to work with flat torus spaces
 void VerletIntegrator::StepState(std::vector< std::vector<double> > &state, double time_step, double time) 
 {
   std::vector<double> acceleration =

@@ -1,6 +1,24 @@
 #include "hamiltonian_particle_state.h"
 
-HamiltonianParticleState::HamiltonianParticleState() {}
+HamiltonianParticleState::HamiltonianParticleState(
+  SmoothCoordinateSpace* position_space,
+  SmoothCoordinateSpace* momentum_space) :
+  ParticleState(std::vector<SmoothCoordinateSpace*>{position_space, momentum_space}) {}
+
+void HamiltonianParticleState::AddParticle(
+  const Coordinate& position,
+  const Coordinate& momentum)
+{
+  ParticleState::AddParticle(std::vector<Coordinate>{position, momentum});
+}
+
+void HamiltonianParticleState::AddStationaryParticle(
+  const Coordinate& position)
+{
+  AddParticle(
+    position,
+    coordinate_spaces.at(1)->getOrigin().getCoordinate());
+}
 
 const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>&
   HamiltonianParticleState::getPositions() const
@@ -8,20 +26,8 @@ const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>&
   return getStateComponent(0); //0 is the positions
 }
 
-void HamiltonianParticleState::setPositions(
-  const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& new_positions)
-{
-  setStateComponent(new_positions, 0);
-}
-
 const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>&
   HamiltonianParticleState::getMomenta() const
 {
   return getStateComponent(1); //1 is the momenta
 }
-
-void HamiltonianParticleState::setMomenta(
-  const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& new_momenta)
-{
-  setStateComponent(new_momenta, 1);
-} 

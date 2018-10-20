@@ -7,13 +7,18 @@
 class HamiltonianParticleState : public ParticleState
 {
 public:
-  HamiltonianParticleState();
+  HamiltonianParticleState(
+    SmoothCoordinateSpace* position_space,
+    SmoothCoordinateSpace* momentum_space);
+
+  void AddParticle(
+    const Coordinate& position,
+    const Coordinate& momentum);
+  void AddStationaryParticle(
+    const Coordinate& position);
 
   const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& getPositions() const;
-  void setPositions(const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& new_positions);
-
   const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& getMomenta() const;
-  void setMomenta(const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& new_momenta);
 };
 
 #endif

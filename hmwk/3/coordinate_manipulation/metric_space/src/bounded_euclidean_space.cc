@@ -21,9 +21,8 @@ BoundedEuclideanSpace::BoundedEuclideanPoint::BoundedEuclideanPoint(
 
 void BoundedEuclideanSpace::BoundedEuclideanPoint::setCoordinate(const Coordinate& new_coordinate)
 {
-  Coordinate coordinate_bounds(bounds);
-  Coordinate bounded_coordinate = 
-    ( ( (new_coordinate % coordinate_bounds) + coordinate_bounds) % coordinate_bounds);
+  Coordinate coordinate_bounds = Coordinate(bounds);
+  Coordinate bounded_coordinate = new_coordinate.Clamp(Coordinate::Zero(getDimension()), coordinate_bounds);
   EuclideanPoint::setCoordinate(bounded_coordinate);
 }
 

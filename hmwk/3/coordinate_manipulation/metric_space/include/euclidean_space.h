@@ -11,6 +11,7 @@ public:
   public:
     EuclideanPoint(EuclideanSpace* space);
     EuclideanPoint(EuclideanSpace* space, const Coordinate& coordinate);
+    virtual ~EuclideanPoint() {}
 
     const EuclideanSpace* getSpace() const
       { return static_cast<const EuclideanSpace*>(MetricPoint::getSpace()); }
@@ -22,6 +23,7 @@ private:
 public:
   EuclideanSpace(unsigned int dimension = 2);
   EuclideanSpace(const Coordinate& zero_coordinate);
+  virtual ~EuclideanSpace() {}
 
   virtual double Distance(const MetricPoint& A, const MetricPoint& B) const override;
   virtual Coordinate DisplacementVector(

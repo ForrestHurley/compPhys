@@ -16,8 +16,9 @@ public:
       FlatTorusSpace* space,
       const std::vector<double>& bounds,
       const Coordinate& coordinate);
+    virtual ~FlatTorusPoint() {}
 
-    virtual void setCoordinate(const Coordinate& newCoordinate) override;
+    virtual void setCoordinate(const Coordinate& new_coordinate) override;
 
     const FlatTorusSpace* getSpace() const
       { return static_cast<const FlatTorusSpace*>(MetricPoint::getSpace()); }
@@ -30,6 +31,7 @@ public:
   FlatTorusSpace(const std::vector<double>& bounds);
   FlatTorusSpace(const std::vector<double>& bounds,
     const Coordinate& zero_coordinate);
+  virtual ~FlatTorusSpace() {}
 
   virtual const FlatTorusPoint& getOrigin() const override;
   virtual FlatTorusPoint& CreatePoint(const Coordinate& coordinate) override;

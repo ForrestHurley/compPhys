@@ -4,6 +4,7 @@
 #include <limits>
 #include <random>
 #include <cmath>
+#include <algorithm>
 
 Coordinate::Coordinate(unsigned int dimension) : dimension(dimension) {}
 
@@ -140,6 +141,22 @@ Coordinate Coordinate::operator%(double other) const
   for (int i = 0; i < dimension; i++)
     new_values.at(i) = 
       std::fmod(new_values.at(i), other);
+
+  return Coordinate(new_values);
+}
+
+Coordinate Coordinate::Clamp(const Coordinate& min, const Coordinate& max) const
+{
+  assert(dimension == min.dimension);
+  assert(dimension == max.dimension);
+
+  std::vector<double> new_values = values;
+  for (int i = 0; i < dimension; i++)
+    new_values.at(i) = 
+      std::min(
+        std::max(new_values.at(i),
+          min.values.at(i)),
+        max.values.at(i));
 
   return Coordinate(new_values);
 }
