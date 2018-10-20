@@ -12,8 +12,9 @@ protected:
   const HamiltonianEnergy& getHamiltonianEnergy() const;
 
 public:
-  HamiltonianParticleSystem(const HamiltonianEnergy& system_energy, const HamiltonianParticleState& initial_state);
+  HamiltonianParticleSystem(const HamiltonianEnergy& system_energy, HamiltonianParticleState& initial_state);
 
+  HamiltonianParticleState& getState() override;
   const HamiltonianParticleState& getCurrentState() const override;
   virtual std::vector<Coordinate> getPositionPartial() const;
   virtual std::vector<Coordinate> getMomentumPartial() const;

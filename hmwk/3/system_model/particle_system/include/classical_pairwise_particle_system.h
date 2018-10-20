@@ -11,7 +11,9 @@ class ClassicalPairwiseParticleSystem : public ClassicalParticleSystem
 private:
   PairwiseBruteForcePotentialEnergy pairwise_potential_energy;
 public:
-  ClassicalPairwiseParticleSystem(const PairwisePotentialFunction& pairwise_potential, const HamiltonianParticleState& initial_state);
+  ClassicalPairwiseParticleSystem(
+    const PairwisePotentialFunction& pairwise_potential,
+    HamiltonianParticleState& initial_state);
 };
 
 #endif

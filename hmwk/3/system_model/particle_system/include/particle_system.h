@@ -8,10 +8,11 @@ class ParticleSystem
 {
 protected:
   const SystemEnergy& system_energy;
-  const ParticleState& state;
+  ParticleState& state;
 public:
-  ParticleSystem(const SystemEnergy& system_energy, const ParticleState& initial_state);
+  ParticleSystem(const SystemEnergy& system_energy, ParticleState& initial_state);
 
+  virtual ParticleState& getState();
   virtual const ParticleState& getCurrentState() const;
   virtual double getCurrentEnergy() const;
 };

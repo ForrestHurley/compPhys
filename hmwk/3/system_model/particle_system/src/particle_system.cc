@@ -1,7 +1,12 @@
 #include "particle_system.h"
 
-ParticleSystem::ParticleSystem(const SystemEnergy& system_energy, const ParticleState& initial_state) : 
+ParticleSystem::ParticleSystem(const SystemEnergy& system_energy, ParticleState& initial_state) : 
   system_energy(system_energy), state(initial_state) {}
+
+ParticleState& ParticleSystem::getState()
+{
+  return state;
+}
 
 const ParticleState& ParticleSystem::getCurrentState() const
 {

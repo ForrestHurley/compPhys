@@ -194,3 +194,8 @@ Coordinate Coordinate::getNormalized() const
   Coordinate out = *this / magnitude;
   return out;
 }
+
+const std::vector<double>& Coordinate::asVector() const
+{
+  return values;
+}

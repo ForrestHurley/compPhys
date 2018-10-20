@@ -2,12 +2,17 @@
 
 HamiltonianParticleSystem::HamiltonianParticleSystem(
   const HamiltonianEnergy& system_energy,
-  const HamiltonianParticleState& initial_state) :
+  HamiltonianParticleState& initial_state) :
   ParticleSystem(system_energy, initial_state) {}
+
+HamiltonianParticleState& HamiltonianParticleSystem::getState()
+{
+  return static_cast<HamiltonianParticleState&>(state);
+}
 
 const HamiltonianParticleState& HamiltonianParticleSystem::getCurrentState() const
 {
-  return static_cast<const HamiltonianParticleState&>(state);
+  return static_cast<HamiltonianParticleState&>(state);
 }
 
 std::vector<Coordinate> HamiltonianParticleSystem::getPositionPartial() const

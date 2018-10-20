@@ -79,6 +79,8 @@ public:
   }
 
   Coordinate getNormalized() const;
+
+  const std::vector<double>& asVector() const;
 };
 
 #endif
