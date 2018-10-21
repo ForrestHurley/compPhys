@@ -7,6 +7,11 @@
 #include "flat_torus_space.h"
 #include "euclidean_space.h"
 
+//TODO:   Create better bounds (and support non-zero minimums on everything)
+//        Allow proper verlet with bounds
+//        Data collection class!
+//        Test and write tests
+
 int main()
 {
   LennardJonesPotential pairwise_potential = LennardJonesPotential();
