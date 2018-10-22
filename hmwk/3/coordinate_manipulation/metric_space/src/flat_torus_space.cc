@@ -1,6 +1,7 @@
 
 #include "flat_torus_space.h"
 #include <algorithm>
+#include <iostream>
 
 FlatTorusSpace::FlatTorusPoint::FlatTorusPoint(
   FlatTorusSpace* space,
@@ -50,13 +51,16 @@ Coordinate FlatTorusSpace::DisplacementVector(
   const FlatTorusPoint& b_torus = 
     dynamic_cast<const FlatTorusPoint&>(B);
 
-  Coordinate difference_vector = b_torus.getCoordinate() - a_torus.getCoordinate();
+  Coordinate difference_vector = a_torus.getCoordinate() - b_torus.getCoordinate();
   Coordinate alternative_difference = Coordinate(bounds) - difference_vector;
   double c = std::min<double>(1, 2);
   Coordinate minimum_differences = 
     difference_vector.ApplyFunction(
       static_cast<const double& (*) (const double&, const double&)>(std::min<double>),
       alternative_difference);
+
+  std::cout << a_torus.getCoordinate() << " : " << b_torus.getCoordinate() << " : ";
+  std::cout << minimum_differences << std::endl;
 
   return minimum_differences;
 }

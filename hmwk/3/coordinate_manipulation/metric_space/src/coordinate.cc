@@ -216,3 +216,19 @@ const std::vector<double>& Coordinate::asVector() const
 {
   return values;
 }
+
+std::ostream& operator<<(
+  std::ostream &os, const Coordinate& coordinate)
+{
+  if (coordinate.values.size() <= 0)
+    return os;
+
+  for (int i = 0; i < coordinate.values.size() - 1; i++) 
+  {
+    os << coordinate.values.at(i);
+    os << ", ";
+  }
+  os << coordinate.values.at(
+    coordinate.values.size() - 1);
+  return os;
+}

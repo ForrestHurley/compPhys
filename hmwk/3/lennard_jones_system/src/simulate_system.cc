@@ -26,7 +26,7 @@ int main()
   std::cout << "Euclidean coordinate system" << std::endl;
   EuclideanSpace momentum_coordinate_system = EuclideanSpace(bounds.size());
   std::cout << "Torus coordinate system" << std::endl;
-  EuclideanSpace position_coordinate_system = EuclideanSpace(bounds.size());
+  FlatTorusSpace position_coordinate_system = FlatTorusSpace(bounds);
 
   std::cout << "Creating particle state" << std::endl;
   //Create particle state
@@ -37,13 +37,13 @@ int main()
 
   std::cout << "Adding particles" << std::endl;
   //Add particles to state
-  for (int i = 0; i < 16; i++)
+  /*for (int i = 0; i < 16; i++)
     state.AddStationaryParticle(
-      Coordinate(std::vector<double>{i % 4, i / 4}));
-  /*state.AddStationaryParticle(
+      Coordinate(std::vector<double>{1. + i % 4, 1. + i / 4}));*/
+  state.AddStationaryParticle(
     Coordinate(std::vector<double>{2, 2}));
   state.AddStationaryParticle(
-    Coordinate(std::vector<double>{2, 3}));*/
+    Coordinate(std::vector<double>{2, 3}));
 
   std::cout << "Declaring system" << std::endl;
   //Initialize the state-energy pair (system)

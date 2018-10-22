@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include <assert.h>
+#include <iostream>
 
 class Coordinate
 {
@@ -83,6 +84,9 @@ public:
   Coordinate getNormalized() const;
 
   const std::vector<double>& asVector() const;
+
+  friend std::ostream& operator<<(std::ostream &os, 
+    const Coordinate& coordinate);
 };
 
 #endif
