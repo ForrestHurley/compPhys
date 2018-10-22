@@ -6,6 +6,8 @@
 #include "integ_runge_kutta.h"
 #include "flat_torus_space.h"
 #include "euclidean_space.h"
+#include "energy_logger.h"
+#include <iostream>
 
 //TODO:   Create better bounds (and support non-zero minimums on everything)
 //        Allow proper verlet with bounds
@@ -37,14 +39,19 @@ int main()
     ClassicalPairwiseParticleSystem(pairwise_potential, state);
 
   //Initialize data collection object
+  EnergyLogger energy_logger = EnergyLogger(system);
+
 
   //System, solver, step_time, initial_time, use_classical_ode
   DynamicsUpdate updater = DynamicsUpdate(system, integrator, 0.01, 0., false);
 
+  updater.addLogger(&energy_logger);
+
   //Run dynamics simulation
-  updater.RunUpdateN(10000);
+  updater.RunUpdateForDuration(1.);
 
   //Print results from data collection
+  std::cout << energy_logger << std::endl;
 
   return 0;
 }

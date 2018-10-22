@@ -12,4 +12,4 @@ set(SYSTEM_UPDATE_SOURCES src/basic_update.cc src/dynamics_update.cc
 add_library(system_update ${SYSTEM_UPDATE_SOURCES})
 
 target_include_directories(system_update PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(system_update particle_system ode)
+target_link_libraries(system_update particle_system ode data_logging)
