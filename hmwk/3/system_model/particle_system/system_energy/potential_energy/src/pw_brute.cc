@@ -10,15 +10,16 @@ double PairwiseBruteForcePotentialEnergy::getPotentialEnergy() const
 {
   double energy = 0.;
 
+  const SmoothCoordinateSpace* space = locations.at(0)->getSpace();
+  for (int i = 1; i < locations.size(); i++)
+      assert(space == locations.at(i)->getSpace());
+
   for (int i = 0; i < locations.size(); i++)
   {
-    const SmoothCoordinateSpace* space = locations.at(i)->getSpace();
     for (int j = i + 1; j < locations.size(); j++)
     {
-      assert(space == locations.at(j)->getSpace());
-
       //Multiply by two becaus the potential is from the perspective of a single particle
-      energy += 2 * pairwise_potential.getPotential(
+      energy += pairwise_potential.getPotential(
         space->Distance(
           *locations.at(i), *locations.at(j)));
     }
@@ -37,14 +38,16 @@ std::vector<Coordinate> PairwiseBruteForcePotentialEnergy::getPartials() const
     SmoothCoordinateSpace::SmoothCoordinatePoint* particle_location : locations)
     partial_derivatives.push_back(Coordinate::Zero(particle_location->getDimension()));
 
+  const SmoothCoordinateSpace* space = locations.at(0)->getSpace();
+  for (int i = 1; i < locations.size(); i++)
+      assert(space == locations.at(i)->getSpace());
+
   for(int i = 0; i < locations.size(); i++)
   {
-    const SmoothCoordinateSpace* space = locations.at(i)->getSpace();
     for (int j = 0; j < locations.size(); j++)
     {
       if (i == j)
         continue;
-      assert(space == locations.at(j)->getSpace());
 
       //TODO: add something to deal with NaN
       partial_derivatives.at(i) =

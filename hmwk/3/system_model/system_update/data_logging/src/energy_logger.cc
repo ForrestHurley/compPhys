@@ -7,8 +7,8 @@ EnergyLogger::EnergyLogger(const ParticleSystem& system)
 
 void EnergyLogger::Log(double current_time)
 {
-  std::cout << static_cast<const ClassicalParticleSystem&>(system).getKineticEnergy() << std::endl;
-  std::cout << static_cast<const ClassicalParticleSystem&>(system).getPotentialEnergy() << std::endl;
+  //std::cout << static_cast<const ClassicalParticleSystem&>(system).getKineticEnergy() << std::endl;
+  //std::cout << static_cast<const ClassicalParticleSystem&>(system).getPotentialEnergy() << std::endl;
   energies.push_back(
     system.getCurrentEnergy());
   times.push_back(current_time);

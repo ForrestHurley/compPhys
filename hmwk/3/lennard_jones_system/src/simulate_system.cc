@@ -37,13 +37,13 @@ int main()
 
   std::cout << "Adding particles" << std::endl;
   //Add particles to state
-  //for (int i = 0; i < 16; i++)
-  //  state.AddStationaryParticle(
-  //    Coordinate(std::vector<double>{i % 4, i / 4}));
-  state.AddStationaryParticle(
+  for (int i = 0; i < 16; i++)
+    state.AddStationaryParticle(
+      Coordinate(std::vector<double>{i % 4, i / 4}));
+  /*state.AddStationaryParticle(
     Coordinate(std::vector<double>{2, 2}));
   state.AddStationaryParticle(
-    Coordinate(std::vector<double>{2, 2.05}));
+    Coordinate(std::vector<double>{2, 3}));*/
 
   std::cout << "Declaring system" << std::endl;
   //Initialize the state-energy pair (system)
@@ -56,15 +56,16 @@ int main()
 
   std::cout << "Building dynamics updater" << std::endl;
   //System, solver, step_time, initial_time, use_classical_ode
-  DynamicsUpdate updater = DynamicsUpdate(system, integrator, 0.002, 0., false);
+  DynamicsUpdate updater = DynamicsUpdate(system, integrator, 0.01, 0., false);
 
   updater.addLogger(&energy_logger);
 
   std::cout << "Simulating system" << std::endl;
   //Run dynamics simulation
-  updater.RunUpdateN(5);
+  updater.RunUpdateN(50);
 
   std::cout << "Finished simulating" << std::endl;
+  std::cout << "Outputting results" << std::endl;
   //Print results from data collection
   std::cout << energy_logger << std::endl;
 

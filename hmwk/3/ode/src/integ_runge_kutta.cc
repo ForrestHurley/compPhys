@@ -18,11 +18,16 @@ std::vector< std::vector<double> > RungeKuttaIntegrator::CalculateFullDerivative
   std::vector<double> highest_deriv =
     differential_equation->CalculateHighestDerivative(state, time);
 
-  //for (double val : highest_deriv) std::cout << val << std::endl;
+  //for (double val : highest_deriv) std::cout << val << "$";
+  //std::cout << std::endl;
 
-  std::rotate(state.begin(), state.begin() + 1, state.end());
   for (int i = 0; i < state.size(); i++)
+  {
+    std::rotate(state.at(i).begin(),
+      state.at(i).begin() + 1,
+      state.at(i).end());
     state.at(i).at(state.at(i).size() - 1) = highest_deriv.at(i);
+  }
 
   return state;
 }
@@ -30,7 +35,7 @@ std::vector< std::vector<double> > RungeKuttaIntegrator::CalculateFullDerivative
 void RungeKuttaIntegrator::multiply(std::vector< std::vector<double> > &vect, double scalar)
 {
   for (int i = 0; i < vect.size(); i++)
-    for (int j = 0; j < vect.at(j).size(); j++)
+    for (int j = 0; j < vect.at(i).size(); j++)
       vect.at(i).at(j) *= scalar;
 }
 
@@ -101,9 +106,9 @@ void RungeKuttaIntegrator::StepState(std::vector< std::vector<double> > &state, 
     {
       state.at(i).at(j) += 1. / 6. * 
         (k1.at(i).at(j) + 2. * k2.at(i).at(j) + 2. * k3.at(i).at(j) + k4.at(i).at(j));
-      std::cout << state.at(i).at(j) << "|";
+      //std::cout << state.at(i).at(j) << "|";
     }
-    std::cout << ":";
+    //std::cout << ":";
   }
-  std::cout << std::endl;
+  //std::cout << std::endl;
 }
