@@ -1,4 +1,5 @@
 #include "dynamics_update.h"
+#include <iostream>
 
 DynamicsUpdate::ClassicalDynamicsODE::ClassicalDynamicsODE(
   ClassicalParticleSystem& system, bool preserve_state) :
@@ -70,7 +71,6 @@ std::vector<double> DynamicsUpdate::DynamicsODE::CalculateHighestDerivative(
   {
     assert(values.at(i).size() == 1);
     positions.push_back(values.at(i).at(0));
-
     assert(values.at(i + particle_count).size() == 1);
     momenta.push_back(values.at(i + particle_count).at(0));
   }
@@ -81,8 +81,10 @@ std::vector<double> DynamicsUpdate::DynamicsODE::CalculateHighestDerivative(
   //Save the current state to be reset after partial derivative calculations if necessary
   std::vector<double> temp_positions, temp_momenta;
   if (preserve_state)
+  {
     temp_positions = DynamicsUpdate::toVector(state.getPositions());
     temp_momenta = DynamicsUpdate::toVector(state.getMomenta());
+  }
 
   DynamicsUpdate::fromVector(state.getPositions(), positions);
   DynamicsUpdate::fromVector(state.getMomenta(), momenta);
@@ -93,8 +95,10 @@ std::vector<double> DynamicsUpdate::DynamicsODE::CalculateHighestDerivative(
 
   //restore the state if necessary
   if(preserve_state)
+  {
     DynamicsUpdate::fromVector(state.getPositions(), temp_positions);
     DynamicsUpdate::fromVector(state.getMomenta(), temp_momenta);
+  }
 
   assert(position_partial.size() == momentum_partial.size());
 
@@ -103,7 +107,7 @@ std::vector<double> DynamicsUpdate::DynamicsODE::CalculateHighestDerivative(
   momentum_double_vect.reserve(particle_count * 2); 
   // Later momentum_double_vect is going to have position_double_vect appended to it
 
-  for (int i = 0; i < particle_count; i++)
+  for (int i = 0; i < position_partial.size(); i++)
   {
     assert(position_partial.at(i).dimension == momentum_partial.at(i).dimension);
 
@@ -112,6 +116,10 @@ std::vector<double> DynamicsUpdate::DynamicsODE::CalculateHighestDerivative(
     momentum_double_vect.insert(momentum_double_vect.end(),
       momentum_partial.at(i).asVector().begin(), momentum_partial.at(i).asVector().end());
   }
+
+  //for (int i = 0; i < position_double_vect.size(); i++)
+  //  std::cout << position_double_vect.at(i) << ":";
+  //std::cout << std::endl;
 
   assert(position_double_vect.size() == particle_count);
   assert(momentum_double_vect.size() == particle_count);
@@ -169,9 +177,22 @@ void DynamicsUpdate::RunUpdate()
   int position_count = position_vector.size();
 
   std::vector< std::vector<double> > state_vector;
-  state_vector.reserve(position_count);
-  for (int i = 0; i < position_count; i++)
-    state_vector.push_back(std::vector<double>{position_vector.at(i), momentum_vector.at(i)});
+
+  if (use_classical_ode)
+  {
+    state_vector.reserve(position_count);
+    for (int i = 0; i < position_count; i++)
+      state_vector.push_back(std::vector<double>{position_vector.at(i), momentum_vector.at(i)});
+
+  }
+  else
+  {
+    state_vector.reserve(position_count * 2);
+    for (int i = 0; i < position_count; i++)
+      state_vector.push_back(std::vector<double>{position_vector.at(i)});
+    for (int i = 0; i < position_count; i++)
+      state_vector.push_back(std::vector<double>{momentum_vector.at(i)});
+  }
 
   //Actually calling the code to update the state by one step
   solver.EvolveState(state_vector, step_time, 1, total_time);
@@ -180,11 +201,23 @@ void DynamicsUpdate::RunUpdate()
   position_vector.clear();
   momentum_vector.clear();
 
-  assert(position_count == state_vector.size());
-  for (int i = 0; i < position_count; i++)
+  if (use_classical_ode)
   {
-    position_vector.push_back(state_vector.at(i).at(0));
-    momentum_vector.push_back(state_vector.at(i).at(1));
+    assert(position_count == state_vector.size());
+    for (int i = 0; i < position_count; i++)
+    {
+      position_vector.push_back(state_vector.at(i).at(0));
+      momentum_vector.push_back(state_vector.at(i).at(1));
+    }
+  }
+  else
+  {
+    assert(position_count * 2 == state_vector.size());
+    for (int i = 0; i < position_count; i++)
+    {
+      position_vector.push_back(state_vector.at(i).at(0));
+      momentum_vector.push_back(state_vector.at(i + position_count).at(0));
+    }
   }
 
   DynamicsUpdate::fromVector(state.getPositions(), position_vector);

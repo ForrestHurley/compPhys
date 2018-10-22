@@ -27,11 +27,10 @@ public:
   };
 
 private:
+  const unsigned int dimension;
   const SmoothCoordinatePoint coordinate_origin;
 
 public:
-  const unsigned int dimension;
-
   SmoothCoordinateSpace(unsigned int dimension = 2);
   SmoothCoordinateSpace(const Coordinate& zero_coordinate);
   virtual ~SmoothCoordinateSpace() {}

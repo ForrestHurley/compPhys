@@ -1,4 +1,5 @@
 #include "pw_brute.h"
+#include <iostream>
 
 PairwiseBruteForcePotentialEnergy::PairwiseBruteForcePotentialEnergy(
   const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& locations,
@@ -41,8 +42,11 @@ std::vector<Coordinate> PairwiseBruteForcePotentialEnergy::getPartials() const
     const SmoothCoordinateSpace* space = locations.at(i)->getSpace();
     for (int j = 0; j < locations.size(); j++)
     {
+      if (i == j)
+        continue;
       assert(space == locations.at(j)->getSpace());
 
+      //TODO: add something to deal with NaN
       partial_derivatives.at(i) =
         partial_derivatives.at(i) +
         pairwise_potential.getPartials(

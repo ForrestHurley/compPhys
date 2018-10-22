@@ -1,16 +1,11 @@
 #include "particle_state.h"
-
+#include <iostream>
 
 ParticleState::ParticleState(const std::vector<SmoothCoordinateSpace* >& coordinate_spaces) : 
-  coordinate_spaces(coordinate_spaces) {}
-
-ParticleState::~ParticleState()
+  coordinate_spaces(coordinate_spaces)
 {
-  for (int i = 0; i < state.size(); i++)
-  {
-    for (SmoothCoordinateSpace::SmoothCoordinatePoint* coordinate: state.at(i))
-      delete coordinate;
-  }
+  for (int i = 0; i < coordinate_spaces.size(); i++)
+    state.push_back(std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>());
 }
 
 void ParticleState::AddOriginParticle()

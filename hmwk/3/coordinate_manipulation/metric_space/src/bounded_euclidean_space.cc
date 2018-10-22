@@ -4,7 +4,7 @@
 
 BoundedEuclideanSpace::BoundedEuclideanPoint::BoundedEuclideanPoint(
   BoundedEuclideanSpace* space, const std::vector<double>& bounds) :
-  EuclideanPoint(space, Coordinate::Zero(getDimension())), bounds(bounds)
+  EuclideanPoint(space), bounds(bounds)
 {
   assert(getDimension() == bounds.size());  
 }

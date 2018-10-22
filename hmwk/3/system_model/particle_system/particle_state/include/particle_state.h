@@ -12,7 +12,7 @@ protected:
   std::vector< SmoothCoordinateSpace* > coordinate_spaces;
 public:
   ParticleState(const std::vector<SmoothCoordinateSpace* >& coordinate_spaces);
-  virtual ~ParticleState();
+  virtual ~ParticleState() {}
 
   void AddOriginParticle();
   void AddParticle(const std::vector<Coordinate>& particle_state);

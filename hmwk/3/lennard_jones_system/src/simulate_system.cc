@@ -16,40 +16,55 @@
 
 int main()
 {
+  std::cout << "Declaring potential" << std::endl;
   LennardJonesPotential pairwise_potential = LennardJonesPotential();
   RungeKuttaIntegrator integrator = RungeKuttaIntegrator(false);
 
+  std::cout << "Declaring coordinate systems" << std::endl;
   //Initialize coordinate systems
   std::vector<double> bounds{ 10., 10. };
-  FlatTorusSpace position_coordinate_system = FlatTorusSpace(bounds);
+  std::cout << "Euclidean coordinate system" << std::endl;
   EuclideanSpace momentum_coordinate_system = EuclideanSpace(bounds.size());
+  std::cout << "Torus coordinate system" << std::endl;
+  EuclideanSpace position_coordinate_system = EuclideanSpace(bounds.size());
 
+  std::cout << "Creating particle state" << std::endl;
   //Create particle state
+  
   HamiltonianParticleState state = HamiltonianParticleState(
     &position_coordinate_system,
     &momentum_coordinate_system);
 
+  std::cout << "Adding particles" << std::endl;
   //Add particles to state
-  for (int i = 0; i < 16; i++)
-    state.AddStationaryParticle(
-      Coordinate(std::vector<double>{i % 4, i / 4}));
+  //for (int i = 0; i < 16; i++)
+  //  state.AddStationaryParticle(
+  //    Coordinate(std::vector<double>{i % 4, i / 4}));
+  state.AddStationaryParticle(
+    Coordinate(std::vector<double>{2, 2}));
+  state.AddStationaryParticle(
+    Coordinate(std::vector<double>{2, 2.05}));
 
+  std::cout << "Declaring system" << std::endl;
   //Initialize the state-energy pair (system)
   ClassicalPairwiseParticleSystem system =
     ClassicalPairwiseParticleSystem(pairwise_potential, state);
 
+  std::cout << "Creating energy logger" << std::endl;
   //Initialize data collection object
   EnergyLogger energy_logger = EnergyLogger(system);
 
-
+  std::cout << "Building dynamics updater" << std::endl;
   //System, solver, step_time, initial_time, use_classical_ode
-  DynamicsUpdate updater = DynamicsUpdate(system, integrator, 0.01, 0., false);
+  DynamicsUpdate updater = DynamicsUpdate(system, integrator, 0.002, 0., false);
 
   updater.addLogger(&energy_logger);
 
+  std::cout << "Simulating system" << std::endl;
   //Run dynamics simulation
-  updater.RunUpdateForDuration(1.);
+  updater.RunUpdateN(5);
 
+  std::cout << "Finished simulating" << std::endl;
   //Print results from data collection
   std::cout << energy_logger << std::endl;
 

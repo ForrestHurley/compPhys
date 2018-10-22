@@ -1,5 +1,7 @@
 #include "classical_hamiltonian_energy.h"
 
+#include <iostream>
+
 ClassicalHamiltonian::ClassicalHamiltonian(const HamiltonianParticleState& state, const PotentialEnergy& potential) :
   DiagonalHamiltonian(state), potential(potential) {}
 
@@ -22,6 +24,12 @@ std::vector<Coordinate> ClassicalHamiltonian::MomentumPartial() const
 
 std::vector<Coordinate> ClassicalHamiltonian::PositionPartial() const
 {
+  /*for (Coordinate coord : potential.getPartials())
+  {
+    for (double val : coord.asVector())
+      std::cout << val << ";";
+  }
+  std::cout << std::endl;*/
   return potential.getPartials();
 }
 

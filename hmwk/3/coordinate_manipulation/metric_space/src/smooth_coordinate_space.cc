@@ -1,5 +1,6 @@
 #include "smooth_coordinate_space.h"
 #include <assert.h>
+#include <iostream>
 
 SmoothCoordinateSpace::SmoothCoordinatePoint::SmoothCoordinatePoint(SmoothCoordinateSpace* space) :
   MetricPoint(space), coordinate(getDimension()) {}
