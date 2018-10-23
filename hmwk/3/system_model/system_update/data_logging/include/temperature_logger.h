@@ -8,8 +8,8 @@
 class TemperatureLogger final : public DataLogger
 {
 private:
-  std::vector<double> temperature;
-  std::vector<double> time;
+  std::vector<double> temperatures;
+  std::vector<double> times;
 public:
   TemperatureLogger(const ClassicalParticleSystem& system);
 
@@ -18,6 +18,6 @@ public:
 
   friend std::ostream& operator<<(
     std::ostream &os, const TemperatureLogger &logger);
-}
+};
 
 #endif

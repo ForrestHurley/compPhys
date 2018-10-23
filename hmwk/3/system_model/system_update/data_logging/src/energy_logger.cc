@@ -23,6 +23,6 @@ std::ostream& operator<<(
   std::ostream &os, const EnergyLogger &logger)
 {
   for (int i = 0; i < logger.getLogCount(); i++)
-    os << logger.times.at(i) << ":" << logger.energies.at(i) << std::endl;
+    os << logger.times.at(i) << "," << logger.energies.at(i) << std::endl;
   return os;
 }

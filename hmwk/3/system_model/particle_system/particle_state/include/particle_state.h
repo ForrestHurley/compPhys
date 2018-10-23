@@ -17,6 +17,13 @@ public:
   void AddOriginParticle();
   void AddParticle(const std::vector<Coordinate>& particle_state);
 
+  int getParticleCount() const
+  {
+    if (state.size() == 0)
+      return 0;
+    return state.at(0).size();
+  }
+
   const std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> >& getState() const;
   const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& getStateComponent(int component_number) const;
 };
