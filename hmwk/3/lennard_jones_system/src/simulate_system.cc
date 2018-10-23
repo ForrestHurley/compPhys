@@ -5,8 +5,10 @@
 #include "lennard_jones_potential.h"
 #include "integ_runge_kutta.h"
 #include "flat_torus_space.h"
+#include "bounded_euclidean_space.h"
 #include "euclidean_space.h"
 #include "energy_logger.h"
+#include "coordinate_bounds.h"
 #include <iostream>
 
 //TODO:   Create better bounds (and support non-zero minimums on everything)
@@ -22,9 +24,17 @@ int main()
 
   std::cout << "Declaring coordinate systems" << std::endl;
   //Initialize coordinate systems
-  std::vector<double> bounds{ 10., 10. };
+  CoordinateBounds bounds = CoordinateBounds(
+    std::vector<double>{ -5., -5. },
+    std::vector<double>{ 5., 5.});
+
+  CoordinateBounds velocity_bounds = CoordinateBounds(
+    std::vector<double>{-1e4, -1e4},
+    std::vector<double>{1e4, 1e4});
+
   std::cout << "Euclidean coordinate system" << std::endl;
-  EuclideanSpace momentum_coordinate_system = EuclideanSpace(bounds.size());
+  BoundedEuclideanSpace momentum_coordinate_system = 
+    BoundedEuclideanSpace(velocity_bounds);
   std::cout << "Torus coordinate system" << std::endl;
   FlatTorusSpace position_coordinate_system = FlatTorusSpace(bounds);
 
@@ -37,13 +47,13 @@ int main()
 
   std::cout << "Adding particles" << std::endl;
   //Add particles to state
-  /*for (int i = 0; i < 16; i++)
+  for (int i = 0; i < 16; i++)
     state.AddStationaryParticle(
-      Coordinate(std::vector<double>{1. + i % 4, 1. + i / 4}));*/
+      Coordinate(std::vector<double>{1. + i % 4, 1. + i / 4}));
+  /*state.AddStationaryParticle(
+    Coordinate(std::vector<double>{6, 2}));
   state.AddStationaryParticle(
-    Coordinate(std::vector<double>{2, 2}));
-  state.AddStationaryParticle(
-    Coordinate(std::vector<double>{2, 3}));
+    Coordinate(std::vector<double>{-4, 3}));*/
 
   std::cout << "Declaring system" << std::endl;
   //Initialize the state-energy pair (system)
@@ -56,13 +66,13 @@ int main()
 
   std::cout << "Building dynamics updater" << std::endl;
   //System, solver, step_time, initial_time, use_classical_ode
-  DynamicsUpdate updater = DynamicsUpdate(system, integrator, 0.01, 0., false);
+  DynamicsUpdate updater = DynamicsUpdate(system, integrator, 0.001, 0., false);
 
   updater.addLogger(&energy_logger);
 
   std::cout << "Simulating system" << std::endl;
   //Run dynamics simulation
-  updater.RunUpdateN(50);
+  updater.RunUpdateN(200);
 
   std::cout << "Finished simulating" << std::endl;
   std::cout << "Outputting results" << std::endl;

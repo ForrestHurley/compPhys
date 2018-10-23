@@ -49,6 +49,8 @@ public:
   Coordinate operator%(double other) const;
 
   Coordinate Clamp(const Coordinate& min, const Coordinate& max) const;
+  Coordinate Abs() const;
+  Coordinate Sign() const;
 
   double dot(const Coordinate& other) const;
   Coordinate cross(const Coordinate& other) const;

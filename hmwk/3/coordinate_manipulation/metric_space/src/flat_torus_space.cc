@@ -5,27 +5,26 @@
 
 FlatTorusSpace::FlatTorusPoint::FlatTorusPoint(
   FlatTorusSpace* space,
-  const std::vector<double>& bounds) :
+  const CoordinateBounds& bounds) :
   BoundedEuclideanSpace::BoundedEuclideanPoint(space, bounds) {}
 
 FlatTorusSpace::FlatTorusPoint::FlatTorusPoint(
   FlatTorusSpace* space,
-  const std::vector<double>& bounds,
+  const CoordinateBounds& bounds,
   const Coordinate& coordinate) :
-  BoundedEuclideanSpace::BoundedEuclideanPoint(space, bounds, coordinate) {}
+  BoundedEuclideanSpace::BoundedEuclideanPoint(space, bounds, 
+    bounds.ModCoordinate(coordinate)) {}
 
 void FlatTorusSpace::FlatTorusPoint::setCoordinate(const Coordinate& new_coordinate)
 {
-  Coordinate coordinate_bounds = Coordinate(bounds);
-  Coordinate bounded_coordinate = 
-    ( ( (new_coordinate % coordinate_bounds) + coordinate_bounds) % coordinate_bounds);
-  EuclideanPoint::setCoordinate(bounded_coordinate);
+  EuclideanPoint::setCoordinate(
+    bounds.ModCoordinate(new_coordinate));
 }
 
-FlatTorusSpace::FlatTorusSpace(const std::vector<double>& bounds) :
+FlatTorusSpace::FlatTorusSpace(const CoordinateBounds& bounds) :
   BoundedEuclideanSpace(bounds), flat_torus_origin(this, bounds) {}
 
-FlatTorusSpace::FlatTorusSpace(const std::vector<double>& bounds,
+FlatTorusSpace::FlatTorusSpace(const CoordinateBounds& bounds,
   const Coordinate& zero_coordinate) :
   BoundedEuclideanSpace(bounds, zero_coordinate),
   flat_torus_origin(this, bounds, zero_coordinate) {}
@@ -46,21 +45,33 @@ FlatTorusSpace::FlatTorusPoint& FlatTorusSpace::CreatePoint(
 Coordinate FlatTorusSpace::DisplacementVector(
   const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const
 {
+  assert(A.getSpace() == this);
+  assert(B.getSpace() == this);
   const FlatTorusPoint& a_torus = 
     dynamic_cast<const FlatTorusPoint&>(A);
   const FlatTorusPoint& b_torus = 
     dynamic_cast<const FlatTorusPoint&>(B);
 
-  Coordinate difference_vector = a_torus.getCoordinate() - b_torus.getCoordinate();
-  Coordinate alternative_difference = Coordinate(bounds) - difference_vector;
-  double c = std::min<double>(1, 2);
-  Coordinate minimum_differences = 
-    difference_vector.ApplyFunction(
-      static_cast<const double& (*) (const double&, const double&)>(std::min<double>),
-      alternative_difference);
+  Coordinate difference = 
+    a_torus.getCoordinate() - b_torus.getCoordinate();
+  std::vector<double> difference_vector = 
+    difference.asVector();
+  std::vector<double> alternative_difference = 
+    (difference - difference.Sign() * bounds.getRange())
+    .asVector();
 
-  std::cout << a_torus.getCoordinate() << " : " << b_torus.getCoordinate() << " : ";
-  std::cout << minimum_differences << std::endl;
+  for (int i = 0; i < getDimension(); i++)
+  {
+    if (abs(difference_vector.at(i)) >
+      abs(alternative_difference.at(i)))
+      difference_vector.at(i) =
+        alternative_difference.at(i);
+  }
+  Coordinate minimum_differences = 
+    Coordinate(difference_vector);
+
+  //std::cout << a_torus.getCoordinate() << " : " << b_torus.getCoordinate() << " : ";
+  //std::cout << minimum_differences << std::endl;
 
   return minimum_differences;
 }

@@ -161,6 +161,23 @@ Coordinate Coordinate::Clamp(const Coordinate& min, const Coordinate& max) const
   return Coordinate(new_values);
 }
 
+Coordinate Coordinate::Abs() const
+{
+  std::vector<double> new_values = values;
+  for (int i = 0; i < new_values.size(); i++)
+    new_values.at(i) = abs(new_values.at(i));
+  return Coordinate(new_values);
+}
+
+Coordinate Coordinate::Sign() const
+{
+  std::vector<double> new_values = values;
+  for (int i = 0; i < new_values.size(); i++)
+    new_values.at(i) = 
+      (0 < new_values.at(i)) - (new_values.at(i) < 0);
+  return Coordinate(new_values);
+}
+
 double Coordinate::dot(const Coordinate& other) const
 {
   assert(other.dimension == dimension);

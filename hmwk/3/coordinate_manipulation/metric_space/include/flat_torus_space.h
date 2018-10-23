@@ -11,10 +11,10 @@ public:
   public:
     FlatTorusPoint(
       FlatTorusSpace* space,
-      const std::vector<double>& bounds);
+      const CoordinateBounds& bounds);
     FlatTorusPoint(
       FlatTorusSpace* space,
-      const std::vector<double>& bounds,
+      const CoordinateBounds& bounds,
       const Coordinate& coordinate);
     virtual ~FlatTorusPoint() {}
 
@@ -28,8 +28,8 @@ private:
   const FlatTorusPoint flat_torus_origin;
 
 public:
-  FlatTorusSpace(const std::vector<double>& bounds);
-  FlatTorusSpace(const std::vector<double>& bounds,
+  FlatTorusSpace(const CoordinateBounds& bounds);
+  FlatTorusSpace(const CoordinateBounds& bounds,
     const Coordinate& zero_coordinate);
   virtual ~FlatTorusSpace() {}
 
