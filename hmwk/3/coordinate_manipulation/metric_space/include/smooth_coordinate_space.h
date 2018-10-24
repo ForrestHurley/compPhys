@@ -37,6 +37,7 @@ public:
 
   virtual const SmoothCoordinatePoint& getOrigin() const override;
   virtual SmoothCoordinatePoint& CreatePoint(const Coordinate& coordinate);
+  virtual void DestroyPoint(SmoothCoordinatePoint* point);
 
   virtual Coordinate DisplacementVector(
     const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const = 0;

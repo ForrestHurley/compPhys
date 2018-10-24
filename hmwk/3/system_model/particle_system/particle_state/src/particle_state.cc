@@ -23,6 +23,11 @@ void ParticleState::AddParticle(const std::vector<Coordinate>& particle_state)
       &coordinate_spaces.at(i)->CreatePoint(particle_state.at(i)));
 }
 
+SmoothCoordinateSpace* ParticleState::getComponentSpace(int component_number) const
+{
+  return coordinate_spaces.at(component_number);
+}
+
 const std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> >& ParticleState::getState() const
 {
   return state;

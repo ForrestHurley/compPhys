@@ -12,12 +12,13 @@ private:
   DisplacementLogger& displacement_logger;
   const bool owns_displacement_logger;
 
-  std::vector<std::vector<Coordinate> > displacement_magnitude_squared;
-  std::vector<double> time;
+  std::vector<std::vector<double> > displacement_magnitude_squared;
+  std::vector<double> mean_r_squared;
+  std::vector<double> times;
 
 public:
   RSquaredLogger(const HamiltonianParticleSystem& system);
-  RSquaredLogger(const DisplacementLogger& displacement_logger);
+  RSquaredLogger(DisplacementLogger& displacement_logger);
   ~RSquaredLogger();
 
   void Log(double current_time) override;

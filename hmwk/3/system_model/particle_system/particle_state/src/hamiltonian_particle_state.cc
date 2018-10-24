@@ -20,6 +20,16 @@ void HamiltonianParticleState::AddStationaryParticle(
     coordinate_spaces.at(1)->getOrigin().getCoordinate());
 }
 
+SmoothCoordinateSpace* HamiltonianParticleState::getPositionSpace() const
+{
+  return getComponentSpace(0);
+}
+
+SmoothCoordinateSpace* HamiltonianParticleState::getMomentumSpace() const
+{
+  return getComponentSpace(1);
+}
+
 const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>&
   HamiltonianParticleState::getPositions() const
 {

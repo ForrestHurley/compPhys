@@ -46,3 +46,8 @@ SmoothCoordinateSpace::SmoothCoordinatePoint& SmoothCoordinateSpace::CreatePoint
   addPoint(point);
   return *point;
 }
+
+void SmoothCoordinateSpace::DestroyPoint(SmoothCoordinatePoint* point)
+{
+  removePoint(point);
+}

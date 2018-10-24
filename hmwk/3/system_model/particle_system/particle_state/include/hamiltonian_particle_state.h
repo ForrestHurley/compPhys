@@ -17,6 +17,9 @@ public:
   void AddStationaryParticle(
     const Coordinate& position);
 
+  SmoothCoordinateSpace* getPositionSpace() const;
+  SmoothCoordinateSpace* getMomentumSpace() const;
+
   const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& getPositions() const;
   const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& getMomenta() const;
 };

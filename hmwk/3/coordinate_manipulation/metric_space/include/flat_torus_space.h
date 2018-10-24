@@ -36,8 +36,8 @@ public:
   virtual const FlatTorusPoint& getOrigin() const override;
   virtual FlatTorusPoint& CreatePoint(const Coordinate& coordinate) override;
 
-  virtual Coordinate DisplacementVector(
-    const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const override;
+  Coordinate DisplacementVector(
+    const SmoothCoordinatePoint& A, const SmoothCoordinatePoint& B) const;
 };
 
 #endif

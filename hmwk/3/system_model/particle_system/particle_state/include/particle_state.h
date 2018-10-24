@@ -24,6 +24,8 @@ public:
     return state.at(0).size();
   }
 
+  SmoothCoordinateSpace* getComponentSpace(int component_number) const;
+
   const std::vector< std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*> >& getState() const;
   const std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>& getStateComponent(int component_number) const;
 };

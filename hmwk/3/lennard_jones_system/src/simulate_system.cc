@@ -11,6 +11,7 @@
 #include "velocity_logger.h"
 #include "temperature_logger.h"
 #include "coordinate_bounds.h"
+#include "r_squared_logger.h"
 #include <iostream>
 #include <random>
 
@@ -29,7 +30,7 @@ int main()
   //Initialize coordinate systems
   CoordinateBounds bounds = CoordinateBounds(
     std::vector<double>{ -0., -0. },
-    std::vector<double>{ 4., 4.});
+    std::vector<double>{ 10., 10.});
 
   CoordinateBounds velocity_bounds = CoordinateBounds(
     std::vector<double>{-1e4, -1e4},
@@ -76,6 +77,7 @@ int main()
   EnergyLogger energy_logger = EnergyLogger(system);
   VelocityLogger velocity_logger = VelocityLogger(system);
   TemperatureLogger temperature_logger = TemperatureLogger(system);
+  RSquaredLogger r_squared_logger = RSquaredLogger(system);
 
   std::cout << "Building dynamics updater" << std::endl;
   //System, solver, step_time, initial_time, use_classical_ode
@@ -84,6 +86,7 @@ int main()
   updater.addLogger(&energy_logger);
   updater.addLogger(&velocity_logger);
   updater.addLogger(&temperature_logger);
+  updater.addLogger(&r_squared_logger);
 
   std::cout << "Simulating system" << std::endl;
   //Run dynamics simulation
@@ -92,7 +95,7 @@ int main()
   std::cout << "Finished simulating" << std::endl;
   std::cout << "Outputting results" << std::endl;
   //Print results from data collection
-  std::cout << temperature_logger << std::endl;
+  std::cout << r_squared_logger << std::endl;
 
   return 0;
 }
