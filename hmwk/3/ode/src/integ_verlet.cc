@@ -5,7 +5,7 @@
 
 VerletIntegrator::VerletIntegrator(unsigned int dimension) : 
   initial_solver(*new RungeKuttaIntegrator()),
-  space(*new EuclideanSpace(dimension)),
+  space(new EuclideanSpace(dimension)),
   owns_space(true) {}
 
 VerletIntegrator::VerletIntegrator(SmoothCoordinateSpace* space) :
@@ -17,7 +17,7 @@ VerletIntegrator::VerletIntegrator(ODEInterface *differential_equation,
   unsigned int dimension) : 
   ODESolver(differential_equation), 
   initial_solver(*new RungeKuttaIntegrator(differential_equation)),
-  space(*new EuclideanSpace(dimension)),
+  space(new EuclideanSpace(dimension)),
   owns_space(true) {}
 
 VerletIntegrator::VerletIntegrator(ODEInterface *differential_equation,
@@ -50,26 +50,42 @@ void VerletIntegrator::InitializeFirstState(std::vector< std::vector<double> > &
 {
   initial_solver.setDifferentialEquation(differential_equation);
 
-  previous_state = StateToPoints(state);
+  previous_state = StateToPositions(state);
   initial_solver.EvolveState(state, time_step, 1, initial_time);
 }
 
-std::vector<SmoothCoordinateSpace::SmoothcoordinatePoint*>* StateToPositions(
+std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>* 
+  VerletIntegrator::StateToPositions(
   const std::vector< std::vector<double> >& state)
 {
+  const unsigned int dimension = space->getDimension();
+  unsigned int point_count = state.size() / dimension;
+  assert(point_count * dimension == state.size());
 
+  std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>* out = 
+    new std::vector<SmoothCoordinateSpace::SmoothCoordinatePoint*>();
+
+  for (unsigned int i = 0; i < point_count; i++)
+  {
+    std::vector<double> point_data;
+    point_data.reserve(dimension);
+    for (unsigned int j = 0; j < dimension; j++)
+      point_data.push_back(state.at(i * dimension + j).at(0));
+
+    const Coordinate coord = Coordinate(point_data);
+
+    out->push_back(
+      &space->CreatePoint(coord));
+  }
+
+  return out;
 }
 
-std::vector< std::vector<double> > PositionsToState(
+void VerletIntegrator::DeletePoints(
   const std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >& points)
 {
-
-}
-
-void DeletePoints(
-  const std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >& points)
-{
-
+  for (SmoothCoordinateSpace::SmoothCoordinatePoint* point : points)
+    space->DestroyPoint(point);
 }
 
 //TODO: Modify to work with flat torus spaces
@@ -85,13 +101,13 @@ void VerletIntegrator::StepState(std::vector< std::vector<double> > &state, doub
     StateToPositions(state);
 
   unsigned int state_index = 0;
-  for (unsigned int i = 0; i < state_points.size(); i++)
+  for (unsigned int i = 0; i < state_points->size(); i++)
   {
     std::vector<double> out_row;
 
     const Coordinate displacement =
       space->DisplacementVector(
-        state_points->at(i), previous_state->at(i));
+        *state_points->at(i), *previous_state->at(i));
 
     const std::vector<double> disp_vector =
       displacement.asVector();
@@ -115,11 +131,11 @@ void VerletIntegrator::StepState(std::vector< std::vector<double> > &state, doub
     }
   }
 
-  std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* > temp_points = 
+  std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >* temp_points = 
     previous_state;
   previous_state = state_points;
 
-  DeletePoints(temp_points);
+  DeletePoints(*temp_points);
   delete temp_points;
 
   state = out;

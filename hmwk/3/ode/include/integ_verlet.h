@@ -3,6 +3,7 @@
 
 #include "ode_solver.h"
 #include "ode_interface.h"
+#include "smooth_coordinate_space.h"
 #include <vector>
 
 class VerletIntegrator : public ODESolver
@@ -18,11 +19,9 @@ private:
   void InitializeFirstState(std::vector< std::vector<double> > &state,
     double time_step, double initial_time = 0);
 
-  static std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >*
+  std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >*
     StateToPositions(const std::vector< std::vector<double> >& state);
-  static std::vector< std::vector<double> > PositionsToState(
-    const std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >& points);
-  static void DeletePoints(
+  void DeletePoints(
     const std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >& points);
 
 protected:
@@ -36,7 +35,7 @@ public:
   VerletIntegrator(unsigned int dimension = 2);
   VerletIntegrator(SmoothCoordinateSpace* space);
   VerletIntegrator(ODEInterface *differential_equation, unsigned int dimension = 2);
-  VerletIntegrator(ODEInterface *differential_equation, SmoothCoordinateSpace* space)
+  VerletIntegrator(ODEInterface *differential_equation, SmoothCoordinateSpace* space);
   VerletIntegrator(ODEInterface *differential_equation, SmoothCoordinateSpace* space,
     ODESolver& initial_solver);
 

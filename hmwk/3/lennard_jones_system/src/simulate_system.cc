@@ -4,6 +4,7 @@
 #include "classical_pairwise_particle_system.h" 
 #include "lennard_jones_potential.h"
 #include "integ_runge_kutta.h"
+#include "integ_verlet.h"
 #include "flat_torus_space.h"
 #include "bounded_euclidean_space.h"
 #include "euclidean_space.h"
@@ -24,7 +25,6 @@ int main()
 {
   std::cout << "Declaring potential" << std::endl;
   LennardJonesPotential pairwise_potential = LennardJonesPotential();
-  RungeKuttaIntegrator integrator = RungeKuttaIntegrator(false);
 
   std::cout << "Declaring coordinate systems" << std::endl;
   //Initialize coordinate systems
@@ -79,18 +79,21 @@ int main()
   TemperatureLogger temperature_logger = TemperatureLogger(system);
   RSquaredLogger r_squared_logger = RSquaredLogger(system);
 
+  RungeKuttaIntegrator integrator = RungeKuttaIntegrator(false);
+  VerletIntegrator verlet_integrator = VerletIntegrator(&position_coordinate_system);
+
   std::cout << "Building dynamics updater" << std::endl;
   //System, solver, step_time, initial_time, use_classical_ode
-  DynamicsUpdate updater = DynamicsUpdate(system, integrator, 0.01, 0., false);
+  DynamicsUpdate updater = DynamicsUpdate(system, verlet_integrator, 0.01, 0., false);
 
   updater.addLogger(&energy_logger);
-  updater.addLogger(&velocity_logger);
-  updater.addLogger(&temperature_logger);
+  //updater.addLogger(&velocity_logger);
+  //updater.addLogger(&temperature_logger);
   updater.addLogger(&r_squared_logger);
 
   std::cout << "Simulating system" << std::endl;
   //Run dynamics simulation
-  updater.RunUpdateN(2000);
+  updater.RunUpdateN(1000);
 
   std::cout << "Finished simulating" << std::endl;
   std::cout << "Outputting results" << std::endl;
