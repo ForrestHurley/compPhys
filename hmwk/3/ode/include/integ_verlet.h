@@ -8,12 +8,22 @@
 class VerletIntegrator : public ODESolver
 {
 private:
-  std::vector< std::vector<double> > previous_state;
+  std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >* 
+    previous_state;
+  SmoothCoordinateSpace* space;
+  const bool owns_space;
 
   void InitializeFirstState(std::vector<double> &state,
     double time_step, double initial_time = 0);
   void InitializeFirstState(std::vector< std::vector<double> > &state,
     double time_step, double initial_time = 0);
+
+  static std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >*
+    StateToPositions(const std::vector< std::vector<double> >& state);
+  static std::vector< std::vector<double> > PositionsToState(
+    const std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >& points);
+  static void DeletePoints(
+    const std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >& points);
 
 protected:
   void StepState(
@@ -23,9 +33,12 @@ protected:
   ODESolver& initial_solver;
 
 public:
-  VerletIntegrator();
-  VerletIntegrator(ODEInterface *differential_equation);
-  VerletIntegrator(ODEInterface *differential_equation, ODESolver& initial_solver);
+  VerletIntegrator(unsigned int dimension = 2);
+  VerletIntegrator(SmoothCoordinateSpace* space);
+  VerletIntegrator(ODEInterface *differential_equation, unsigned int dimension = 2);
+  VerletIntegrator(ODEInterface *differential_equation, SmoothCoordinateSpace* space)
+  VerletIntegrator(ODEInterface *differential_equation, SmoothCoordinateSpace* space,
+    ODESolver& initial_solver);
 
   void setInitialSolver(ODESolver* initial_solver);
 

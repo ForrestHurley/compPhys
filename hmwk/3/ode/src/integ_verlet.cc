@@ -1,17 +1,40 @@
 
 #include "integ_verlet.h"
 #include "integ_runge_kutta.h"
+#include "euclidean_space.h"
 
-VerletIntegrator::VerletIntegrator() : initial_solver(*new RungeKuttaIntegrator()){}
+VerletIntegrator::VerletIntegrator(unsigned int dimension) : 
+  initial_solver(*new RungeKuttaIntegrator()),
+  space(*new EuclideanSpace(dimension)),
+  owns_space(true) {}
 
-VerletIntegrator::VerletIntegrator(ODEInterface *differential_equation) : 
+VerletIntegrator::VerletIntegrator(SmoothCoordinateSpace* space) :
+  initial_solver(*new RungeKuttaIntegrator()),
+  space(space),
+  owns_space(false) {}
+
+VerletIntegrator::VerletIntegrator(ODEInterface *differential_equation,
+  unsigned int dimension) : 
   ODESolver(differential_equation), 
-  initial_solver(*new RungeKuttaIntegrator(differential_equation)) {}
+  initial_solver(*new RungeKuttaIntegrator(differential_equation)),
+  space(*new EuclideanSpace(dimension)),
+  owns_space(true) {}
+
+VerletIntegrator::VerletIntegrator(ODEInterface *differential_equation,
+  SmoothCoordinateSpace* space) :
+  ODESolver(differential_equation),
+  initial_solver(*new RungeKuttaIntegrator(differential_equation)),
+  space(space),
+  owns_space(false) {}
 
 VerletIntegrator::VerletIntegrator(
-  ODEInterface *differential_equation, ODESolver& initial_solver) : 
+  ODEInterface *differential_equation, 
+  SmoothCoordinateSpace* space,
+  ODESolver& initial_solver) : 
   ODESolver(differential_equation), 
-  initial_solver(initial_solver) {}
+  initial_solver(initial_solver),
+  space(space),
+  owns_space(false) {}
 
 void VerletIntegrator::InitializeFirstState(std::vector<double> &state,
   double time_step, double initial_time)
@@ -27,8 +50,26 @@ void VerletIntegrator::InitializeFirstState(std::vector< std::vector<double> > &
 {
   initial_solver.setDifferentialEquation(differential_equation);
 
-  previous_state = state;
+  previous_state = StateToPoints(state);
   initial_solver.EvolveState(state, time_step, 1, initial_time);
+}
+
+std::vector<SmoothCoordinateSpace::SmoothcoordinatePoint*>* StateToPositions(
+  const std::vector< std::vector<double> >& state)
+{
+
+}
+
+std::vector< std::vector<double> > PositionsToState(
+  const std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >& points)
+{
+
+}
+
+void DeletePoints(
+  const std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >& points)
+{
+
 }
 
 //TODO: Modify to work with flat torus spaces
@@ -40,23 +81,47 @@ void VerletIntegrator::StepState(std::vector< std::vector<double> > &state, doub
   std::vector< std::vector<double> > out;
   out.reserve(state.size());
 
-  for (unsigned int i = 0; i < state.size(); i++)
+  std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* >* state_points =
+    StateToPositions(state);
+
+  unsigned int state_index = 0;
+  for (unsigned int i = 0; i < state_points.size(); i++)
   {
     std::vector<double> out_row;
 
-    //position calculation
-    out_row.push_back(
-      2 * state.at(i).at(0) - previous_state.at(i).at(0) +
-      acceleration.at(i) * time_step * time_step);
+    const Coordinate displacement =
+      space->DisplacementVector(
+        state_points->at(i), previous_state->at(i));
 
-    //velocity calculation
-    out_row.push_back(
-      (out_row.at(0) - previous_state.at(i).at(0)) / ( 2 * time_step ));
+    const std::vector<double> disp_vector =
+      displacement.asVector();
+    const std::vector<double> position_vect =
+      state_points->at(i)->getCoordinate().asVector();
 
-    out.push_back(out_row);
+    for (unsigned int j = 0; j < disp_vector.size(); j++)
+    {
+      //position calculation
+      out_row.push_back(
+        position_vect.at(j) + 
+        disp_vector.at(j) +
+        acceleration.at(state_index) * time_step * time_step);
+
+      //velocity calculation O(dt) error (could be better, but takes more work)
+      out_row.push_back(
+        disp_vector.at(j) / time_step);
+        
+      out.push_back(out_row);
+      state_index++;
+    }
   }
 
-  previous_state = state;
+  std::vector< SmoothCoordinateSpace::SmoothCoordinatePoint* > temp_points = 
+    previous_state;
+  previous_state = state_points;
+
+  DeletePoints(temp_points);
+  delete temp_points;
+
   state = out;
 }
 
