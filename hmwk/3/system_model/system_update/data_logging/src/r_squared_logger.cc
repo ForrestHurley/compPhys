@@ -23,7 +23,7 @@ void RSquaredLogger::Log(double current_time)
 
   times.push_back(current_time);
 
-  double mean;
+  double mean = 0.;
   std::vector<double> tmp_r_squared;
   for (const Coordinate& point : 
     displacement_logger.total_displacements.at(

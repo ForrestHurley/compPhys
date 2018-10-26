@@ -50,8 +50,7 @@ std::vector<Coordinate> PairwiseBruteForcePotentialEnergy::getPartials() const
         continue;
 
       //TODO: add something to deal with NaN
-      partial_derivatives.at(i) =
-        partial_derivatives.at(i) +
+      partial_derivatives.at(i) +=
         pairwise_potential.getPartials(
           space->DisplacementVector(
             *locations.at(i), *locations.at(j)));

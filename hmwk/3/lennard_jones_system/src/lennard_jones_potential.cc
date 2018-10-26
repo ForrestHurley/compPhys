@@ -25,7 +25,7 @@ double LennardJonesPotential::getPotential(
 Coordinate LennardJonesPotential::getPartials(
   const Coordinate& displacement) const
 {
-  const Coordinate unit_displacement = displacement.getNormalized();
+  Coordinate unit_displacement = displacement.getNormalized();
 
   const double distance_squared = displacement.getMagnitudeSquared();
   const double distance = sqrt(distance_squared);
@@ -40,13 +40,12 @@ Coordinate LennardJonesPotential::getPartials(
   const double derivative = 
     4 * potential_depth * (6 * sixth_pow - 12 * twelth_pow) / distance;
 
-  const Coordinate partial_derivatives =
-    unit_displacement * derivative;
+  unit_displacement *= derivative;
   
   /*for (double val : partial_derivatives.asVector())
     std::cout << val << "|";
   std::cout << std::endl;*/
 
-  return partial_derivatives;
+  return unit_displacement;
 }
 

@@ -9,6 +9,9 @@ class CoordinateBounds
 private:
   Coordinate lower_bound;
   Coordinate upper_bound;
+  
+  Coordinate range;
+  void updateRange();
 
   const int dimension;
 
@@ -26,7 +29,7 @@ public:
   CoordinateBounds(
     const CoordinateBounds& bounds);
 
-  Coordinate getRange() const;
+  const Coordinate& getRange() const;
   const Coordinate& getLowerBound() const;
   const Coordinate& getUpperBound() const;
   void setLowerBound(const Coordinate& bound);

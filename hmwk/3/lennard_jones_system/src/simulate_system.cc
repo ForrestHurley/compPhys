@@ -60,7 +60,7 @@ int main()
   //Add particles to state
   for (int i = 0; i < 16; i++)
     state.AddParticle(
-      Coordinate(std::vector<double>{i % 4, 1. + i / 4}),
+      Coordinate(std::vector<double>{(double)(i % 4), 1. + i / 4}),
       Coordinate::RandomUnit(2, generator) * scale);
   /*state.AddStationaryParticle(
     Coordinate(std::vector<double>{6, 2}));

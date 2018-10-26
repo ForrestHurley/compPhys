@@ -52,27 +52,24 @@ Coordinate FlatTorusSpace::DisplacementVector(
   const FlatTorusPoint& b_torus = 
     dynamic_cast<const FlatTorusPoint&>(B);
 
-  Coordinate difference = 
-    a_torus.getCoordinate() - b_torus.getCoordinate();
-  std::vector<double> difference_vector = 
-    difference.asVector();
-  std::vector<double> alternative_difference = 
-    (difference - difference.Sign() * bounds.getRange())
-    .asVector();
+  Coordinate difference = a_torus.getCoordinate();
+  difference -= b_torus.getCoordinate();
+  std::vector<double> difference_vector = difference.asVector();
+  Coordinate range = difference.Sign();
+  range *= bounds.getRange();
+  difference -= range;
 
   for (int i = 0; i < getDimension(); i++)
   {
     if (abs(difference_vector.at(i)) >
-      abs(alternative_difference.at(i)))
+      abs(difference.asVector().at(i)))
       difference_vector.at(i) =
-        alternative_difference.at(i);
+        difference.asVector().at(i);
   }
-  Coordinate minimum_differences = 
-    Coordinate(difference_vector);
 
   //std::cout << a_torus.getCoordinate() << " : " << b_torus.getCoordinate() << " : ";
   //std::cout << minimum_differences << std::endl;
 
-  return minimum_differences;
+  return Coordinate(difference_vector);
 }
 

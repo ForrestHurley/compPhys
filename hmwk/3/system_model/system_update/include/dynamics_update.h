@@ -49,6 +49,7 @@ public:
 
   ~DynamicsUpdate();
 
+  virtual void SetupUpdate() override;
   virtual void RunUpdate() override;
 
 private:

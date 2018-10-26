@@ -15,17 +15,23 @@ void ODESolver::setDifferentialEquation(ODEInterface *differential_equation)
   this->differential_equation = differential_equation;  
 }
 
-void ODESolver::StepState(std::vector<double> &state, double time_step, double time) 
+void ODESolver::setState(const std::vector< std::vector<double> > &state)
 {
-  std::vector< std::vector<double> > manip_vect;
-  manip_vect.push_back(state);
-
-  StepState(manip_vect, time_step, time);
-
-  state = manip_vect.at(0);
+  this->state = state;
 }
 
-void ODESolver::EvolveState(std::vector< std::vector<double> > &state, double total_time, int number_of_steps, double initial_time) 
+void ODESolver::setState(const std::vector<double> &state)
+{
+  this->state.clear();
+  this->state.push_back(state);
+}
+
+const std::vector< std::vector<double> >& ODESolver::getState() const
+{
+  return state;
+}
+
+void ODESolver::EvolveState(double total_time, int number_of_steps, double initial_time) 
 {
   double step_size = total_time / number_of_steps;
 
@@ -53,7 +59,7 @@ void ODESolver::EvolveState(std::vector< std::vector<double> > &state, double to
 
   for (unsigned int i = 0; i < number_of_steps; i++)
   {
-    StepState(state, step_size, initial_time + step_size * i);
+    StepState(step_size, initial_time + step_size * i);
   }
 
   //Return input to original form
@@ -72,16 +78,6 @@ void ODESolver::EvolveState(std::vector< std::vector<double> > &state, double to
       state.at(i % particle_count).push_back(
         temp_state.at(i).at(0));
     }
-  }
-}
-
-void ODESolver::EvolveState(std::vector<double> &state, double total_time, int number_of_steps, double initial_time) 
-{
-  double step_size = total_time / number_of_steps;
-
-  for (unsigned int i = 0; i < number_of_steps; i++)
-  {
-    StepState(state, step_size, initial_time + step_size * i);
   }
 }
 

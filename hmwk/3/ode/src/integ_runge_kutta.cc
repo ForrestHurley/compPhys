@@ -51,7 +51,7 @@ void RungeKuttaIntegrator::add(std::vector< std::vector<double> > &A,
   }
 }
 
-void RungeKuttaIntegrator::StepState(std::vector< std::vector<double> > &state, double time_step, double time)
+void RungeKuttaIntegrator::StepState(double time_step, double time)
 {
   std::vector< std::vector<double> > k1, k2, k3, k4;
   k1.reserve(state.size());

@@ -10,6 +10,10 @@ class Coordinate
 {
 private:
   std::vector<double> values;
+  double magnitude_squared;
+  double magnitude;
+
+  void ResetCalculatedProperties();
 
 public:
   const unsigned int dimension;
@@ -37,6 +41,16 @@ public:
 
   Coordinate& operator=(const Coordinate&coordinate);
 
+  Coordinate& operator+=(const Coordinate& other);
+  Coordinate& operator-=(const Coordinate& other);
+  Coordinate& operator*=(const Coordinate& other);
+  Coordinate& operator/=(const Coordinate& other);
+  Coordinate& operator%=(const Coordinate& other);
+  Coordinate& operator+=(double other);
+  Coordinate& operator-=(double other);
+  Coordinate& operator*=(double other);
+  Coordinate& operator/=(double other);
+  Coordinate& operator%=(double other);
   Coordinate operator+(const Coordinate& other) const;
   Coordinate operator-(const Coordinate& other) const;
   Coordinate operator*(const Coordinate& other) const;
@@ -47,6 +61,11 @@ public:
   Coordinate operator*(double other) const;
   Coordinate operator/(double other) const;
   Coordinate operator%(double other) const;
+  bool operator>(const Coordinate& other) const;
+  bool operator>=(const Coordinate& other) const;
+  bool operator==(const Coordinate& other) const;
+  bool operator<=(const Coordinate& other) const;
+  bool operator<(const Coordinate& other) const;
 
   Coordinate Clamp(const Coordinate& min, const Coordinate& max) const;
   Coordinate Abs() const;

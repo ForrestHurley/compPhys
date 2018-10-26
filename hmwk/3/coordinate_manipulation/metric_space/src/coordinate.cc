@@ -6,9 +6,25 @@
 #include <cmath>
 #include <algorithm>
 
-Coordinate::Coordinate(unsigned int dimension) : dimension(dimension) {}
+Coordinate::Coordinate(unsigned int dimension) : dimension(dimension)
+{
+  ResetCalculatedProperties();
+}
 
-Coordinate::Coordinate(const std::vector<double>& values) : values(values), dimension(values.size()) {}
+Coordinate::Coordinate(const std::vector<double>& values) : values(values), dimension(values.size())
+{
+  ResetCalculatedProperties();
+}
+
+void Coordinate::ResetCalculatedProperties()
+{
+  magnitude = sqrt(getMagnitudeSquared());
+
+  magnitude_squared = 0;
+
+  for (int i = 0; i < dimension; i++)
+    magnitude_squared += values.at(i) * values.at(i);
+}
 
 Coordinate Coordinate::Zero(unsigned int dimension)
 {
@@ -39,110 +55,224 @@ Coordinate& Coordinate::operator=(const Coordinate& coordinate)
   assert(coordinate.dimension == dimension);
 
   values = coordinate.values;
+  magnitude = coordinate.magnitude;
+  magnitude_squared = coordinate.magnitude_squared;
+
+  return *this;
+}
+
+Coordinate& Coordinate::operator+=(const Coordinate& other)
+{
+  assert(other.dimension == dimension);
+
+  for (int i = 0; i < dimension; i++)
+    values.at(i) += other.values.at(i);
+
+  ResetCalculatedProperties();
+
+  return *this;
+}
+
+Coordinate& Coordinate::operator-=(const Coordinate& other)
+{
+  assert(other.dimension == dimension);
+
+  for (int i = 0; i < dimension; i++)
+    values.at(i) -= other.values.at(i);
+
+  ResetCalculatedProperties();
+
+  return *this;
+}
+
+Coordinate& Coordinate::operator*=(const Coordinate& other)
+{
+  assert(other.dimension == dimension);
+
+  for (int i = 0; i < dimension; i++)
+    values.at(i) *= other.values.at(i);
+
+  ResetCalculatedProperties();
+
+  return *this;
+}
+
+Coordinate& Coordinate::operator/=(const Coordinate& other)
+{
+  assert(other.dimension == dimension);
+
+  for (int i = 0; i < dimension; i++)
+    values.at(i) /= other.values.at(i);
+
+  ResetCalculatedProperties();
+
+  return *this;
+}
+
+Coordinate& Coordinate::operator%=(const Coordinate& other)
+{
+  assert(other.dimension == dimension);
+
+  for (int i = 0; i < dimension; i++)
+    values.at(i) =
+      std::fmod(values.at(i), other.values.at(i));
+
+  ResetCalculatedProperties();
+
+  return *this;
+}
+
+Coordinate& Coordinate::operator+=(double other)
+{
+  for (int i = 0; i < dimension; i++)
+    values.at(i) += other;
+
+  ResetCalculatedProperties();
+
+  return *this;
+}
+
+Coordinate& Coordinate::operator-=(double other)
+{
+  for (int i = 0; i < dimension; i++)
+    values.at(i) -= other;
+
+  ResetCalculatedProperties();
+
+  return *this;
+}
+
+Coordinate& Coordinate::operator*=(double other)
+{
+  for (int i = 0; i < dimension; i++)
+    values.at(i) *= other;
+
+  magnitude *= other;
+  magnitude_squared *= (other * other);
+
+  return *this;
+}
+
+Coordinate& Coordinate::operator/=(double other)
+{
+  for (int i = 0; i < dimension; i++)
+    values.at(i) /= other;
+
+  magnitude /= other;
+  magnitude_squared /= (other * other);
+
+  return *this;
+}
+
+Coordinate& Coordinate::operator%=(double other)
+{
+  for (int i = 0; i < dimension; i++)
+    values.at(i) =
+      std::fmod(values.at(i), other);
+
+  ResetCalculatedProperties();
 
   return *this;
 }
 
 Coordinate Coordinate::operator+(const Coordinate& other) const
 {
-  assert(other.dimension == dimension);
-
-  std::vector<double> new_values = values;
-  for (int i = 0; i < dimension; i++)
-    new_values.at(i) += other.values.at(i);
-
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  out += other;
+  return out;
 }
 
 Coordinate Coordinate::operator-(const Coordinate& other) const
 {
-  assert(other.dimension == dimension);
-
-  std::vector<double> new_values = values;
-  for (int i = 0; i < dimension; i++)
-    new_values.at(i) -= other.values.at(i);
-
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  out -= other;
+  return out;
 }
 
 Coordinate Coordinate::operator*(const Coordinate& other) const
 {
-  assert(other.dimension == dimension);
-
-  std::vector<double> new_values = values;
-  for (int i = 0; i < dimension; i++)
-    new_values.at(i) *= other.values.at(i);
-
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  out *= other;
+  return out;
 }
 
 Coordinate Coordinate::operator/(const Coordinate& other) const
 {
-  assert(other.dimension == dimension);
-
-  std::vector<double> new_values = values;
-  for (int i = 0; i < dimension; i++)
-    new_values.at(i) /= other.values.at(i);
-
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  out /= other;
+  return out;
 }
 
 Coordinate Coordinate::operator%(const Coordinate& other) const
 {
-  assert(other.dimension == dimension);
-
-  std::vector<double> new_values = values;
-  for (int i = 0; i < dimension; i++)
-    new_values.at(i) = 
-      std::fmod(new_values.at(i), other.values.at(i));
-
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  out %= other;
+  return out;
 }
 
 Coordinate Coordinate::operator+(double other) const
 {
-  std::vector<double> new_values = values;
-  for (int i = 0; i < dimension; i++)
-    new_values.at(i) += other;
-
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  out += other;
+  return out;
 }
 
 Coordinate Coordinate::operator-(double other) const
 {
-  std::vector<double> new_values = values;
-  for (int i = 0; i < dimension; i++)
-    new_values.at(i) -= other;
-
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  out -= other;
+  return out;
 }
 
 Coordinate Coordinate::operator*(double other) const
 {
-  std::vector<double> new_values = values;
-  for (int i = 0; i < dimension; i++)
-    new_values.at(i) *= other;
-
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  out *= other;
+  return out;
 }
 
 Coordinate Coordinate::operator/(double other) const
 {
-  std::vector<double> new_values = values;
-  for (int i = 0; i < dimension; i++)
-    new_values.at(i) /= other;
-
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  out /= other;
+  return out;
 }
 
 Coordinate Coordinate::operator%(double other) const
 {
-  std::vector<double> new_values = values;
-  for (int i = 0; i < dimension; i++)
-    new_values.at(i) = 
-      std::fmod(new_values.at(i), other);
+  Coordinate out = *this;
+  out %= other;
+  return out;
+}
 
-  return Coordinate(new_values);
+bool Coordinate::operator>(const Coordinate& other) const
+{
+  assert(other.dimension == dimension);
+  return values > other.values;
+}
+
+bool Coordinate::operator>=(const Coordinate& other) const
+{
+  assert(other.dimension == dimension);
+  return values >= other.values;
+}
+
+bool Coordinate::operator==(const Coordinate& other) const
+{
+  assert(other.dimension == dimension);
+  return values == other.values;
+}
+
+bool Coordinate::operator<=(const Coordinate& other) const
+{
+  assert(other.dimension == dimension);
+  return values <= other.values;
+}
+
+bool Coordinate::operator<(const Coordinate& other) const
+{
+  assert(other.dimension == dimension);
+  return values < other.values;
 }
 
 Coordinate Coordinate::Clamp(const Coordinate& min, const Coordinate& max) const
@@ -150,32 +280,33 @@ Coordinate Coordinate::Clamp(const Coordinate& min, const Coordinate& max) const
   assert(dimension == min.dimension);
   assert(dimension == max.dimension);
 
-  std::vector<double> new_values = values;
+  Coordinate out = *this;
+
   for (int i = 0; i < dimension; i++)
-    new_values.at(i) = 
+    out.values.at(i) = 
       std::min(
-        std::max(new_values.at(i),
+        std::max(out.values.at(i),
           min.values.at(i)),
         max.values.at(i));
 
-  return Coordinate(new_values);
+  return out;
 }
 
 Coordinate Coordinate::Abs() const
 {
-  std::vector<double> new_values = values;
-  for (int i = 0; i < new_values.size(); i++)
-    new_values.at(i) = abs(new_values.at(i));
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  for (int i = 0; i < out.values.size(); i++)
+    out.values.at(i) = abs(out.values.at(i));
+  return out;
 }
 
 Coordinate Coordinate::Sign() const
 {
-  std::vector<double> new_values = values;
-  for (int i = 0; i < new_values.size(); i++)
-    new_values.at(i) = 
-      (0 < new_values.at(i)) - (new_values.at(i) < 0);
-  return Coordinate(new_values);
+  Coordinate out = *this;
+  for (int i = 0; i < out.values.size(); i++)
+    out.values.at(i) =
+      (0 < out.values.at(i)) - (out.values.at(i) < 0);
+  return out;
 }
 
 double Coordinate::dot(const Coordinate& other) const
@@ -206,16 +337,11 @@ Coordinate Coordinate::cross(const Coordinate& other) const
 
 double Coordinate::getMagnitude() const
 {
-  return sqrt(getMagnitudeSquared());
+  return magnitude;
 }
 
 double Coordinate::getMagnitudeSquared() const
 {
-  double magnitude_squared = 0;
-
-  for (int i = 0; i < dimension; i++)
-    magnitude_squared += values.at(i) * values.at(i);
-
   return magnitude_squared;
 }
 
@@ -225,7 +351,8 @@ Coordinate Coordinate::getNormalized() const
   if (magnitude < 1e-10)
     return INF(dimension);
 
-  Coordinate out = *this / magnitude;
+  Coordinate out = *this;
+  out /= magnitude;
   return out;
 }
 

@@ -13,6 +13,7 @@ private:
 protected:
   ParticleSystem& system;
 
+  virtual void SetupUpdate() = 0;
   virtual void RunUpdate() = 0;
 
 public:

@@ -30,7 +30,7 @@ std::vector<Coordinate> ClassicalHamiltonian::PositionPartial() const
       std::cout << val << ";";
   }
   std::cout << std::endl;*/
-  for (Coordinate single : potential.getPartials())
+  //for (Coordinate single : potential.getPartials())
   return potential.getPartials();
 }
 

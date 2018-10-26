@@ -70,5 +70,5 @@ int DisplacementLogger::getLogCount() const
 std::ostream& operator<<(
   std::ostream &os, const DisplacementLogger &logger)
 {
-
+  return os;
 }

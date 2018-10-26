@@ -159,7 +159,7 @@ DynamicsUpdate::~DynamicsUpdate()
   delete ode;
 }
 
-void DynamicsUpdate::RunUpdate()
+void DynamicsUpdate::SetupUpdate()
 {
   //This function is almost entirely converting to the correct form for the ODE Solver
   //TODO: Consider refactoring so that this is less necessary
@@ -169,9 +169,9 @@ void DynamicsUpdate::RunUpdate()
   HamiltonianParticleState& state =
     static_cast<HamiltonianParticleState&>(system.getState());
 
-  std::vector<double> position_vector = 
+  std::vector<double> position_vector =
     DynamicsUpdate::toVector(state.getPositions());
-  std::vector<double> momentum_vector = 
+  std::vector<double> momentum_vector =
     DynamicsUpdate::toVector(state.getMomenta());
 
   int position_count = position_vector.size();
@@ -194,12 +194,26 @@ void DynamicsUpdate::RunUpdate()
       state_vector.push_back(std::vector<double>{momentum_vector.at(i)});
   }
 
+  solver.setState(state_vector);
+}
+
+void DynamicsUpdate::RunUpdate()
+{
+  HamiltonianParticleSystem& hamiltonian_system = static_cast<HamiltonianParticleSystem&>(system);
+
+  HamiltonianParticleState& state =
+    static_cast<HamiltonianParticleState&>(system.getState());
+
+  const std::vector<double> temp_position_vector =
+    DynamicsUpdate::toVector(state.getPositions());
+  const int position_count = temp_position_vector.size();
+
   //Actually calling the code to update the state by one step
-  solver.EvolveState(state_vector, step_time, 1, total_time);
+  solver.EvolveState(step_time, 1, total_time);
   total_time += step_time;
 
-  position_vector.clear();
-  momentum_vector.clear();
+  std::vector<double> position_vector, momentum_vector;
+  const std::vector< std::vector<double> > state_vector = solver.getState();
 
   if (use_classical_ode)
   {

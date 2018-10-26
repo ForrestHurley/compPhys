@@ -8,6 +8,7 @@ void BasicUpdate::RunUpdateN(int total_steps)
   for (DataLogger* logger : logger_list)
     logger->Log(0.);
 
+  SetupUpdate();
   for (int i = 0; i < total_steps; i++)
   {
     RunUpdate();
@@ -26,6 +27,7 @@ void BasicUpdate::RunUpdateForDuration(double total_time)
   for (DataLogger* logger : logger_list)
     logger->Log(0.);
 
+  SetupUpdate();
   while (true)
   {
     RunUpdate();

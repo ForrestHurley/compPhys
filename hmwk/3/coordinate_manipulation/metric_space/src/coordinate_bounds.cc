@@ -5,41 +5,71 @@ CoordinateBounds::CoordinateBounds(
   const Coordinate& upper_bound)
   : upper_bound(upper_bound),
   lower_bound(Coordinate::Zero(upper_bound.dimension)),
-  dimension(upper_bound.dimension) {}
+  range(upper_bound),
+  dimension(upper_bound.dimension)
+{
+
+  assert(this->upper_bound >= this->lower_bound);
+  range -= lower_bound;
+}
 
 CoordinateBounds::CoordinateBounds(
   const Coordinate& lower_bound,
   const Coordinate& upper_bound)
-  : lower_bound(lower_bound), upper_bound(upper_bound),
+  : lower_bound(lower_bound),
+  upper_bound(upper_bound),
+  range(upper_bound),
   dimension(lower_bound.dimension)
 {
+  assert(this->upper_bound >= this->lower_bound);
   assert(lower_bound.dimension == upper_bound.dimension);  
+  range -= lower_bound;
 }
 
 CoordinateBounds::CoordinateBounds(
   const std::vector<double>& upper_bound)
   : upper_bound(upper_bound),
   lower_bound(Coordinate::Zero(upper_bound.size())),
-  dimension(upper_bound.size()) {}
+  range(upper_bound),
+  dimension(upper_bound.size()) 
+{
+  assert(this->upper_bound >= lower_bound);
+  range -= lower_bound; //Not strictly necessary
+}
 
 CoordinateBounds::CoordinateBounds(
   const std::vector<double>& lower_bound,
   const std::vector<double>& upper_bound)
-  : lower_bound(lower_bound), upper_bound(upper_bound),
+  : lower_bound(lower_bound),
+  upper_bound(upper_bound),
+  range(upper_bound),
   dimension(lower_bound.size())
 {
   assert(lower_bound.size() == upper_bound.size());
+  assert(this->upper_bound >= this->lower_bound);
+  range -= lower_bound; //Set range to what it should be
 }
 
 CoordinateBounds::CoordinateBounds(
   const CoordinateBounds& bounds) :
   lower_bound(bounds.lower_bound),
   upper_bound(bounds.upper_bound),
-  dimension(bounds.getDimension()) {}
-
-Coordinate CoordinateBounds::getRange() const
+  range(bounds.upper_bound),
+  dimension(bounds.getDimension()) 
 {
-  return upper_bound - lower_bound;
+  assert(bounds.upper_bound >= bounds.lower_bound);
+  range -= lower_bound; //Set range to what it should be
+}
+
+void CoordinateBounds::updateRange()
+{
+  range = upper_bound;
+  range -= lower_bound;
+}
+
+const Coordinate& CoordinateBounds::getRange() const
+{
+  return range;
 }
 
 const Coordinate& CoordinateBounds::getLowerBound() const
@@ -57,6 +87,7 @@ void CoordinateBounds::setLowerBound(
 {
   assert(bound.dimension == dimension);
   lower_bound = bound;
+  updateRange();
 }
 
 void CoordinateBounds::setUpperBound(
@@ -64,6 +95,7 @@ void CoordinateBounds::setUpperBound(
 {
   assert(bound.dimension == dimension);
   upper_bound = bound;
+  updateRange();
 }
 
 void CoordinateBounds::setLowerUpperBound(
@@ -74,6 +106,7 @@ void CoordinateBounds::setLowerUpperBound(
   assert(upper_bound.dimension == dimension);
   this->lower_bound = lower_bound;
   this->upper_bound = upper_bound;
+  updateRange();
 }
 
 CoordinateBounds& CoordinateBounds::operator=(const CoordinateBounds& bounds)
@@ -84,6 +117,8 @@ CoordinateBounds& CoordinateBounds::operator=(const CoordinateBounds& bounds)
 
   lower_bound = bounds.lower_bound;
   upper_bound = bounds.upper_bound;
+
+  updateRange();
 
   return *this;
 }
