@@ -8,7 +8,7 @@ class MetropolisUVTUpdate : public MetropolisUpdate
 public:
   const double T, U;
 
-  MetropolisUVTUpdate(ParticleSystem& system, double T, double U);
+  MetropolisUVTUpdate(ClassicalParticleSystem& system, double T = 1., double U = 1.);
 
   virtual void RunUpdate() override;
 };

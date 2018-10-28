@@ -16,6 +16,8 @@ public:
   void Log(double current_time) override;
   int getLogCount() const override;
 
+  const std::vector<double>& getTemperatures() { return temperatures; }
+
   friend std::ostream& operator<<(
     std::ostream &os, const TemperatureLogger &logger);
 };

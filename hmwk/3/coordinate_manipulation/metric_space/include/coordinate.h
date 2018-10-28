@@ -26,17 +26,24 @@ public:
   static Coordinate INF(unsigned int dimension);
 
   template< class RNG >
-  static Coordinate RandomUnit(unsigned int dimension, RNG& generator)
+  static Coordinate RandomGaussian(unsigned int dimension, RNG& generator)
   {
     std::vector<double> random_vector;
     random_vector.reserve(dimension);
 
     std::normal_distribution<double> distribution(0., 1.);
+    const double recip_dimension = 1. / dimension; //For normalizing the expected value of x^2
 
     for (int i = 0; i < dimension; i++)
-      random_vector.push_back(distribution(generator));
+      random_vector.push_back(distribution(generator) * recip_dimension);
 
-    return Coordinate(random_vector).getNormalized();
+    return Coordinate(random_vector);
+  }
+
+  template< class RNG >
+  static Coordinate RandomUnit(unsigned int dimension, RNG& generator)
+  {
+    return RandomGaussian(dimension, generator).getNormalized();
   }
 
   Coordinate& operator=(const Coordinate&coordinate);

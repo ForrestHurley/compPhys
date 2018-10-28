@@ -13,7 +13,7 @@ private:
 protected:
   ParticleSystem& system;
 
-  virtual void SetupUpdate() = 0;
+  virtual void SetupUpdate() {};
   virtual void RunUpdate() = 0;
 
 public:
@@ -23,6 +23,9 @@ public:
   void RunUpdateForDuration(double total_time);
 
   void addLogger(DataLogger* logger);
+
+  template< class MetropolisType>
+  friend class MetropolisDynamicsUpdate;
 };
 
 #endif

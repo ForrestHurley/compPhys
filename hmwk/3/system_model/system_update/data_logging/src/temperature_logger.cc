@@ -12,9 +12,15 @@ void TemperatureLogger::Log(double current_time)
   const ClassicalParticleSystem& classical_system =
     static_cast<const ClassicalParticleSystem&>(system);
 
+  const double kinetic_energy =
+    classical_system.getKineticEnergy();
+
+  const int degrees_of_freedom =
+    classical_system.getCurrentState().getMomentumSpace()->getDimension() *
+    (classical_system.getCurrentState().getParticleCount() - 1);
+
   const double temperature =
-    2 * classical_system.getKineticEnergy() /
-    (3 * classical_system.getCurrentState().getParticleCount() - 3);
+    2 * kinetic_energy / degrees_of_freedom;
 
   temperatures.push_back(temperature);
 }
