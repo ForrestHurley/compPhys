@@ -33,7 +33,8 @@ TEST(RungeKuttaIntegratorTest, ZeroIntegrationTest)
 
   std::vector< std::vector<double> > state = 
     std::vector< std::vector<double> >{ std::vector<double>{0.}, std::vector<double>{2.}};
-  integrator.EvolveState(state, 10, 10, 0);
+  integrator.setState(state);
+  integrator.EvolveState(10, 10, 0);
 
   EXPECT_DOUBLE_EQ(state.at(0).at(0), 0.);
   EXPECT_DOUBLE_EQ(state.at(1).at(0), 2.);
@@ -46,7 +47,8 @@ TEST(RungeKuttaIntegratorTest, LinearIntegrationTest)
 
   std::vector< std::vector<double> > state = 
     std::vector< std::vector<double> >{ std::vector<double>{0.}, std::vector<double>{2.}};
-  integrator.EvolveState(state, 10, 10, 0);
+  integrator.setState(state);
+  integrator.EvolveState(10, 10, 0);
 
   EXPECT_DOUBLE_EQ(state.at(0).at(0), 110.);
   EXPECT_DOUBLE_EQ(state.at(1).at(0), 112.);
@@ -59,7 +61,8 @@ TEST(RungeKuttaIntegratorTest, QuadraticIntegrationTest)
 
   std::vector< std::vector<double> > state = 
     std::vector< std::vector<double> >{ std::vector<double>{0.}, std::vector<double>{2.}};
-  integrator.EvolveState(state, 10, 10, 0);
+  integrator.setState(state);
+  integrator.EvolveState(10, 10, 0);
 
   EXPECT_DOUBLE_EQ(state.at(0).at(0), 910.);
   EXPECT_DOUBLE_EQ(state.at(1).at(0), 912.);
@@ -72,7 +75,8 @@ TEST(RungeKuttaIntegratorTest, TwoLevelIntegrationTest)
 
   std::vector< std::vector<double> > state = 
     std::vector< std::vector<double> >{ std::vector<double>{0., 0.}};
-  integrator.EvolveState(state, 10, 10, 0);
+  integrator.setState(state);
+  integrator.EvolveState(10, 10, 0);
 
   EXPECT_DOUBLE_EQ(state.at(0).at(0), 0.);
   EXPECT_DOUBLE_EQ(state.at(0).at(1), 0.);
@@ -82,7 +86,8 @@ TEST(RungeKuttaIntegratorTest, TwoLevelIntegrationTest)
 
   std::vector< std::vector<double> > state2 = 
     std::vector< std::vector<double> >{ std::vector<double>{0., 0.}};
-  integrator2.EvolveState(state2, 10, 10, 0);
+  integrator2.setState(state2);
+  integrator2.EvolveState(10, 10, 0);
 
   EXPECT_DOUBLE_EQ(state2.at(0).at(0), 50.);
   EXPECT_DOUBLE_EQ(state2.at(0).at(1), 10.);
@@ -95,7 +100,8 @@ TEST(RungeKuttaIntegratorTest, TwoLevelVectorizedTest)
 
   std::vector< std::vector<double> > state = 
     std::vector< std::vector<double> >{ std::vector<double>{0., 0.}, std::vector<double> {1., -1.}};
-  integrator.EvolveState(state, 10, 10, 0);
+  integrator.setState(state);
+  integrator.EvolveState(10, 10, 0);
 
   EXPECT_DOUBLE_EQ(state.at(0).at(0), 1100.);
   EXPECT_DOUBLE_EQ(state.at(0).at(1), 320.);
@@ -137,7 +143,8 @@ TEST(RungeKuttaIntegratorTest, FlattenedIntegrationTest)
 
   std::vector< std::vector<double> > state =
     std::vector< std::vector<double> >{ std::vector<double>{0., 0.}, std::vector<double>{2., -2.}};
-  integrator.EvolveState(state, 10, 10, 0);
+  integrator.setState(state);
+  integrator.EvolveState(10, 10, 0);
 
   EXPECT_DOUBLE_EQ(state.at(0).at(0), 0.);
   EXPECT_DOUBLE_EQ(state.at(0).at(1), 0.);
@@ -149,7 +156,8 @@ TEST(RungeKuttaIntegratorTest, FlattenedIntegrationTest)
 
   std::vector< std::vector<double> > state2 =
     std::vector< std::vector<double> >{ std::vector<double>{0., 0.}, std::vector<double>{-1., 1.}};
-  integrator2.EvolveState(state2, 3.1415927, 100, 0);
+  integrator2.setState(state2);
+  integrator2.EvolveState(3.1415927, 100, 0);
 
   EXPECT_DOUBLE_EQ(state2.at(0).at(0), 0.);
   EXPECT_DOUBLE_EQ(state2.at(0).at(1), 0.);

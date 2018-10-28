@@ -18,12 +18,8 @@ Coordinate::Coordinate(const std::vector<double>& values) : values(values), dime
 
 void Coordinate::ResetCalculatedProperties()
 {
-  magnitude = sqrt(getMagnitudeSquared());
-
-  magnitude_squared = 0;
-
-  for (int i = 0; i < dimension; i++)
-    magnitude_squared += values.at(i) * values.at(i);
+  magnitude = -1;
+  magnitude_squared = -1;
 }
 
 Coordinate Coordinate::Zero(unsigned int dimension)
@@ -337,11 +333,21 @@ Coordinate Coordinate::cross(const Coordinate& other) const
 
 double Coordinate::getMagnitude() const
 {
+  if (magnitude >= 0)
+    return magnitude;
+  magnitude = sqrt(getMagnitudeSquared());
   return magnitude;
 }
 
 double Coordinate::getMagnitudeSquared() const
 {
+  if (magnitude_squared >= 0)
+    return magnitude_squared;
+
+  magnitude_squared = 0;
+
+  for (int i = 0; i < dimension; i++)
+    magnitude_squared += values.at(i) * values.at(i);
   return magnitude_squared;
 }
 
@@ -370,7 +376,7 @@ std::ostream& operator<<(
   for (int i = 0; i < coordinate.values.size() - 1; i++) 
   {
     os << coordinate.values.at(i);
-    os << ", ";
+    os << ",";
   }
   os << coordinate.values.at(
     coordinate.values.size() - 1);

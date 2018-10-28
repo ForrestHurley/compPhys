@@ -10,8 +10,8 @@ class Coordinate
 {
 private:
   std::vector<double> values;
-  double magnitude_squared;
-  double magnitude;
+  mutable double magnitude_squared;
+  mutable double magnitude;
 
   void ResetCalculatedProperties();
 

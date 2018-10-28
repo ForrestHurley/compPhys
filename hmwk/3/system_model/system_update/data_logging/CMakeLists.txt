@@ -5,7 +5,7 @@ project(data_logging)
 set(DATA_LOGGING_SOURCES src/data_logger.cc src/displacement_logger.cc src/energy_logger.cc
   src/pressure_logger.cc src/r_squared_logger.cc
   src/temperature_logger.cc
-  src/velocity_logger.cc)
+  src/velocity_logger.cc src/position_logger.cc)
 
 add_library(data_logging ${DATA_LOGGING_SOURCES})
 

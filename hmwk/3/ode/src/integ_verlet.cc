@@ -105,8 +105,6 @@ void VerletIntegrator::StepState(double time_step, double time)
   unsigned int state_index = 0;
   for (unsigned int i = 0; i < state_points->size(); i++)
   {
-    std::vector<double> out_row;
-
     const Coordinate displacement =
       space->DisplacementVector(
         *state_points->at(i), *previous_state->at(i));
@@ -118,15 +116,19 @@ void VerletIntegrator::StepState(double time_step, double time)
 
     for (unsigned int j = 0; j < disp_vector.size(); j++)
     {
+      std::vector<double> out_row;
+
       //position calculation
-      out_row.push_back(
+      const double new_position = 
         position_vect.at(j) + 
         disp_vector.at(j) +
-        acceleration.at(state_index) * time_step * time_step);
+        acceleration.at(state_index) * time_step * time_step;
+      out_row.push_back(new_position);
 
       //velocity calculation O(dt) error (could be better, but takes more work)
       out_row.push_back(
-        disp_vector.at(j) / time_step);
+        (new_position - position_vect.at(j))
+          / time_step);
         
       out.push_back(out_row);
       state_index++;

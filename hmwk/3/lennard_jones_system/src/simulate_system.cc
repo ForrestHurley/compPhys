@@ -11,6 +11,7 @@
 #include "energy_logger.h"
 #include "velocity_logger.h"
 #include "temperature_logger.h"
+#include "position_logger.h"
 #include "coordinate_bounds.h"
 #include "r_squared_logger.h"
 #include <iostream>
@@ -65,7 +66,7 @@ int main()
   /*state.AddStationaryParticle(
     Coordinate(std::vector<double>{6, 2}));
   state.AddStationaryParticle(
-    Coordinate(std::vector<double>{-4, 3}));*/
+    Coordinate(std::vector<double>{6, 3.}));*/
 
   std::cout << "Declaring system" << std::endl;
   //Initialize the state-energy pair (system)
@@ -78,27 +79,30 @@ int main()
   VelocityLogger velocity_logger = VelocityLogger(system);
   TemperatureLogger temperature_logger = TemperatureLogger(system);
   RSquaredLogger r_squared_logger = RSquaredLogger(system);
+  PositionLogger position_logger = PositionLogger(system);
 
   RungeKuttaIntegrator integrator = RungeKuttaIntegrator(false);
   VerletIntegrator verlet_integrator = VerletIntegrator(&position_coordinate_system);
 
   std::cout << "Building dynamics updater" << std::endl;
   //System, solver, step_time, initial_time, use_classical_ode
-  DynamicsUpdate updater = DynamicsUpdate(system, verlet_integrator, 0.01, 0., false);
+  DynamicsUpdate updater = DynamicsUpdate(system, verlet_integrator, 0.005, 0., true);
+  //DynamicsUpdate updater = DynamicsUpdate(system, integrator, 0.005, 0., true);
 
   updater.addLogger(&energy_logger);
-  //updater.addLogger(&velocity_logger);
-  //updater.addLogger(&temperature_logger);
+  updater.addLogger(&velocity_logger);
+  updater.addLogger(&temperature_logger);
   updater.addLogger(&r_squared_logger);
+  updater.addLogger(&position_logger);
 
   std::cout << "Simulating system" << std::endl;
   //Run dynamics simulation
-  updater.RunUpdateN(1000);
+  updater.RunUpdateN(25);
 
   std::cout << "Finished simulating" << std::endl;
   std::cout << "Outputting results" << std::endl;
   //Print results from data collection
   std::cout << r_squared_logger << std::endl;
-
+  
   return 0;
 }
