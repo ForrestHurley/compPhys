@@ -17,6 +17,8 @@ public:
   void Log(double current_time) override;
   int getLogCount() const override;
 
+  const std::vector<std::vector<Coordinate> >& getVelocities() const { return velocities; }
+
   friend std::ostream& operator<<(
     std::ostream &os, const VelocityLogger &logger);
 

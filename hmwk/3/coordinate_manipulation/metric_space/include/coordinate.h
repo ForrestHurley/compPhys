@@ -46,6 +46,20 @@ public:
     return RandomGaussian(dimension, generator).getNormalized();
   }
 
+  template< class RNG >
+  static Coordinate RandomUniform(unsigned int dimension, RNG& generator)
+  {
+    std::vector<double> random_vector;
+    random_vector.reserve(dimension);
+
+    std::uniform_real_distribution<double> distribution(0., 1.);
+
+    for (int i = 0; i < dimension; i++)
+      random_vector.push_back(distribution(generator));
+
+    return Coordinate(random_vector);
+  }
+
   Coordinate& operator=(const Coordinate&coordinate);
 
   Coordinate& operator+=(const Coordinate& other);

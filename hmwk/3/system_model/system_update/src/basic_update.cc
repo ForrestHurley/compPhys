@@ -3,7 +3,7 @@
 
 BasicUpdate::BasicUpdate(ParticleSystem& system) : system(system) {};
 
-void BasicUpdate::RunUpdateN(int total_steps)
+void BasicUpdate::RunUpdateN(int total_steps, bool verbose)
 {
   for (DataLogger* logger : logger_list)
     logger->Log(0.);
@@ -11,10 +11,18 @@ void BasicUpdate::RunUpdateN(int total_steps)
   SetupUpdate();
   for (int i = 0; i < total_steps; i++)
   {
+    if (verbose)
+      if (i % 100 == 0)
+        std::cout << "\r" <<
+        "Currently on calculation " << i << 
+        " out of " << total_steps;
+
     RunUpdate();
     for (DataLogger* logger : logger_list)
       logger->Log(i + 1.);
   }
+  if (verbose)
+    std::cout << std::endl;
 }
 
 void BasicUpdate::RunUpdateForDuration(double total_time)

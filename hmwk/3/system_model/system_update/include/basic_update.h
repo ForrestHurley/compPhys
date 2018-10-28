@@ -19,7 +19,7 @@ protected:
 public:
   BasicUpdate(ParticleSystem& system);
 
-  void RunUpdateN(int total_steps);
+  void RunUpdateN(int total_steps, bool verbose = false);
   void RunUpdateForDuration(double total_time);
 
   void addLogger(DataLogger* logger);
