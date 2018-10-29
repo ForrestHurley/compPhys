@@ -148,11 +148,22 @@ void Problem23()
   std::random_device device;
   std::mt19937_64 generator(device());
 
+  std::vector<Coordinate> velocities;
+  Coordinate total_velocity = Coordinate::Zero(2);
+  for (int i = 0; i < 16; i++)
+  {
+    Coordinate temp_vel = 
+      Coordinate::RandomUnit(2, generator) * scale;
+    total_velocity += temp_vel;
+    velocities.push_back(temp_vel);
+  }
+  total_velocity /= 16;
+
   //Add particles to state
   for (int i = 0; i < 16; i++)
     state.AddParticle(
       Coordinate(std::vector<double>{(double)(i % 4), (double)(i / 4)}),
-      Coordinate::RandomUnit(2, generator) * scale);
+      velocities.at(i) - total_velocity);
 
   std::cout << "Declaring system" << std::endl;
   //Initialize the state-energy pair (system)
