@@ -13,13 +13,13 @@ private:
   double energy_t;
   int geometric_dimension;
 
-  void CalculatePotential(state& walker_state) const;
+  void CalculatePotential(State& walker_state) const;
 
 protected:
-  virtual void addDiffusion(state& walker_state, double time_step) const override;
-  virtual void addDrift(state& walker_state, double time_step) const override;
+  virtual void addDiffusion(State& walker_state, double time_step) const override;
+  virtual void addDrift(State& walker_state, double time_step) const override;
   virtual int getProliferation(
-      state& walker_state, 
+      State& walker_state, 
       double time_step) const override;
 
   virtual void PostIteration() override;

@@ -15,7 +15,7 @@ public:
   explicit State(int dimension);
   explicit State(const std::vector<double>& initial_state);
 
-  static std::unique_ptr<state> RandomGaussian(
+  static std::unique_ptr<State> RandomGaussian(
       double mean = 0., double standard_deviation = 1., int dimension = 1);
 
   double& at(int i);

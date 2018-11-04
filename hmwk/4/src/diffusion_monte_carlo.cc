@@ -1,5 +1,8 @@
 
 #include "diffusion_monte_carlo.h"
+#include <math.h>
+#include <cassert>
+#include <random>
 
 DiffusionMonteCarlo::DiffusionMonteCarlo(
     double nucleus_count,
@@ -15,11 +18,12 @@ DiffusionMonteCarlo::DiffusionMonteCarlo(
   geometric_dimension(dimension),
   Diffusion(initial_walker_count, electron_count * dimension + 1) {}
 
-void DiffusionMonteCarlo::getCalculatedEnergy() const
+#include <iostream>
+double DiffusionMonteCarlo::getCalculatedEnergy() const
 {
   double total_energy = 0.;
 
-  std::list<state>::const_iterator it = getWalkers().begin();
+  std::list<State>::const_iterator it = getWalkers().begin();
   for (; it != getWalkers().end(); ++it)
   {
     total_energy += it->at(electron_count * geometric_dimension);
@@ -28,7 +32,7 @@ void DiffusionMonteCarlo::getCalculatedEnergy() const
   return total_energy / getWalkerCount();
 }
 
-void DiffusionMonteCarlo::CalculatePotential(state& walker_state) const
+void DiffusionMonteCarlo::CalculatePotential(State& walker_state) const
 {
   double energy = 0.;
 
@@ -55,7 +59,7 @@ void DiffusionMonteCarlo::CalculatePotential(state& walker_state) const
           walker_state.at(geometric_dimension * i + k) -
           walker_state.at(geometric_dimension * j + k);
 
-        distance_squared += displacement * displacement
+        distance_squared += displacement * displacement;
       }
 
       const double recip_dist = 1. / sqrt(distance_squared);
@@ -66,27 +70,27 @@ void DiffusionMonteCarlo::CalculatePotential(state& walker_state) const
   walker_state.at(electron_count * geometric_dimension) = energy;
 }
 
-void DiffusionMonteCarlo::addDiffusion(state& walker_state, double time_step) const
+void DiffusionMonteCarlo::addDiffusion(State& walker_state, double time_step) const
 {
-  assert(state.dimension == electron_count * geometric_dimension + 1);
+  assert(walker_state.dimension == electron_count * geometric_dimension + 1);
 
   const double standard_deviation = sqrt(time_step);
   for (int i = 0; i < dimension; i++)
-    state.at(i) += getRandomGaussian(0., standard_deviation);
+    walker_state.at(i) += getRandomGaussian(0., standard_deviation);
 }
 
-void DiffusionMonteCarlo::addDrift(state& walker_state, double time_step) const {}
+void DiffusionMonteCarlo::addDrift(State& walker_state, double time_step) const {}
 
-int DiffusionMonteCarlo::getProliferation(state& walker_state, double time_step) const
+int DiffusionMonteCarlo::getProliferation(State& walker_state, double time_step) const
 {
-  assert(state.dimension == electron_count * geometric_dimension + 1);
+  assert(walker_state.dimension == electron_count * geometric_dimension + 1);
 
-  const double old_potential = state.at(electron_count * dimension);
-  CalculateEnergy(state);
-  const double new_potential = state.at(electron_count * dimension);
+  const double old_potential = walker_state.at(electron_count * geometric_dimension);
+  CalculatePotential(walker_state);
+  const double new_potential = walker_state.at(electron_count * geometric_dimension);
 
   static thread_local std::random_device device;
-  static thread_local std::mt19337_64 twister(device);
+  static thread_local std::mt19937_64 twister(device());
   static thread_local std::uniform_real_distribution<double> uniform(0., 1.);
 
   const double energies =
@@ -101,6 +105,6 @@ int DiffusionMonteCarlo::getProliferation(state& walker_state, double time_step)
 void DiffusionMonteCarlo::PostIteration()
 {
   energy_t =
-    energy_guess - ln(getWalkerCount() / goal_walker_count);
+    energy_guess - log((double)getWalkerCount() / goal_walker_count);
 }
 
