@@ -2,6 +2,7 @@
 #define DIFFUSION_MONTE_CARLO_H
 
 #include "diffusion.h"
+#include <vector>
 
 class DiffusionMonteCarlo : public Diffusion
 {
@@ -13,7 +14,10 @@ private:
   double energy_t;
   int geometric_dimension;
 
+  std::vector<double> calculated_energies;
+
   void CalculatePotential(State& walker_state) const;
+  void UpdateCalculatedEnergies();
 
 protected:
   virtual void addDiffusion(State& walker_state, double time_step) const override;
@@ -33,6 +37,8 @@ public:
       int initial_walker_count = 1000);
 
   double getCalculatedEnergy() const;
+  const std::vector<double>& getPastCalculatedEnergies() const;
+  void ClearCalculatedEnergies();
 };
 
 #endif

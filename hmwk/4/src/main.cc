@@ -9,27 +9,28 @@ int main()
 
   //Nucleus count, electron count, guess, dimension, walker count
   DiffusionMonteCarlo simulator
-    = DiffusionMonteCarlo(2, 2, -2.9, 3, 100000);
+    = DiffusionMonteCarlo(2, 2, -2.9, 3, 1000);
     
+  int initial_iterations = 0;
+  int iterations_per_print = 100;
+  double iteration_time_step = 0.00001;
+
   //Iterations, time step
-  simulator.RunIterations(1000, 0.001);
+  simulator.RunIterations(initial_iterations, iteration_time_step);
 
-  for (int i = 0; i < 20; i++)
+  for (int i = 0; i < 2000; i++)
   {
+    double total_energy = 0.;
+    for (double energy : simulator.getPastCalculatedEnergies())
+      total_energy += energy;
+    total_energy /= simulator.getPastCalculatedEnergies().size();
+
     std::cout << "Calculated energy is " << 
-      simulator.getCalculatedEnergy() << " after " <<
-      i * 0.1 + 1 << " seconds" << std::endl;
+      total_energy << " after " <<
+      i * iterations_per_print + initial_iterations << " iterations" << std::endl;
 
-    /*std::list<State>::const_iterator it;
-    for (it = simulator.getWalkers().begin(); it != simulator.getWalkers().end(); it++)
-    {
-      for (int k = 0; k < it->dimension; k++)
-      {
-        std::cout << it->at(k) << ",";
-      }
-      std::cout << std::endl;
-    }*/
+    simulator.ClearCalculatedEnergies();
 
-    simulator.RunIterations(1000, 0.0001);
+    simulator.RunIterations(iterations_per_print, iteration_time_step);
   }
 }

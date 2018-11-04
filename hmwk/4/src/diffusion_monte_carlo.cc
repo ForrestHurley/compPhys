@@ -18,18 +18,20 @@ DiffusionMonteCarlo::DiffusionMonteCarlo(
   geometric_dimension(dimension),
   Diffusion(initial_walker_count, electron_count * dimension + 1) {}
 
-#include <iostream>
 double DiffusionMonteCarlo::getCalculatedEnergy() const
 {
-  double total_energy = 0.;
+  return calculated_energies.at(calculated_energies.size() - 1);
+}
 
-  std::list<State>::const_iterator it = getWalkers().begin();
-  for (; it != getWalkers().end(); ++it)
-  {
-    total_energy += it->at(electron_count * geometric_dimension);
-  }
+const std::vector<double>& 
+  DiffusionMonteCarlo::getPastCalculatedEnergies() const
+{
+  return calculated_energies;
+}
 
-  return total_energy / getWalkerCount();
+void DiffusionMonteCarlo::ClearCalculatedEnergies()
+{
+  calculated_energies = std::vector<double>();
 }
 
 void DiffusionMonteCarlo::CalculatePotential(State& walker_state) const
@@ -70,6 +72,19 @@ void DiffusionMonteCarlo::CalculatePotential(State& walker_state) const
   walker_state.setElement(electron_count * geometric_dimension, energy);
 }
 
+void DiffusionMonteCarlo::UpdateCalculatedEnergies()
+{
+  double total_energy = 0.;
+
+  std::list<State>::const_iterator it = getWalkers().begin();
+  for (; it != getWalkers().end(); ++it)
+  {
+    total_energy += it->at(electron_count * geometric_dimension);
+  }
+
+  calculated_energies.push_back(total_energy / getWalkerCount());
+}
+
 void DiffusionMonteCarlo::addDiffusion(State& walker_state, double time_step) const
 {
   assert(walker_state.dimension == electron_count * geometric_dimension + 1);
@@ -104,6 +119,7 @@ int DiffusionMonteCarlo::getProliferation(State& walker_state, double time_step)
 
 void DiffusionMonteCarlo::PostIteration()
 {
+  UpdateCalculatedEnergies();
   energy_t =
     energy_guess - log((double)getWalkerCount() / goal_walker_count);
 }
