@@ -20,6 +20,13 @@ public:
 
   double& at(int i);
   const double& at(int i) const;
+
+  void setElement(int i, double element);
+  double getElement(int i) const;
+
+  double getDistanceSquared(const State& other) const;
+  double getDistance(const State& other) const;
+  double getDistanceFromOrigin() const;
 };
 
 #endif

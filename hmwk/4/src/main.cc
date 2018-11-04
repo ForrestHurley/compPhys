@@ -1,4 +1,3 @@
-
 #include "state.h"
 #include "diffusion.h"
 #include "diffusion_monte_carlo.h"

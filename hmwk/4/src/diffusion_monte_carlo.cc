@@ -41,8 +41,8 @@ void DiffusionMonteCarlo::CalculatePotential(State& walker_state) const
     double distance_squared = 0.;
     for (int j = 0; j < geometric_dimension; j++)
       distance_squared += 
-        walker_state.at(geometric_dimension * i + j) *
-        walker_state.at(geometric_dimension * i + j);
+        walker_state.getElement(geometric_dimension * i + j) *
+        walker_state.getElement(geometric_dimension * i + j);
     
     const double recip_dist = 1. / sqrt(distance_squared);
     energy -= recip_dist * nucleus_count;
@@ -56,8 +56,8 @@ void DiffusionMonteCarlo::CalculatePotential(State& walker_state) const
       for (int k = 0; k < geometric_dimension; k++)
       {
         const double displacement =
-          walker_state.at(geometric_dimension * i + k) -
-          walker_state.at(geometric_dimension * j + k);
+          walker_state.getElement(geometric_dimension * i + k) -
+          walker_state.getElement(geometric_dimension * j + k);
 
         distance_squared += displacement * displacement;
       }
@@ -67,7 +67,7 @@ void DiffusionMonteCarlo::CalculatePotential(State& walker_state) const
     }
   }
 
-  walker_state.at(electron_count * geometric_dimension) = energy;
+  walker_state.setElement(electron_count * geometric_dimension, energy);
 }
 
 void DiffusionMonteCarlo::addDiffusion(State& walker_state, double time_step) const

@@ -1,6 +1,7 @@
 
 #include "state.h"
 #include <random>
+#include <cassert>
 
 State::State(int dimension) :
   dimension(dimension)
@@ -37,4 +38,44 @@ double& State::at(int i)
 const double& State::at(int i) const
 {
   return internal_state.at(i);
+}
+
+void State::setElement(int i, double value)
+{
+  internal_state.at(i) = value;
+}
+
+double State::getElement(int i) const
+{
+  return internal_state.at(i);
+}
+
+double State::getDistanceSquared(const State& other) const
+{
+  assert(other.dimension == dimension);
+
+  double squared = 0.;
+  for (int i = 0; i < dimension; i++)
+  {
+    const double this_val = internal_state.at(i);
+    const double other_val = other.internal_state.at(i);
+    squared += (this_val - other_val) * (this_val - other_val);
+  }
+  return squared;
+}
+
+double State::getDistance(const State& other) const
+{
+  return sqrt(getDistanceSquared(other));
+}
+
+double State::getDistanceFromOrigin() const
+{
+  double squared = 0.;
+  for (int i = 0; i < dimension; i++)
+  {
+    const double this_val = internal_state.at(i);
+    squared += this_val * this_val;
+  }
+  return sqrt(squared);
 }
