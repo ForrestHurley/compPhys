@@ -2,6 +2,7 @@
 #include "diffusion.h"
 #include <cassert>
 #include <random>
+#include <iostream>
 
 Diffusion::Diffusion(int initial_walker_count, int dimension) :
   initial_walker_count(initial_walker_count),
@@ -21,7 +22,7 @@ Diffusion::Diffusion(const std::list<State>& initial_walkers) :
 Diffusion::Diffusion(const std::vector<State>& initial_walkers) :
   Diffusion(std::list<State>(initial_walkers.begin(), initial_walkers.end())) {}
 
-void Diffusion::RunIterations(int number_of_iterations, double time_step)
+void Diffusion::RunIterations(int number_of_iterations, double time_step, bool verbose)
 {
   //Check if the walker list has elements in it and initialize if necessary
   if (walkers.size() == 0)
@@ -30,8 +31,16 @@ void Diffusion::RunIterations(int number_of_iterations, double time_step)
       walkers.push_back(*getRandomInitialState());
   }
 
+  int print_mod = number_of_iterations / 1000;
   for (int iteration = 0; iteration < number_of_iterations; iteration++)
   {
+    if(verbose && iteration % print_mod == 0)
+    {
+      std::cout << "Completed " << iteration << " iterations. This is " << 
+        (double) iteration / number_of_iterations * 100 << " percent of the calculation.\r"
+        << std::flush;
+    }
+
     //Iterate backwards to make deletes and inserts easier
     std::list<State>::iterator it = walkers.end();
     while (it != walkers.begin())

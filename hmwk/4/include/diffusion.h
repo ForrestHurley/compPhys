@@ -35,7 +35,7 @@ public:
   explicit Diffusion(const std::vector<State>& initial_walkers);
   explicit Diffusion(const std::list<State>& initial_walkers);
 
-  void RunIterations(int number_of_iterations, double time_step = 0.01);
+  void RunIterations(int number_of_iterations, double time_step = 0.01, bool verbose = false);
 
   const std::list<State>& getWalkers() const;
   int getWalkerCount() const;
